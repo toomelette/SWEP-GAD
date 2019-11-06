@@ -19,7 +19,11 @@ class RepositoryServiceProvider extends ServiceProvider {
 		$this->app->bind('App\Core\Interfaces\SubmenuInterface', 'App\Core\Repositories\SubmenuRepository');
 
 		$this->app->bind('App\Core\Interfaces\ProfileInterface', 'App\Core\Repositories\ProfileRepository');
-		
+
+		// GAD Modules
+
+		$this->app->bind('App\Core\Interfaces\SeminarInterface', 'App\Core\Repositories\SeminarRepository');
+
 	}
 
 

@@ -1,7 +1,7 @@
 <header class="main-header">
   <a href="#" class="logo">
-    <span class="logo-mini">R</span>
-    <span class="logo-lg"><b>RD</b></span>
+    <span class="logo-mini">G</span>
+    <span class="logo-lg"><b>GAD</b></span>
   </a>
   <nav class="navbar navbar-static-top">
     <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
