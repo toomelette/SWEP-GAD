@@ -33,27 +33,11 @@ class UserMenuComposer{
 
         $user_menus = [];
 
-
         if($this->auth->check()){
-
-            $user_menus_u = $this->user_menu_repo->getByCategory('U');
-
-            $user_menus_su = $this->user_menu_repo->getByCategory('SU');
-
-            $user_menus_sgrlab = $this->user_menu_repo->getByCategory('SGRLAB');
-
-            $user_menus_regu = $this->user_menu_repo->getByCategory('REGU');
-
+            $user_menus = $this->user_menu_repo->getAll();
         }  
 
-
-    	$view->with([
-            'global_user_menus_u'=> $user_menus_u,
-            'global_user_menus_su'=> $user_menus_su,
-            'global_user_menus_sgrlab'=> $user_menus_sgrlab,
-            'global_user_menus_regu'=> $user_menus_regu,
-        ]);
-
+    	$view->with('global_user_menus', $user_menus);
 
     }
 

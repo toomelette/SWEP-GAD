@@ -19,21 +19,6 @@ class RepositoryServiceProvider extends ServiceProvider {
 		$this->app->bind('App\Core\Interfaces\SubmenuInterface', 'App\Core\Repositories\SubmenuRepository');
 
 		$this->app->bind('App\Core\Interfaces\ProfileInterface', 'App\Core\Repositories\ProfileRepository');
-
-		// LMD
-		$this->app->bind('App\Core\Interfaces\MillInterface', 'App\Core\Repositories\MillRepository');
-
-		// Sugar Laboratory
-		$this->app->bind('App\Core\Interfaces\SugarOrderOfPaymentInterface', 'App\Core\Repositories\SugarOrderOfPaymentRepository');
-		$this->app->bind('App\Core\Interfaces\SugarServiceInterface', 'App\Core\Repositories\SugarServiceRepository');
-		$this->app->bind('App\Core\Interfaces\SugarAnalysisInterface', 'App\Core\Repositories\SugarAnalysisRepository');
-		$this->app->bind('App\Core\Interfaces\SugarAnalysisParameterInterface', 'App\Core\Repositories\SugarAnalysisParameterRepository');
-		$this->app->bind('App\Core\Interfaces\CaneJuiceAnalysisInterface', 'App\Core\Repositories\CaneJuiceAnalysisRepository');
-		$this->app->bind('App\Core\Interfaces\SugarSampleInterface', 'App\Core\Repositories\SugarSampleRepository');
-		$this->app->bind('App\Core\Interfaces\SugarSampleParameterInterface', 'App\Core\Repositories\SugarSampleParameterRepository');
-		$this->app->bind('App\Core\Interfaces\SugarMethodInterface', 'App\Core\Repositories\SugarMethodRepository');
-		$this->app->bind('App\Core\Interfaces\SugarAnalysisParameterMethodInterface', 'App\Core\Repositories\SugarAnalysisParameterMethodRepository');
-		$this->app->bind('App\Core\Interfaces\SugarClientInterface', 'App\Core\Repositories\SugarClientRepository');
 		
 	}
 

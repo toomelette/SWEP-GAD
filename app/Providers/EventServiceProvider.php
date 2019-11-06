@@ -32,13 +32,6 @@ class EventServiceProvider extends ServiceProvider{
         'App\Core\Subscribers\UserSubscriber',
         'App\Core\Subscribers\ProfileSubscriber',
         'App\Core\Subscribers\MenuSubscriber',
-        'App\Core\Subscribers\SugarOrderOfPaymentSubscriber',
-        'App\Core\Subscribers\SugarAnalysisSubscriber',
-        'App\Core\Subscribers\MillSubscriber',
-        'App\Core\Subscribers\SugarServiceSubscriber',
-        'App\Core\Subscribers\SugarSampleSubscriber',
-        'App\Core\Subscribers\CaneJuiceAnalysisSubscriber',
-        'App\Core\Subscribers\SugarClientSubscriber',
         
     ];
 
