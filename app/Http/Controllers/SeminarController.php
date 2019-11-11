@@ -22,11 +22,11 @@ class SeminarController extends Controller{
 
 
     
-    public function index(SeminarFilterRequest $request){
+    // public function index(SeminarFilterRequest $request){
         
-        return $this->seminar->fetch($request);
+    //     return $this->seminar->fetch($request);
 
-    }
+    // }
 
     
 
@@ -47,29 +47,29 @@ class SeminarController extends Controller{
 
 
 
-    public function edit($slug){
+    // public function edit($slug){
         
-        return $this->seminar->edit($slug);
+    //     return $this->seminar->edit($slug);
 
-    }
-
-
+    // }
 
 
-    public function update(SeminarFormRequest $request, $slug){
+
+
+    // public function update(SeminarFormRequest $request, $slug){
         
-        return $this->seminar->update($request, $slug);
+    //     return $this->seminar->update($request, $slug);
 
-    }
+    // }
 
     
 
 
-    public function destroy($slug){
+    // public function destroy($slug){
         
-        return $this->seminar->destroy($slug);
+    //     return $this->seminar->destroy($slug);
 
-    }
+    // }
 
 
 

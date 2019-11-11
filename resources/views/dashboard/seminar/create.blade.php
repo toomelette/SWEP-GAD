@@ -17,16 +17,24 @@
         </div> 
       </div>
       
-      <form method="POST" autocomplete="off" action="{{ route('dashboard.menu.store') }}">
+      <form method="POST" autocomplete="off" action="{{ route('dashboard.seminar.store') }}">
 
         <div class="box-body">
 
-          <div class="col-md-11">
+          <div class="col-md-12">
                   
             @csrf    
 
             {!! __form::textbox(
-              '4', 'name', 'text', 'Name *', 'Name', old('name'), $errors->has('name'), $errors->first('name'), ''
+              '6', 'title', 'text', 'Title *', 'Title', old('title'), $errors->has('title'), $errors->first('title'), ''
+            ) !!}
+
+            {!! __form::datepicker(
+              '3', 'date_covered_from',  'Date From *', old('date_covered_from') ? old('date_covered_from') : Carbon::now()->format('m/d/Y'), $errors->has('date_covered_from'), $errors->first('date_covered_from')
+            ) !!}
+
+            {!! __form::datepicker(
+              '3', 'date_covered_to',  'Date To *', old('date_covered_to') ? old('date_covered_to') : Carbon::now()->format('m/d/Y'), $errors->has('date_covered_to'), $errors->first('date_covered_to')
             ) !!}
 
           </div>
@@ -52,10 +60,10 @@
 
 @section('modals')
 
-  @if(Session::has('MENU_CREATE_SUCCESS'))
+  @if(Session::has('SEMINAR_CREATE_SUCCESS'))
 
     {!! __html::modal(
-      'menu_create', '<i class="fa fa-fw fa-check"></i> Saved!', Session::get('MENU_CREATE_SUCCESS')
+      'seminar_create', '<i class="fa fa-fw fa-check"></i> Saved!', Session::get('SEMINAR_CREATE_SUCCESS')
     ) !!}
   
   @endif
@@ -71,8 +79,8 @@
 
   <script type="text/javascript">
 
-    @if(Session::has('MENU_CREATE_SUCCESS'))
-      $('#menu_create').modal('show');
+    @if(Session::has('SEMINAR_CREATE_SUCCESS'))
+      $('#seminar_create').modal('show');
     @endif
 
   </script>

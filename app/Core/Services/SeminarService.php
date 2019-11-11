@@ -25,14 +25,14 @@ class SeminarService extends BaseService{
 
 
 
-    public function fetch($request){
+    // public function fetch($request){
 
-        $seminars = $this->seminar_repo->fetch($request);
+    //     $seminars = $this->seminar_repo->fetch($request);
 
-        $request->flash();
-        return view('dashboard.seminar.index')->with('seminars', $seminars);
+    //     $request->flash();
+    //     return view('dashboard.seminar.index')->with('seminars', $seminars);
 
-    }
+    // }
 
 
 
@@ -53,40 +53,40 @@ class SeminarService extends BaseService{
 
 
 
-    public function edit($slug){
+    // public function edit($slug){
 
-        $seminar = $this->seminar_repo->findbySlug($slug);
-        return view('dashboard.seminar.edit')->with('seminar', $seminar);
+    //     $seminar = $this->seminar_repo->findbySlug($slug);
+    //     return view('dashboard.seminar.edit')->with('seminar', $seminar);
 
-    }
-
-
-
-
-
-
-    public function update($request, $slug){
-
-        $seminar = $this->seminar_repo->update($request, $slug);
-
-        $this->event->fire('seminar.update', $seminar);
-        return redirect()->route('dashboard.seminar.index');
-
-    }
+    // }
 
 
 
 
 
 
-    public function destroy($slug){
+    // public function update($request, $slug){
 
-        $seminar = $this->seminar_repo->destroy($slug);
+    //     $seminar = $this->seminar_repo->update($request, $slug);
 
-        $this->event->fire('seminar.destroy', $seminar);
-        return redirect()->back();
+    //     $this->event->fire('seminar.update', $seminar);
+    //     return redirect()->route('dashboard.seminar.index');
 
-    }
+    // }
+
+
+
+
+
+
+    // public function destroy($slug){
+
+    //     $seminar = $this->seminar_repo->destroy($slug);
+
+    //     $this->event->fire('seminar.destroy', $seminar);
+    //     return redirect()->back();
+
+    // }
 
 
 

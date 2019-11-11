@@ -52,24 +52,21 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
 
     public function store($request){
 
-        // $seminar = new Seminar;
-        // $seminar->seminar_id = $this->getSeminarIdInc();
-        // $seminar->slug = $this->str->random(16);
-        // $seminar->name = $request->name;
-        // $seminar->route = $request->route;
-        // $seminar->category = $request->category;
-        // $seminar->icon = $request->icon;
-        // $seminar->is_seminar = $this->__dataType->string_to_boolean($request->is_seminar);
-        // $seminar->is_dropdown = $this->__dataType->string_to_boolean($request->is_dropdown);
-        // $seminar->created_at = $this->carbon->now();
-        // $seminar->updated_at = $this->carbon->now();
-        // $seminar->ip_created = request()->ip();
-        // $seminar->ip_updated = request()->ip();
-        // $seminar->user_created = $this->auth->user()->user_id;
-        // $seminar->user_updated = $this->auth->user()->user_id;
-        // $seminar->save();
+        $seminar = new Seminar;
+        $seminar->seminar_id = $this->getSeminarIdInc();
+        $seminar->slug = $this->str->random(16);
+        $seminar->title = $request->title;
+        $seminar->date_covered_from = $this->__dataType->date_parse($request->date_covered_from);
+        $seminar->date_covered_to = $this->__dataType->date_parse($request->date_covered_to);
+        $seminar->created_at = $this->carbon->now();
+        $seminar->updated_at = $this->carbon->now();
+        $seminar->ip_created = request()->ip();
+        $seminar->ip_updated = request()->ip();
+        $seminar->user_created = $this->auth->user()->user_id;
+        $seminar->user_updated = $this->auth->user()->user_id;
+        $seminar->save();
         
-        // return $seminar;
+        return $seminar;
 
     }
 
@@ -132,12 +129,12 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
 
     private function getSeminarIdInc(){
 
-        $id = 'M10001';
+        $id = 'S10001';
         $seminar = $this->seminar->select('seminar_id')->orderBy('seminar_id', 'desc')->first();
 
         if($seminar != null){
-            $num = str_replace('M', '', $seminar->seminar_id) + 1;
-            $id = 'M' . $num;
+            $num = str_replace('S', '', $seminar->seminar_id) + 1;
+            $id = 'S' . $num;
         }
         
         return $id;
