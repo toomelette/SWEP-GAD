@@ -18,7 +18,7 @@ class Seminar extends Model{
     
 	public $timestamps = false;
     
-    public $sortable = ['title'];
+    public $sortable = ['title', 'date_covered_from', 'date_covered_to'];
 
 
 
@@ -46,8 +46,11 @@ class Seminar extends Model{
 
     /** RELATIONSHIPS **/
 
-    
+    public function seminarParticipant() {
+        return $this->hasMany('App\Models\SeminarParticipant','seminar_id','seminar_id');
+    }
 
+    
 
 
 

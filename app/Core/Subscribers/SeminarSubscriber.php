@@ -35,9 +35,6 @@ class SeminarSubscriber extends BaseSubscriber{
     public function onStore(){
         
         $this->__cache->deletePattern(''. config('app.name') .'_cache:seminars:fetch:*');
-        $this->__cache->deletePattern(''. config('app.name') .'_cache:seminars:getAll');
-        
-        $this->__cache->deletePattern(''. config('app.name') .'_cache:subseminars:getAll');
 
         $this->session->flash('SEMINAR_CREATE_SUCCESS', 'The Seminar has been successfully created!');
 
@@ -50,11 +47,7 @@ class SeminarSubscriber extends BaseSubscriber{
     public function onUpdate($seminar){
 
         $this->__cache->deletePattern(''. config('app.name') .'_cache:seminars:fetch:*');
-        $this->__cache->deletePattern(''. config('app.name') .'_cache:seminars:getAll');
         $this->__cache->deletePattern(''. config('app.name') .'_cache:seminars:findBySlug:'. $seminar->slug .'');
-        $this->__cache->deletePattern(''. config('app.name') .'_cache:seminars:findBySeminarId:'. $seminar->seminar_id .'');
-        
-        $this->__cache->deletePattern(''. config('app.name') .'_cache:subseminars:getAll');
 
         $this->session->flash('SEMINAR_UPDATE_SUCCESS', 'The Seminar has been successfully updated!');
         $this->session->flash('SEMINAR_UPDATE_SUCCESS_SLUG', $seminar->slug);
@@ -66,11 +59,7 @@ class SeminarSubscriber extends BaseSubscriber{
     public function onDestroy($seminar){
 
         $this->__cache->deletePattern(''. config('app.name') .'_cache:seminars:fetch:*');
-        $this->__cache->deletePattern(''. config('app.name') .'_cache:seminars:getAll');
         $this->__cache->deletePattern(''. config('app.name') .'_cache:seminars:findBySlug:'. $seminar->slug .'');
-        $this->__cache->deletePattern(''. config('app.name') .'_cache:seminars:findBySeminarId:'. $seminar->seminar_id .'');
-
-        $this->__cache->deletePattern(''. config('app.name') .'_cache:subseminars:getAll');
 
         $this->session->flash('SEMINAR_DELETE_SUCCESS', 'The Seminar has been successfully deleted!');
         $this->session->flash('SEMINAR_DELETE_SUCCESS_SLUG', $seminar->slug);

@@ -6,14 +6,12 @@ Route::get('/submenu/select_submenu_byMenuId/{menu_id}', 'Api\ApiSubmenuControll
 		->name('selectSubmenuByMenuId');
 
 
-// Mill
-Route::get('/mill/input_mill_byMillId/{mill_id}', 'Api\ApiMillController@inputMillByMillId')
-		->name('inputMillByMillId');
+// Seminars
+Route::get('/seminar/participant/{slug}/edit', 'Api\ApiSeminarController@editParticipant')
+		->name('api.seminar_participant_edit');
 
 
-// Sugar Analysis
-Route::get('/sugar_analysis/cane_juice_analysis/{slug}/edit', 'Api\ApiSugarAnalysisController@editCaneJuiceAnalysis')
-		->name('sugar_analysis.cane_juice_analysis_edit');
+
 
 
 

@@ -29,20 +29,20 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
 
     public function fetch($request){
 
-        // $cache_key = str_slug($request->fullUrl(), '_');
-        // $entries = isset($request->e) ? $request->e : 20;
+        $cache_key = str_slug($request->fullUrl(), '_');
+        $entries = isset($request->e) ? $request->e : 20;
 
-        // $seminars = $this->cache->remember('seminars:fetch:' . $cache_key, 240, function() use ($request, $entries){
+        $seminars = $this->cache->remember('seminars:fetch:' . $cache_key, 240, function() use ($request, $entries){
 
-        //     $seminar = $this->seminar->newQuery();
+            $seminar = $this->seminar->newQuery();
             
-        //     if(isset($request->q)){ $this->search($seminar, $request->q); }
+            if(isset($request->q)){ $this->search($seminar, $request->q); }
 
-        //     return $this->populate($seminar, $entries);
+            return $this->populate($seminar, $entries);
 
-        // });
+        });
 
-        // return $seminars;
+        return $seminars;
 
     }
 
@@ -76,19 +76,16 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
 
     public function update($request, $slug){
 
-        // $seminar = $this->findBySlug($slug);
-        // $seminar->name = $request->name;
-        // $seminar->route = $request->route;
-        // $seminar->category = $request->category;
-        // $seminar->icon = $request->icon;
-        // $seminar->is_seminar = $this->__dataType->string_to_boolean($request->is_seminar);
-        // $seminar->is_dropdown = $this->__dataType->string_to_boolean($request->is_dropdown);
-        // $seminar->updated_at = $this->carbon->now();
-        // $seminar->ip_updated = request()->ip();
-        // $seminar->user_updated = $this->auth->user()->user_id;
-        // $seminar->save();
+        $seminar = $this->findBySlug($slug);
+        $seminar->title = $request->title;
+        $seminar->date_covered_from = $this->__dataType->date_parse($request->date_covered_from);
+        $seminar->date_covered_to = $this->__dataType->date_parse($request->date_covered_to);
+        $seminar->updated_at = $this->carbon->now();
+        $seminar->ip_updated = request()->ip();
+        $seminar->user_updated = $this->auth->user()->user_id;
+        $seminar->save();
 
-        // return $seminar;
+        return $seminar;
 
     }
 
@@ -98,11 +95,10 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
 
     public function destroy($slug){
 
-        // $seminar = $this->findBySlug($slug);
-        // $seminar->delete();
-        // $seminar->subseminar()->delete();
+        $seminar = $this->findBySlug($slug);
+        $seminar->delete();
 
-        // return $seminar;
+        return $seminar;
 
     }
 
@@ -112,13 +108,13 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
 
     public function findBySlug($slug){
 
-        // $seminar = $this->cache->remember('seminars:findBySlug:' . $slug, 240, function() use ($slug){
-        //     return $this->seminar->where('slug', $slug)->first();
-        // }); 
+        $seminar = $this->cache->remember('seminars:findBySlug:' . $slug, 240, function() use ($slug){
+            return $this->seminar->where('slug', $slug)->first();
+        }); 
         
-        // if(empty($seminar)){ abort(404); }
+        if(empty($seminar)){ abort(404); }
 
-        // return $seminar;
+        return $seminar;
 
     }
 
@@ -149,7 +145,7 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
     private function search($instance, $key){
 
         return $instance->where(function ($instance) use ($key) {
-                    $instance->where('name', 'LIKE', '%'. $key .'%');        
+                    $instance->where('title', 'LIKE', '%'. $key .'%');        
         });
 
     }
@@ -160,7 +156,7 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
 
     private function populate($instance, $entries){
 
-        return $instance->select('name', 'route', 'icon', 'slug')
+        return $instance->select('title', 'date_covered_from', 'date_covered_to', 'slug')
                         ->sortable()
                         ->orderBy('updated_at', 'desc')
                         ->paginate($entries);

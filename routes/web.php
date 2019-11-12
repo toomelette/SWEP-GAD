@@ -44,6 +44,14 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 	/** SEMINARS **/
 	Route::resource('seminar', 'SeminarController');
 
+
+	/** SEMINAR PARTICIPANTS **/
+	Route::get('/seminar/participant/{slug}', 'SeminarController@participant')->name('seminar.participant');
+	Route::post('/seminar/participant/store/{slug}', 'SeminarController@participantStore')->name('seminar.participant_store');
+	Route::put('/seminar/participant/update/{slug}/{emp_trng_slug}', 'SeminarController@participantUpdate')->name('seminar.participant_update');
+	Route::delete('/seminar/participant/destroy/{slug}', 'SeminarController@participantDestroy')->name('seminar.participant_destroy');
+	Route::get('/seminar/participant/print/{slug}', 'SeminarController@participantPrint')->name('seminar.participant_print');
+
 	
 });
 
