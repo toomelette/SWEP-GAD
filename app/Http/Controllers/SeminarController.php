@@ -62,6 +62,15 @@ class SeminarController extends Controller{
 
 
 
+    public function viewAttendanceSheet($slug){
+
+       return $this->seminar->viewAttendanceSheet($slug); 
+
+    }
+
+
+
+
     public function update(SeminarFormRequest $request, $slug){
         
         return $this->seminar->update($request, $slug);
@@ -115,6 +124,45 @@ class SeminarController extends Controller{
         return $this->seminar_participant->destroy($slug);
 
     }
+
+
+
+
+
+    /** Seminar participant **/
+
+    public function speaker($slug){
+
+        return $slug;
+
+    }
+
+
+
+
+    // public function participantStore(SeminarParticipantCreateFormRequest $request, $slug){
+
+    //     return $this->seminar_participant->store($request, $slug);
+
+    // }
+
+
+
+
+    // public function participantUpdate(SeminarParticipantEditFormRequest $request, $sem_slug, $sem_ptcpt_slug){
+        
+    //     return $this->seminar_participant->update($request, $sem_slug, $sem_ptcpt_slug); 
+
+    // } 
+
+
+
+
+    // public function participantDestroy($slug){
+        
+    //     return $this->seminar_participant->destroy($slug);
+
+    // }
 
 
 

@@ -17,7 +17,7 @@
         </div> 
       </div>
       
-      <form method="POST" autocomplete="off" action="{{ route('dashboard.seminar.store') }}">
+      <form method="POST" autocomplete="off" action="{{ route('dashboard.seminar.store') }}" enctype="multipart/form-data">
 
         <div class="box-body">
 
@@ -25,16 +25,28 @@
                   
             @csrf    
 
+            {!! __form::file(
+             '4', 'doc_file', 'Attendance Sheet', $errors->has('doc_file'), $errors->first('doc_file'), ''
+            ) !!} 
+
             {!! __form::textbox(
-              '6', 'title', 'text', 'Title *', 'Title', old('title'), $errors->has('title'), $errors->first('title'), ''
+              '8', 'title', 'text', 'Title *', 'Title', old('title'), $errors->has('title'), $errors->first('title'), ''
+            ) !!}
+
+            {!! __form::textbox(
+              '4', 'sponsor', 'text', 'Sponsor *', 'Sponsor', old('sponsor'), $errors->has('sponsor'), $errors->first('sponsor'), ''
+            ) !!}
+
+            {!! __form::textbox(
+              '4', 'venue', 'text', 'Venue *', 'Venue', old('venue'), $errors->has('venue'), $errors->first('venue'), ''
             ) !!}
 
             {!! __form::datepicker(
-              '3', 'date_covered_from',  'Date From *', old('date_covered_from') ? old('date_covered_from') : Carbon::now()->format('m/d/Y'), $errors->has('date_covered_from'), $errors->first('date_covered_from')
+              '4', 'date_covered_from',  'Date From *', old('date_covered_from') ? old('date_covered_from') : Carbon::now()->format('m/d/Y'), $errors->has('date_covered_from'), $errors->first('date_covered_from')
             ) !!}
 
             {!! __form::datepicker(
-              '3', 'date_covered_to',  'Date To *', old('date_covered_to') ? old('date_covered_to') : Carbon::now()->format('m/d/Y'), $errors->has('date_covered_to'), $errors->first('date_covered_to')
+              '4', 'date_covered_to',  'Date To *', old('date_covered_to') ? old('date_covered_to') : Carbon::now()->format('m/d/Y'), $errors->has('date_covered_to'), $errors->first('date_covered_to')
             ) !!}
 
           </div>
@@ -82,6 +94,8 @@
     @if(Session::has('SEMINAR_CREATE_SUCCESS'))
       $('#seminar_create').modal('show');
     @endif
+
+    {!! __js::pdf_upload('doc_file', 'fa', '') !!}
 
   </script>
     

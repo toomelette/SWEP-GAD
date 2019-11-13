@@ -8,9 +8,9 @@ interface SeminarInterface {
 
 	public function fetch($request);
 
-	public function store($request);
+	public function store($request, $filename);
 
-	public function update($request, $slug);
+	public function update($request, $filename, $seminar);
 
 	public function destroy($slug);
 

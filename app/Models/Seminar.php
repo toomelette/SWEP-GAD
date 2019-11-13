@@ -18,7 +18,7 @@ class Seminar extends Model{
     
 	public $timestamps = false;
     
-    public $sortable = ['title', 'date_covered_from', 'date_covered_to'];
+    public $sortable = ['title', 'sponsor', 'venue', 'date_covered_from', 'date_covered_to'];
 
 
 
@@ -28,6 +28,8 @@ class Seminar extends Model{
         'slug' => '',
         'seminar_id' => '',
         'title' => '',
+        'sponsor' => '',
+        'venue' => '',
         'date_covered_from' => null,
         'date_covered_to' => null,
         'attendance_sheet_filename' => '',

@@ -43,6 +43,8 @@
         <table class="table table-hover">
           <tr>
             <th>@sortablelink('title', 'Title')</th>
+            <th>@sortablelink('sponsor', 'Sponsor')</th>
+            <th>@sortablelink('venue', 'Venue')</th>
             <th>@sortablelink('date_covered_from', 'Date From')</th>
             <th>@sortablelink('date_covered_to', 'Date To')</th>
             <th style="width: 150px">Action</th>
@@ -50,12 +52,15 @@
           @foreach($seminars as $data) 
             <tr {!! __html::table_highlighter($data->slug, $table_sessions) !!} >
               <td>{{ $data->title }}</td>
+              <td>{{ $data->sponsor }}</td>
+              <td>{{ $data->venue }}</td>
               <td>{{ __dataType::date_parse($data->date_covered_from, 'F d,Y') }}</td>
               <td>{{ __dataType::date_parse($data->date_covered_to, 'F d,Y') }}</td>
               <td> 
                 <select id="action" class="form-control input-md">
                   <option value="">Select</option>
                   <option data-type="1" data-url="{{ route('dashboard.seminar.participant', $data->slug) }}">Participants</option>
+                  <option data-type="1" data-url="{{ route('dashboard.seminar.speaker', $data->slug) }}">Speakers</option>
                   <option data-type="1" data-url="{{ route('dashboard.seminar.edit', $data->slug) }}">Edit</option>
                   <option data-type="0" data-action="delete" data-url="{{ route('dashboard.seminar.destroy', $data->slug) }}">Delete</option>
                 </select>

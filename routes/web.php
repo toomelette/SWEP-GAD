@@ -42,15 +42,22 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 
 
 	/** SEMINARS **/
+	Route::get('/seminar/view_attendance_sheet/{slug}', 'SeminarController@viewAttendanceSheet')->name('seminar.view_attendance_sheet');
 	Route::resource('seminar', 'SeminarController');
 
 
 	/** SEMINAR PARTICIPANTS **/
 	Route::get('/seminar/participant/{slug}', 'SeminarController@participant')->name('seminar.participant');
 	Route::post('/seminar/participant/store/{slug}', 'SeminarController@participantStore')->name('seminar.participant_store');
-	Route::put('/seminar/participant/update/{slug}/{emp_trng_slug}', 'SeminarController@participantUpdate')->name('seminar.participant_update');
+	Route::put('/seminar/participant/update/{slug}/{ptcpt_slug}', 'SeminarController@participantUpdate')->name('seminar.participant_update');
 	Route::delete('/seminar/participant/destroy/{slug}', 'SeminarController@participantDestroy')->name('seminar.participant_destroy');
-	Route::get('/seminar/participant/print/{slug}', 'SeminarController@participantPrint')->name('seminar.participant_print');
+
+
+	/** SEMINAR SPEAKERS **/
+	Route::get('/seminar/speaker/{slug}', 'SeminarController@speaker')->name('seminar.speaker');
+	Route::post('/seminar/speaker/store/{slug}', 'SeminarController@speakerStore')->name('seminar.speaker_store');
+	Route::put('/seminar/speaker/update/{slug}/{spkr_slug}', 'SeminarController@speakerUpdate')->name('seminar.speaker_update');
+	Route::delete('/seminar/speaker/destroy/{slug}', 'SeminarController@speakerDestroy')->name('seminar.speaker_destroy');
 
 	
 });

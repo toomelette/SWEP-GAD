@@ -50,14 +50,17 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
 
 
 
-    public function store($request){
+    public function store($request, $filename){
 
         $seminar = new Seminar;
         $seminar->seminar_id = $this->getSeminarIdInc();
         $seminar->slug = $this->str->random(16);
         $seminar->title = $request->title;
+        $seminar->sponsor = $request->sponsor;
+        $seminar->venue = $request->venue;
         $seminar->date_covered_from = $this->__dataType->date_parse($request->date_covered_from);
         $seminar->date_covered_to = $this->__dataType->date_parse($request->date_covered_to);
+        $seminar->attendance_sheet_filename = $filename;
         $seminar->created_at = $this->carbon->now();
         $seminar->updated_at = $this->carbon->now();
         $seminar->ip_created = request()->ip();
@@ -74,12 +77,14 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
 
 
 
-    public function update($request, $slug){
+    public function update($request, $filename, $seminar){
 
-        $seminar = $this->findBySlug($slug);
         $seminar->title = $request->title;
+        $seminar->sponsor = $request->sponsor;
+        $seminar->venue = $request->venue;
         $seminar->date_covered_from = $this->__dataType->date_parse($request->date_covered_from);
         $seminar->date_covered_to = $this->__dataType->date_parse($request->date_covered_to);
+        $seminar->attendance_sheet_filename = $filename;
         $seminar->updated_at = $this->carbon->now();
         $seminar->ip_updated = request()->ip();
         $seminar->user_updated = $this->auth->user()->user_id;
@@ -145,7 +150,9 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
     private function search($instance, $key){
 
         return $instance->where(function ($instance) use ($key) {
-                    $instance->where('title', 'LIKE', '%'. $key .'%');        
+                    $instance->where('title', 'LIKE', '%'. $key .'%')
+                             ->orwhere('sponsor', 'LIKE', '%'. $key .'%')
+                             ->orwhere('venue', 'LIKE', '%'. $key .'%');        
         });
 
     }
@@ -156,7 +163,7 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
 
     private function populate($instance, $entries){
 
-        return $instance->select('title', 'date_covered_from', 'date_covered_to', 'slug')
+        return $instance->select('title', 'sponsor', 'venue', 'date_covered_from', 'date_covered_to', 'slug')
                         ->sortable()
                         ->orderBy('updated_at', 'desc')
                         ->paginate($entries);

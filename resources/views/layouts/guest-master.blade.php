@@ -11,7 +11,7 @@
     @include('layouts.css-plugins')
 
   </head>
-  <body class="hold-transition skin-red layout-top-nav">
+  <body class="hold-transition skin-purple layout-top-nav">
     <div class="wrapper">
       <header class="main-header">
         <nav class="navbar navbar-static-top">
