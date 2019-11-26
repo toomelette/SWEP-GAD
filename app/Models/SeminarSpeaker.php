@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SeminarSpeaker extends Model{
 
 
-    protected $table = 'seminar_speaker';
+    protected $table = 'seminar_speakers';
 
     protected $dates = ['created_at', 'updated_at'];
     
@@ -18,18 +18,11 @@ class SeminarSpeaker extends Model{
 
     protected $attributes = [
 
-        'slug' => '',
         'seminar_id' => '',
         'seminar_speaker_id' => '',
         'fullname' => '',
         'topic' => '',
-        'created_at' => null,
-        'updated_at' => null,
-        'ip_created' => '',
-        'ip_updated' => '',
-        'user_created' => '',
-        'user_updated' => '',
-
+        
     ];
 
 

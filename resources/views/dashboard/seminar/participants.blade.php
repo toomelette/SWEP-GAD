@@ -50,11 +50,11 @@
             ) !!}
 
             {!! __form::textbox(
-               '12', 'cellphone_no', 'text', 'Cellphone No.', 'Cellphone No.', old('cellphone_no'), $errors->has('cellphone_no'), $errors->first('cellphone_no'), ''
+               '12', 'contact_no', 'text', 'Contact No.', 'Contact No.', old('contact_no'), $errors->has('contact_no'), $errors->first('contact_no'), ''
             ) !!}
 
             {!! __form::textbox(
-               '12', 'email', 'text', 'Email', 'Cellphone No.', old('email'), $errors->has('email'), $errors->first('email'), ''
+               '12', 'email', 'text', 'Email', 'Email', old('email'), $errors->has('email'), $errors->first('email'), ''
             ) !!}
 
           </div>
@@ -92,7 +92,7 @@
               <th>Fullname</th>
               <th>Address</th>
               <th>Sex</th>
-              <th>Cellphone No.</th>
+              <th>Contact No.</th>
               <th>Email</th>
               <th>Action</th>
             </tr>
@@ -104,7 +104,7 @@
                 <td>{{ $data->fullname }}</td>
                 <td>{{ $data->address }}</td>
                 <td>{{ $data->sex }}</td>
-                <td>{{ $data->cellphone_no }}</td>
+                <td>{{ $data->contact_no }}</td>
                 <td>{{ $data->email }}</td>
                 <td>
                   <div class="btn-group">
@@ -178,7 +178,7 @@
               ) !!}
 
               {!! __form::textbox(
-                 '6', 'e_cellphone_no', 'text', 'Cellphone No.', 'Cellphone No.', old('e_cellphone_no'), $errors->has('e_cellphone_no'), $errors->first('e_cellphone_no'), ''
+                 '6', 'e_contact_no', 'text', 'Contact No.', 'Contact No.', old('e_contact_no'), $errors->has('e_contact_no'), $errors->first('e_contact_no'), ''
               ) !!}
 
               <div class="col-md-12"></div>
@@ -248,7 +248,7 @@
             $("#ptcpt_update_form #e_slug").val(value.slug);
             $("#ptcpt_update_form #e_fullname").val(value.fullname);
             $("#ptcpt_update_form #e_address").val(value.address);
-            $("#ptcpt_update_form #e_cellphone_no").val(value.cellphone_no);
+            $("#ptcpt_update_form #e_contact_no").val(value.contact_no);
             $("#ptcpt_update_form #e_email").val(value.email);
 
             if(value.sex == "MALE"){

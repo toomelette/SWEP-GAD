@@ -55,7 +55,7 @@
 
 
           {{-- USER MENU DYNAMIC TABLE GRID --}}
-          <div class="col-md-12" style="padding-top:50px;">
+          <div class="col-md-12" style="padding-top:40px;">
             <div class="box box-solid">
               <div class="box-header with-border">
                 <h3 class="box-title">Submenu</h3>

@@ -24,7 +24,7 @@ class SeminarParticipant extends Model{
         'fullname' => '',
         'address' => '',
         'sex' => '',
-        'cellphone_no' => '',
+        'contact_no' => '',
         'email' => '',
         'created_at' => null,
         'updated_at' => null,

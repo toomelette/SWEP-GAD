@@ -66,7 +66,7 @@ class SeminarParticipantRepository extends BaseRepository implements SeminarPart
         $seminar_participant->fullname = $request->fullname;
         $seminar_participant->address = $request->address;
         $seminar_participant->sex = $request->sex;
-        $seminar_participant->cellphone_no = $request->cellphone_no;
+        $seminar_participant->contact_no = $request->contact_no;
         $seminar_participant->email = $request->email;
         $seminar_participant->created_at = $this->carbon->now();
         $seminar_participant->updated_at = $this->carbon->now();
@@ -91,7 +91,7 @@ class SeminarParticipantRepository extends BaseRepository implements SeminarPart
         $seminar_participant->fullname = $request->e_fullname;
         $seminar_participant->address = $request->e_address;
         $seminar_participant->sex = $request->e_sex;
-        $seminar_participant->cellphone_no = $request->e_cellphone_no;
+        $seminar_participant->contact_no = $request->e_contact_no;
         $seminar_participant->email = $request->e_email;
         $seminar_participant->updated_at = $this->carbon->now();
         $seminar_participant->ip_updated = request()->ip();

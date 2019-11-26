@@ -60,6 +60,7 @@ class SeminarSubscriber extends BaseSubscriber{
 
         $this->__cache->deletePattern(''. config('app.name') .'_cache:seminars:fetch:*');
         $this->__cache->deletePattern(''. config('app.name') .'_cache:seminars:findBySlug:'. $seminar->slug .'');
+        $this->__cache->deletePattern(''. config('app.name') .'_cache:seminars:participants:fetchBySeminarId:'. $seminar->seminar_id .'');
 
         $this->session->flash('SEMINAR_DELETE_SUCCESS', 'The Seminar has been successfully deleted!');
         $this->session->flash('SEMINAR_DELETE_SUCCESS_SLUG', $seminar->slug);

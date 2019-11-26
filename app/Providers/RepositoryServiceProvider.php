@@ -25,6 +25,7 @@ class RepositoryServiceProvider extends ServiceProvider {
 
 		$this->app->bind('App\Core\Interfaces\SeminarInterface', 'App\Core\Repositories\SeminarRepository');
 		$this->app->bind('App\Core\Interfaces\SeminarParticipantInterface', 'App\Core\Repositories\SeminarParticipantRepository');
+		$this->app->bind('App\Core\Interfaces\SeminarSpeakerInterface', 'App\Core\Repositories\SeminarSpeakerRepository');
 
 	}
 

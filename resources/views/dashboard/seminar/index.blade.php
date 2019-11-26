@@ -59,8 +59,8 @@
               <td> 
                 <select id="action" class="form-control input-md">
                   <option value="">Select</option>
+                  <option data-type="1" data-url="{{ route('dashboard.seminar.show', $data->slug) }}">Details</option>
                   <option data-type="1" data-url="{{ route('dashboard.seminar.participant', $data->slug) }}">Participants</option>
-                  <option data-type="1" data-url="{{ route('dashboard.seminar.speaker', $data->slug) }}">Speakers</option>
                   <option data-type="1" data-url="{{ route('dashboard.seminar.edit', $data->slug) }}">Edit</option>
                   <option data-type="0" data-action="delete" data-url="{{ route('dashboard.seminar.destroy', $data->slug) }}">Delete</option>
                 </select>

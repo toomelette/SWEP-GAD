@@ -52,6 +52,10 @@ class Seminar extends Model{
         return $this->hasMany('App\Models\SeminarParticipant','seminar_id','seminar_id');
     }
 
+    public function seminarSpeaker() {
+        return $this->hasMany('App\Models\SeminarSpeaker','seminar_id','seminar_id');
+    }
+
     
 
 

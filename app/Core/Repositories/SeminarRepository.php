@@ -90,6 +90,8 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
         $seminar->user_updated = $this->auth->user()->user_id;
         $seminar->save();
 
+        $seminar->seminarSpeaker()->delete();
+
         return $seminar;
 
     }
@@ -102,6 +104,8 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
 
         $seminar = $this->findBySlug($slug);
         $seminar->delete();
+        $seminar->seminarParticipant()->delete();
+        $seminar->seminarSpeaker()->delete();
 
         return $seminar;
 

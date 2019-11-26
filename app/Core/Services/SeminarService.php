@@ -4,6 +4,7 @@ namespace App\Core\Services;
 
 use File;
 use App\Core\Interfaces\SeminarInterface;
+use App\Core\Interfaces\SeminarSpeakerInterface;
 use App\Core\BaseClasses\BaseService;
 
 
@@ -11,12 +12,14 @@ class SeminarService extends BaseService{
 
 
     protected $seminar_repo;
+    protected $seminar_speaker_repo;
 
 
 
-    public function __construct(SeminarInterface $seminar_repo){
+    public function __construct(SeminarInterface $seminar_repo, SeminarSpeakerInterface $seminar_speaker_repo){
 
         $this->seminar_repo = $seminar_repo;
+        $this->seminar_speaker_repo = $seminar_speaker_repo;
         parent::__construct();
 
     }
@@ -50,7 +53,13 @@ class SeminarService extends BaseService{
         }
        
         $seminar = $this->seminar_repo->store($request, $filename);
-        
+            
+        if(!empty($request->row)){
+            foreach ($request->row as $row) {
+                $seminar_speaker = $this->seminar_speaker_repo->store($row, $seminar);
+            }
+        }
+
         $this->event->fire('seminar.store');
         return redirect()->back();
 
@@ -133,6 +142,12 @@ class SeminarService extends BaseService{
         }
 
         $seminar = $this->seminar_repo->update($request, $filename, $seminar);
+
+        if(!empty($request->row)){
+            foreach ($request->row as $row) {
+                $seminar_speaker = $this->seminar_speaker_repo->store($row, $seminar);
+            }
+        }
 
         $this->event->fire('seminar.update', $seminar);
         return redirect()->route('dashboard.seminar.index');
