@@ -20,10 +20,8 @@ class SeminarSpeakerRepository extends BaseRepository implements SeminarSpeakerI
 
 
 	public function __construct(SeminarSpeaker $seminar_speaker){
-
         $this->seminar_speaker = $seminar_speaker;
         parent::__construct();
-
     }
 
 
@@ -41,7 +39,6 @@ class SeminarSpeakerRepository extends BaseRepository implements SeminarSpeakerI
         $seminar_speaker->save();
         
         return $seminar_speaker;
-
     }
 
 

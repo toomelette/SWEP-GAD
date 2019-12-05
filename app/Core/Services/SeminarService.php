@@ -24,22 +24,13 @@ class SeminarService extends BaseService{
 
     }
 
-
-
-
-
     public function fetch($request){
 
         $seminars = $this->seminar_repo->fetch($request);
-
         $request->flash();
         return view('dashboard.seminar.index')->with('seminars', $seminars);
 
     }
-
-
-
-
 
 
     public function store($request){
@@ -61,7 +52,8 @@ class SeminarService extends BaseService{
         }
 
         $this->event->fire('seminar.store');
-        return redirect()->back();
+
+        return json_encode(array('result' => 1, 'slug'=> $seminar->slug));
 
     }
 
@@ -109,7 +101,10 @@ class SeminarService extends BaseService{
 
 
 
-
+    public function view($slug){
+        $seminar = $this->seminar_repo->findbySlug($slug);
+        return view('dashboard.seminar.view')->with('seminar',$seminar);
+    }
 
 
     public function update($request, $slug){
@@ -150,7 +145,8 @@ class SeminarService extends BaseService{
         }
 
         $this->event->fire('seminar.update', $seminar);
-        return redirect()->route('dashboard.seminar.index');
+
+        return json_encode(array('result' => 1 , 'slug' => $seminar->slug));
 
     }
 
@@ -172,7 +168,8 @@ class SeminarService extends BaseService{
         }
 
         $this->event->fire('seminar.destroy', $seminar);
-        return redirect()->back();
+        
+        return json_encode(array('result' => 1));
 
     }
 

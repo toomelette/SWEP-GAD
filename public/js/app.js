@@ -31,6 +31,18 @@ $(document).ready(function($){
         return true;
     });
     $("form").find( ":input" ).prop( "disabled", false );
+
+    $('.datepicker').each(function(){
+        $(this).datepicker({
+            autoclose: true,
+            dateFormat: "mm/dd/yy",
+            orientation: "bottom"
+        });
+    });
+
+    //Tooltip Initialization
+    $('[data-toggle="tooltip"]').tooltip();
+
 });
 
 
@@ -157,3 +169,30 @@ $(document).on('ready pjax:success', function() {
 
 
 });
+
+//Notify
+function notify(message, type){
+    $.notify({
+              // options
+      message: message 
+    },{
+      // settings
+      type: type,
+      z_index: 5000,
+      delay: 3500,
+      placement: {
+        from: "top"
+        },
+      animate:{
+            enter: "animated bounceInDown",
+            exit: "animated zoomOutRight"
+        }
+    });
+}
+
+
+
+
+
+
+

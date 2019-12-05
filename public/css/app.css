@@ -22,3 +22,21 @@
 input[data-transform=uppercase] {
     text-transform: uppercase;
 }
+
+
+.action{
+    width: 140px !important
+}
+
+.modal-content  {
+    -webkit-border-radius: 5px !important;
+    -moz-border-radius: 5px !important;
+    border-radius: 5px !important; 
+}
+
+
+/*.modal-content .modal-header {
+    background-color: #605ca8 !important;
+    color: white;
+    border-radius: 5px 5px 0px 0px !important;
+}*/

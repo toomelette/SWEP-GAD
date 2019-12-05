@@ -13,7 +13,7 @@
     @yield('css')
 
   </head>
-  <body class="hold-transition {!! Auth::check() ? __sanitize::html_encode(Auth::user()->color) : '' !!}" style="zoom:90%;">
+  <body class="hold-transition {!! Auth::check() ? __sanitize::html_encode(Auth::user()->color) : '' !!}">
 
     <div id="loader"></div>
 
@@ -23,20 +23,16 @@
 
       @include('layouts.admin-sidenav') 
 
-      <div class="content-wrapper" style="height:500em;"> 
-
-        @yield('content')
-
+      <div class="content-wrapper" style="height:auto; min-height: 69em"> 
+         @yield('content')
+         <footer class="main-footer">
+          <div class="pull-right hidden-xs">
+            <b>Version</b> 1.2.0
+          </div>
+          <strong>Copyright &copy; 2019-2020 <a href="#">MIS-VISAYAS</a>.</strong> All rights
+          reserved.
+        </footer>
       </div>
-
-      <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-          <b>Version</b> 1.2.0
-        </div>
-        <strong>Copyright &copy; 2019-2020 <a href="#">MIS-VISAYAS</a>.</strong> All rights
-        reserved.
-      </footer>
-
     </div>
 
     @include('layouts.js-plugins')

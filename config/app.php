@@ -164,6 +164,7 @@ return [
         /** CUSTOM PROVIDERS **/
         App\Providers\ViewComposerServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
 
     ],
 
@@ -216,6 +217,8 @@ return [
         'Input' => Illuminate\Support\Facades\Input::class,
         'Carbon' => Carbon\Carbon::class,
         'Str' => 'Illuminate\Support\Str',
+        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+
 
         /** View Helper **/
         '__chart' => App\Core\ViewHelpers\__chart::class,

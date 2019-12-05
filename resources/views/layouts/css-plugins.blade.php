@@ -29,6 +29,12 @@
 {{-- Charts --}}	
 <link rel="stylesheet" href="{{asset('template/bower_components/morris.js/morris.css')}}">
 
+{{-- Animate.css --}}	
+<link rel="stylesheet" href="{{asset('template/plugins/animate.css/animate.min.css')}}">
 
+{{-- DataTable --}}	
+<link rel="stylesheet" href="{{asset('template/plugins/DataTables/datatables.min.css')}}">
 
+{{-- JQuery Confirm --}}
+<link rel="stylesheet" href="{{asset('template/plugins/jquery-confirm/css/jquery-confirm.css')}}">
 

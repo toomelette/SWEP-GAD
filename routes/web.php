@@ -43,8 +43,11 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 
 	/** SEMINARS **/
 	Route::get('/seminar/view_attendance_sheet/{slug}', 'SeminarController@viewAttendanceSheet')->name('seminar.view_attendance_sheet');
-	Route::resource('seminar', 'SeminarController');
 
+	Route::get('/seminar/view_seminar/{slug}', 'SeminarController@viewSeminar')->name('seminar.view_seminar_details');
+
+	Route::resource('seminar', 'SeminarController');
+	
 
 	/** SEMINAR PARTICIPANTS **/
 	Route::get('/seminar/participant/{slug}', 'SeminarController@participant')->name('seminar.participant');

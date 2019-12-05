@@ -2,13 +2,20 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Core\Services\SeminarService;
 use App\Http\Requests\Seminar\SeminarFormRequest;
 use App\Http\Requests\Seminar\SeminarFilterRequest;
 
+use App\Models\Seminar;
+
 use App\Core\Services\SeminarParticipantService;
 use App\Http\Requests\SeminarParticipant\SeminarParticipantCreateFormRequest;
 use App\Http\Requests\SeminarParticipant\SeminarParticipantEditFormRequest;
+
+use Datatables;
+
+
 
 class SeminarController extends Controller{
 
@@ -28,9 +35,41 @@ class SeminarController extends Controller{
 
 
     
-    public function index(SeminarFilterRequest $request){
+    public function index(){
+
+        if(request()->ajax())
+        {   
+
+            return datatables()->of(Seminar::latest()->get(['id', 'slug', 'seminar_id', 'title', 'sponsor', 'venue', 'date_covered_from', 'date_covered_to']))
+            ->addColumn('action', function($data){
+                $button = '<div class="btn-group">
+                                <button type="button" class="btn btn-default btn-sm view_seminar_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#view_seminar_modal" title="View more" data-placement="left">
+                                    <i class="fa fa-file-text"></i>
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" title="Participants" data-placement="top">
+                                    <i class="fa fa-users"></i>
+                                </button>
+                                <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_seminar_btn" data-toggle="modal" data-target="#edit_seminar_modal" title="Edit" data-placement="top">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button type="button" data="'.$data->slug.'" class="btn btn-sm btn-danger delete_seminar_btn" data-toggle="tooltip" title="Delete" data-placement="top">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>';
+                return $button;
+            })
+            ->rawColumns(['action'])
+            ->setRowId('slug')
+            ->make(true);
+        }
+
         
-        return $this->seminar->fetch($request);
+        return view('dashboard.seminar.index');
+
+    }
+
+    public function seminarList(){
+
 
     }
 
@@ -46,8 +85,9 @@ class SeminarController extends Controller{
 
     public function store(SeminarFormRequest $request){
         
+        $validated = $request->validated();
         return $this->seminar->store($request);
-
+        
     }
  
 
@@ -56,7 +96,7 @@ class SeminarController extends Controller{
     public function edit($slug){
         
         return $this->seminar->edit($slug);
-
+        // return $slug;
     }
 
 
@@ -73,6 +113,9 @@ class SeminarController extends Controller{
 
     public function update(SeminarFormRequest $request, $slug){
         
+        // return $this->seminar->update($request, $slug);
+        // return $slug;
+        $validated = $request->validated();
         return $this->seminar->update($request, $slug);
 
     }
@@ -81,12 +124,10 @@ class SeminarController extends Controller{
 
 
     public function destroy($slug){
-        
+
         return $this->seminar->destroy($slug);
 
     }
-
-
 
 
 
@@ -137,6 +178,9 @@ class SeminarController extends Controller{
 
     }
 
+    public function viewSeminar($slug){
+        return $this->seminar->view($slug);
+    }
 
 
 
