@@ -15,6 +15,8 @@ class User extends Authenticatable{
 
     use Notifiable, Sortable;
 
+
+
     protected $dates = ['created_at', 'updated_at', 'last_login_time'];
 
     public $sortable = ['username', 'firstname', 'is_online', 'is_active'];
@@ -68,9 +70,7 @@ class User extends Authenticatable{
     public function userSubmenu() {
         return $this->hasMany('App\Models\UserSubmenu','user_id','user_id');
     }
-    
-
-    
+   
 
 
 
@@ -94,3 +94,5 @@ class User extends Authenticatable{
 
 
 }
+
+

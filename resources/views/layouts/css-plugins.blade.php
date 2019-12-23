@@ -34,7 +34,14 @@
 
 {{-- DataTable --}}	
 <link rel="stylesheet" href="{{asset('template/plugins/DataTables/datatables.min.css')}}">
+<link href="{{asset('template/plugins/DataTables/Buttons-1.6.1/css/buttons.bootstrap.min.css')}}" rel="stylesheet">
+<link href="{{asset('template/plugins/DataTables/Buttons-1.6.1/css/buttons.bootstrap.min.css')}}" rel="stylesheet">
+
+
 
 {{-- JQuery Confirm --}}
 <link rel="stylesheet" href="{{asset('template/plugins/jquery-confirm/css/jquery-confirm.css')}}">
 
+
+{{-- PACE --}}
+<link rel="stylesheet" href="{{asset('template/plugins/pace/pace.min.css')}}">

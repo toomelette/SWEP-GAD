@@ -24,7 +24,6 @@ class Seminar extends Model{
 
 
     protected $attributes = [
-
         'slug' => '',
         'seminar_id' => '',
         'title' => '',
@@ -39,7 +38,6 @@ class Seminar extends Model{
         'ip_updated' => '',
         'user_created' => '',
         'user_updated' => '',
-
     ];
 
 
@@ -57,7 +55,13 @@ class Seminar extends Model{
     }
 
     
+    public function creator(){
+        return $this->hasOne('App\Models\User', 'user_id', 'user_created');
+    }
 
+    public function updater(){
+        return $this->hasOne('App\Models\User', 'user_id', 'user_updated');
+    }
 
 
 

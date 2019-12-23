@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 
 
 use App\Core\Services\SeminarService;
+use App\Core\Services\SeminarParticipantService;
 use App\Http\Requests\Seminar\SeminarFormRequest;
 use App\Http\Requests\Seminar\SeminarFilterRequest;
-
-use App\Models\Seminar;
-
-use App\Core\Services\SeminarParticipantService;
 use App\Http\Requests\SeminarParticipant\SeminarParticipantCreateFormRequest;
 use App\Http\Requests\SeminarParticipant\SeminarParticipantEditFormRequest;
 
@@ -19,34 +16,26 @@ use Datatables;
 
 class SeminarController extends Controller{
 
-
-
 	protected $seminar;
     protected $seminar_participant;
 
-
-
     public function __construct(SeminarService $seminar, SeminarParticipantService $seminar_participant){
-
+        
         $this->seminar = $seminar;
         $this->seminar_participant = $seminar_participant;
-
     }
-
-
     
     public function index(){
 
         if(request()->ajax())
         {   
-
-            return datatables()->of(Seminar::latest()->get(['id', 'slug', 'seminar_id', 'title', 'sponsor', 'venue', 'date_covered_from', 'date_covered_to']))
+            return datatables()->of($this->seminar->fetchTable())
             ->addColumn('action', function($data){
                 $button = '<div class="btn-group">
                                 <button type="button" class="btn btn-default btn-sm view_seminar_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#view_seminar_modal" title="View more" data-placement="left">
                                     <i class="fa fa-file-text"></i>
                                 </button>
-                                <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" title="Participants" data-placement="top">
+                                <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm participant_btn" data-toggle="modal" data-target="#participant_modal" title="Participants" data-placement="top">
                                     <i class="fa fa-users"></i>
                                 </button>
                                 <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_seminar_btn" data-toggle="modal" data-target="#edit_seminar_modal" title="Edit" data-placement="top">
@@ -60,12 +49,10 @@ class SeminarController extends Controller{
             })
             ->rawColumns(['action'])
             ->setRowId('slug')
-            ->make(true);
+            ->make();
         }
 
-        
         return view('dashboard.seminar.index');
-
     }
 
     public function seminarList(){
@@ -84,19 +71,22 @@ class SeminarController extends Controller{
    
 
     public function store(SeminarFormRequest $request){
-        
         $validated = $request->validated();
         return $this->seminar->store($request);
-        
     }
- 
+    
+
+    public function show($slug){
+        $seminar = $this->seminar->show($slug);
+        return view('dashboard.seminar.show')->with(['seminar'=>$seminar]);
+    }
 
 
 
     public function edit($slug){
         
-        return $this->seminar->edit($slug);
-        // return $slug;
+        $seminar = $this->seminar->edit($slug);
+        return view('dashboard.seminar.edit')->with(['seminar'=>$seminar]);
     }
 
 
@@ -109,12 +99,8 @@ class SeminarController extends Controller{
     }
 
 
-
-
     public function update(SeminarFormRequest $request, $slug){
         
-        // return $this->seminar->update($request, $slug);
-        // return $slug;
         $validated = $request->validated();
         return $this->seminar->update($request, $slug);
 
@@ -132,14 +118,19 @@ class SeminarController extends Controller{
 
 
     /** Seminar participant **/
-
     public function participant($slug){
 
-        return $this->seminar_participant->index($slug);
+        $seminar = $this->seminar->participant($slug);
+
+        return view('dashboard.seminar.participants')->with(['seminar' => $seminar]);
 
     }
 
+    public function participantEdit($slug){
+ 
+        return $this->seminar_participant->edit($slug);
 
+    }
 
 
     public function participantStore(SeminarParticipantCreateFormRequest $request, $slug){
@@ -151,9 +142,9 @@ class SeminarController extends Controller{
 
 
 
-    public function participantUpdate(SeminarParticipantEditFormRequest $request, $sem_slug, $sem_ptcpt_slug){
+    public function participantUpdate(SeminarParticipantEditFormRequest $request, $sem_slug){
         
-        return $this->seminar_participant->update($request, $sem_slug, $sem_ptcpt_slug); 
+        return $this->seminar_participant->update($request, $sem_slug); 
 
     } 
 
@@ -178,38 +169,7 @@ class SeminarController extends Controller{
 
     }
 
-    public function viewSeminar($slug){
-        return $this->seminar->view($slug);
-    }
-
-
-
-    // public function participantStore(SeminarParticipantCreateFormRequest $request, $slug){
-
-    //     return $this->seminar_participant->store($request, $slug);
-
-    // }
-
-
-
-
-    // public function participantUpdate(SeminarParticipantEditFormRequest $request, $sem_slug, $sem_ptcpt_slug){
-        
-    //     return $this->seminar_participant->update($request, $sem_slug, $sem_ptcpt_slug); 
-
-    // } 
-
-
-
-
-    // public function participantDestroy($slug){
-        
-    //     return $this->seminar_participant->destroy($slug);
-
-    // }
-
-
-
+    
 
     
 }

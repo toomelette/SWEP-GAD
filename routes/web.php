@@ -43,7 +43,6 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 
 	/** SEMINARS **/
 	Route::get('/seminar/view_attendance_sheet/{slug}', 'SeminarController@viewAttendanceSheet')->name('seminar.view_attendance_sheet');
-
 	Route::get('/seminar/view_seminar/{slug}', 'SeminarController@viewSeminar')->name('seminar.view_seminar_details');
 
 	Route::resource('seminar', 'SeminarController');
@@ -52,8 +51,9 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 	/** SEMINAR PARTICIPANTS **/
 	Route::get('/seminar/participant/{slug}', 'SeminarController@participant')->name('seminar.participant');
 	Route::post('/seminar/participant/store/{slug}', 'SeminarController@participantStore')->name('seminar.participant_store');
-	Route::put('/seminar/participant/update/{slug}/{ptcpt_slug}', 'SeminarController@participantUpdate')->name('seminar.participant_update');
+	Route::put('/seminar/participant/update/{slug}', 'SeminarController@participantUpdate')->name('seminar.participant_update');
 	Route::delete('/seminar/participant/destroy/{slug}', 'SeminarController@participantDestroy')->name('seminar.participant_destroy');
+	Route::get('/seminar/participant/{slug}/edit', 'SeminarController@participantEdit')->name('seminar.participant_edit');
 
 
 	/** SEMINAR SPEAKERS **/
@@ -62,11 +62,11 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 	Route::put('/seminar/speaker/update/{slug}/{spkr_slug}', 'SeminarController@speakerUpdate')->name('seminar.speaker_update');
 	Route::delete('/seminar/speaker/destroy/{slug}', 'SeminarController@speakerDestroy')->name('seminar.speaker_destroy');
 
-	
+
+	/** BLOCK FARMING **/
+	Route::resource('block_farm','BlockFarmController');
+
 });
-
-
-
 
 
 

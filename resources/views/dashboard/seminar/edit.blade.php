@@ -1,14 +1,21 @@
 
-
-
-  <div class="row">
-    <div class="col-md-12">
-        <code class="pull-right">Fields with asterisks(*) are required</code>
-    </div>
+<form id="edit_seminar_form" autocomplete="off">
+  @csrf 
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Edit</h4>
   </div>
 
-  <form id="edit_seminar_form" autocomplete="off">
-    @csrf 
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+          <code class="pull-right">Fields with asterisks(*) are required</code>
+      </div>
+    </div>
+
+  
+    @method('PUT')
+
     <div class="row">
       <div class="col-md-7">
         <div class="row">
@@ -38,7 +45,7 @@
       </div> 
       <div class="col-md-5">
         {!! __form::file(
-          '4', 'doc_file', 'Upload File *', $errors->has('doc_file'), $errors->first('doc_file'), ''
+          '12', 'doc_file', 'e_doc_file', 'Upload File *', $errors->has('doc_file'), $errors->first('doc_file'), ''
         ) !!}
       </div>
     </div>
@@ -46,13 +53,22 @@
     
 
     <div class="col-md-12" style="padding-top:30px;">
-      <div class="box box-solid">
-        <div class="box-header with-border">
-          <h3 class="box-title">Add Speakers</h3>
-          <button id="add_row_edit" type="button" class="btn btn-sm bg-green pull-right">Add Speaker &nbsp;<i class="fa fw fa-plus"></i></button>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-md-6">
+              <p>
+                <b>Add Speakers</b>
+              </p>
+            </div>
+            <div class="col-md-6">
+              <button id="add_row_edit" type="button" class="btn btn-xs btn-success pull-right">Add Speaker &nbsp;<i class="fa fw fa-plus"></i></button>
+            </div>
+          </div>
+          
         </div>
 
-        <div class="box-body no-padding">
+        <div class="panel-body">
           <table class="table table-bordered">
             <tr>
               <th>Fullname *</th>
@@ -79,16 +95,23 @@
             </tbody>
           </table>
         </div>
-
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-12">
-        <button type="submit" class="btn btn-success pull-right"> <i class="fa fa-fw fa-save"></i> Save changes</button>
-      </div>
-    </div>     
-  </form>
+
+  </div>
+
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-success pull-right update_seminar_btn"> <i class="fa fa-fw fa-save"></i> Save changes</button>
+  </div>
+</form>     
 
 
 
+<script type="text/javascript">
+  {!! __js::pdf_upload(
+    'e_doc_file', 'fa', route('dashboard.seminar.view_attendance_sheet', $seminar->slug)
+  ) !!}
+</script>

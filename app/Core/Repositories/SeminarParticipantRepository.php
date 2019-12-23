@@ -37,22 +37,9 @@ class SeminarParticipantRepository extends BaseRepository implements SeminarPart
 
         $seminar = $this->seminar_repo->findBySlug($slug);
 
-        $seminar_participants = $this->cache->remember('seminars:participants:fetchBySeminarId:'. $seminar->seminar_id, 240, function() use ($seminar){
-
-            $seminar_participant = $this->seminar_participant->newQuery();
-
-            return $this->populateBySeminarId($seminar_participant, $seminar->seminar_id);
-
-        });
-
-        return ['seminar' => $seminar, 'seminar_participants' => $seminar_participants];
+        return $seminar_participant;
 
     }
-
-
-
-
-
 
 
     public function store($request, $slug){
@@ -77,7 +64,6 @@ class SeminarParticipantRepository extends BaseRepository implements SeminarPart
         $seminar_participant->save();
 
         return $seminar_participant;
-
     }
 
 
@@ -137,13 +123,8 @@ class SeminarParticipantRepository extends BaseRepository implements SeminarPart
 
 
 
-
     public function getBySlug($slug){
             
-        $seminar_participant = $this->cache->remember('seminars:participants:getBySlug:'. $slug .'', 240, function() use ($slug){
-            return $this->seminar_participant->where('slug', $slug)->get();
-        });
-
         return $seminar_participant;
 
     }

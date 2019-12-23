@@ -11,12 +11,11 @@ class __form{
 
 
     /** Default **/
-    public static function textbox($class, $key, $type, $label, $placeholder, $old_value, $error_has, $error_first, $extra_attr){
+    public static function textbox($class, $key, $type, $label, $placeholder, $old_value, $id, $error_first, $extra_attr){
 
-       return '<div class="form-group col-md-'. $class .' '. self::error_response($error_has) .'">
+       return '<div class="form-group col-md-'. $class .'">
                 <label for="'. $key .'">'. $label .'</label>
-                <input class="form-control" id="'. $key .'" name="'. $key .'" type="'. $type .'" value="'. self::string_value($old_value) .'" placeholder="'. $placeholder .'" '. $extra_attr .'>
-                '. self::error_message($error_has, $error_first) .'
+                <input class="form-control" id="'. $id .'" name="'. $key .'" type="'. $type .'" value="'. self::string_value($old_value) .'" placeholder="'. $placeholder .'" '. $extra_attr .'>
               </div>';
 
     }
@@ -45,7 +44,6 @@ class __form{
                 </select>
                 '. self::error_message($error_has, $error_first) .'
               </div>';
-                
     }
 
 
@@ -60,8 +58,51 @@ class __form{
                 </select>
                 '. self::error_message($error_has, $error_first) .'
               </div>';
-                
     }
+
+
+    public static function checkbox($class, $name, $label, $all_options, $checked_options, $extra_attr){
+      $options_html = '';
+
+      foreach ($all_options as $key => $value) {
+        $checked = '';
+        if(isset($checked_options[$key])){
+          $checked = 'checked = ""';
+        }
+
+        $options_html = $options_html.'
+        <div class="col-md-'.$class.'">
+          <div class="checkbox no-margin">
+            <label><input class="options" type="checkbox" '.$checked.' value="'.$key.'" name="'.$name.'" '.$extra_attr.' >'.$value.'</label>
+          </div>
+        </div>
+        ';
+      }
+
+      return $options_html;
+    }
+
+    public static function radio_sex($class, $name, $label, $all_options, $selected, $extra_attr){
+      $options = "";
+      $all_options = ["MALE"=> "Male", "FEMALE"=> "Female"];
+      foreach ($all_options as $key => $value) {
+        $checked = '';
+        if(strtoupper($selected) == $key){
+          $checked = "checked";
+        }
+        $options = $options.'<label  style="margin-left: 15px">
+        <input type="radio" name="'.$name.'" value="'.$key.'" '.$checked.' >'.$value.'
+        </label>';
+      }
+
+      return '<div class="form-group col-md-'.$class.'">
+                <label for="sex">'.$label.'</label>
+                <div class="radio">
+                  '.$options.'
+                </div>                    
+              </div>';
+    }
+
 
 
 
@@ -69,7 +110,7 @@ class __form{
 
        return '<div class="form-group col-md-'. $class .' '. self::error_response($error_has) .'">
                 <label for="'. $key .'">'. $label .'</label>
-                <textarea id="editor" name="'. $key .'" rows="10" cols="80" '. $extra_attr .'>'. __sanitize::html_encode($old_value) .'</textarea>
+                <textarea id="editor" name="'. $key .'" cols="80" '. $extra_attr .'>'. __sanitize::html_encode($old_value) .'</textarea>
                 '. self::error_message($error_has, $error_first) .'
               </div>';
 
@@ -115,12 +156,12 @@ class __form{
 
 
 
-    public static function file($class, $key, $label, $error_has, $error_first, $extra_attr){
+    public static function file($class, $key, $id, $label, $error_has, $error_first, $extra_attr){
 
        return '<div class="form-group col-md-'. $class .' '. self::error_response($error_has) .'">
                 <label for="'. $key .'">'. $label .'</label>
                 <div class="file-loading">
-                  <input class="file" name="'. $key .'" id="'. $key .'" type="file" '. $extra_attr .'>
+                  <input class="file" name="'. $key .'" id="'. $id .'" type="file" '. $extra_attr .'>
                 </div>
                 '. self::error_message($error_has, $error_first) .'
               </div>';
@@ -180,9 +221,13 @@ class __form{
                 
     }
 
-
-
-
+    public static function textbox_tbl_sm($class, $key, $type , $placeholder, $value, $extra_attr){
+      return '
+        <div class="form-group  '.$class.' no-margin">
+          <input class="form-control input-sm " name="'.$key.'" type="'.$type.'" value="'.$value.'" '.$extra_attr.' > 
+        </div>
+       ';
+    }
 
     /** For Filters **/
 

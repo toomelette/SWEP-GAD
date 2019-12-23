@@ -27,6 +27,11 @@ class RepositoryServiceProvider extends ServiceProvider {
 		$this->app->bind('App\Core\Interfaces\SeminarParticipantInterface', 'App\Core\Repositories\SeminarParticipantRepository');
 		$this->app->bind('App\Core\Interfaces\SeminarSpeakerInterface', 'App\Core\Repositories\SeminarSpeakerRepository');
 
+		$this->app->bind('App\Core\Interfaces\BlockFarmInterface', 'App\Core\Repositories\BlockFarmRepository');
+
+		$this->app->bind('App\Core\Interfaces\BlockFarmProblemInterface', 'App\Core\Repositories\BlockFarmProblemRepository');
+
+		$this->app->bind('App\Core\Interfaces\BFEncounteredProblemInterface', 'App\Core\Repositories\BFEncounteredProblemRepository');
 	}
 
 

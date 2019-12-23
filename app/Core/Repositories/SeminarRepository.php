@@ -14,13 +14,9 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
 
     protected $seminar;
 
-
-
 	public function __construct(Seminar $seminar){
-
         $this->seminar = $seminar;
         parent::__construct();
-
     }
 
 
@@ -112,7 +108,10 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
     }
 
 
+    public function fetchTable(){
 
+       return $this->seminar->latest()->get(['id', 'slug', 'seminar_id', 'title', 'sponsor', 'venue', 'date_covered_from', 'date_covered_to']);
+    }
 
 
     public function findBySlug($slug){

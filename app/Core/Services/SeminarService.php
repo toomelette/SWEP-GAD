@@ -61,7 +61,9 @@ class SeminarService extends BaseService{
 
 
 
-
+    public function fetchTable(){
+        return $this->seminar_repo->fetchTable();
+    }
 
 
     public function viewAttendanceSheet($slug){
@@ -94,16 +96,15 @@ class SeminarService extends BaseService{
 
     public function edit($slug){
 
-        $seminar = $this->seminar_repo->findbySlug($slug);
-        return view('dashboard.seminar.edit')->with('seminar', $seminar);
+        return $this->seminar_repo->findbySlug($slug);
 
     }
 
 
 
-    public function view($slug){
-        $seminar = $this->seminar_repo->findbySlug($slug);
-        return view('dashboard.seminar.view')->with('seminar',$seminar);
+    public function show($slug){
+        return $this->seminar_repo->findbySlug($slug);
+        
     }
 
 
@@ -191,9 +192,6 @@ class SeminarService extends BaseService{
 
 
 
-
-
-
     private function filterReservedChar($filename){
 
         $filename = str_replace('.pdf', '', $filename);
@@ -207,7 +205,12 @@ class SeminarService extends BaseService{
 
 
 
+    public function participant($slug){
 
+        $seminar = $this->seminar_repo->findBySlug($slug);
+
+        return $seminar;
+    }
 
 
 }

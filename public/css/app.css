@@ -28,12 +28,40 @@ input[data-transform=uppercase] {
     width: 140px !important
 }
 
+.th-10{
+    width: 50px !important
+}
+
 .modal-content  {
     -webkit-border-radius: 5px !important;
     -moz-border-radius: 5px !important;
     border-radius: 5px !important; 
 }
 
+.block_farm_table tbody tr td:last-child,
+.block_farm_table tbody tr td:nth-last-child(2){
+    width: 80px
+}
+
+.block_farm_table {
+    font-size: calc(110% - 1px) !important;
+}
+
+.block_farm_table thead{
+    text-align: center;
+    font-weight: bold;
+}
+
+
+.stamps{
+    text-align: left;
+    color: #777;
+}
+
+#tbl_loader{
+    padding-bottom: 50px; 
+    padding-top: 50px
+}
 
 /*.modal-content .modal-header {
     background-color: #605ca8 !important;

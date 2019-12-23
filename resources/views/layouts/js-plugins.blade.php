@@ -47,6 +47,12 @@
 {{-- DataTable --}}
 <script type="text/javascript" src="{{asset('template/plugins/DataTables/datatables.min.js')}}"></script>
 
+<script src="{{asset('template/plugins/DataTables/Buttons-1.6.1/js/buttons.bootstrap.min.js')}}"></script>
+<script src="{{asset('template/plugins/DataTables/Buttons-1.6.1/js/buttons.html5.min.js')}}"></script>
+<script src="{{asset('template/plugins/DataTables/Buttons-1.6.1/js/buttons.print.min.js')}}"></script>
+<script src="{{asset('template/plugins/DataTables/Buttons-1.6.1/js/buttons.colVis.min.js')}}"></script>
+<script src="{{asset('template/plugins/DataTables/JSZip-2.5.0/jszip.min.js')}}"></script>
+<script src="{{asset('template/plugins/DataTables/pdfmake-0.1.36/pdfmake.min.js')}}"></script>
 
 {{-- Moment --}}
 <script type="text/javascript" src="{{asset('template/plugins/moment/moment.js')}}"></script>
@@ -56,3 +62,9 @@
 
 {{-- JQuery Confirm --}}
 <script type="text/javascript" src="{{asset('template/plugins/jquery-confirm/js/jquery-confirm.js')}}"></script>
+
+{{-- AutoNumeric --}}
+<script type="text/javascript" src="{{asset('template/plugins/autonum/main.js')}}"></script>
+
+{{-- Pace --}}
+<script type="text/javascript" src="{{asset('template/bower_components/PACE/pace.min.js')}}"></script>
