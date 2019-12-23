@@ -57,9 +57,6 @@
 @endsection
 
 
-
-
-
 @section('modals')
 
   {!! __html::modal_delete('seminar_delete') !!}

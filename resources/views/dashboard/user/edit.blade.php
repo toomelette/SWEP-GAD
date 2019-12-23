@@ -124,6 +124,7 @@
         </div>
       </form>
     </div>
+    </div>
   </section>
 @endsection
 

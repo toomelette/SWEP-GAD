@@ -65,28 +65,19 @@ class UserService extends BaseService{
 
                 $menu = $this->menu_repo->findByMenuId($request->menu[$i]);
                 $user_menu = $this->user_menu_repo->store($user, $menu);
-
+                
                 if(!empty($request->submenu)){
-
                     foreach($request->submenu as $data){
-
                         $submenu = $this->submenu_repo->findBySubmenuId($data);
-
                         if($menu->menu_id == $submenu->menu_id){
                             $this->user_submenu_repo->store($submenu, $user_menu);
                         }
-
                     }
-
                 }
-
             }
-
         }
-
         $this->event->fire('user.store');
         return redirect()->back();
-
     }
 
 
