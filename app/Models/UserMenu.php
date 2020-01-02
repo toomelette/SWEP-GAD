@@ -50,7 +50,9 @@ class UserMenu extends Model{
    	}
 
 
-
+    public function menu(){
+        return $this->belongsTo('App\Models\Menu','menu_id','menu_id');
+    }
 
 
 

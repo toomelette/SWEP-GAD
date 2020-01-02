@@ -23,6 +23,26 @@
       </div>
 
       <div class="box-body">
+        <div id="users_table_container">
+          <table class="table table-bordered table-striped table-hover" id="users_table" style="width: 100% !important">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Full Name</th>
+                <th>Online</th>
+                <th>Active</th>
+                <th class="action">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+        <div id="tbl_loader">
+          <center>
+            <img style="width: 100px" src="{{ asset('images/loader.gif') }}">
+          </center>
+        </div>
       </div>
     </div>
 
@@ -52,7 +72,7 @@
           <h4 class="modal-title">New User</h4>
         </div>
         <div class="modal-body">
-          
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -71,7 +91,49 @@
 
 
 @section('scripts')
-
+<script type="text/javascript">
+  //-----DATATABLES-----//
+      //Initialize DataTable
+      users_table = $("#users_table").DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax" : '{{ route("dashboard.seminar.index") }}',
+        "columns": [
+            { "data": "username" },
+            { "data": "fullname" },
+            { "data": "online" },
+            { "data": "active" },
+            { "data": "action" }
+        ],
+        buttons: [
+            'copy', 'excel', 'pdf'
+        ],
+        "columnDefs":[
+          {
+            "targets" : 4,
+            "orderable" : false,
+            "class" : 'action'
+          },
+        ],
+        "responsive": false,
+        "initComplete": function( settings, json ) {
+            $('#tbl_loader').fadeOut(function(){
+              $("#seminars_table_container").fadeIn();
+            });
+          },
+        "language": 
+          {          
+            "processing": "<center><img style='width: 70px' src='{{ asset('images/loader.gif') }}'></center>",
+          },
+        "drawCallback": function(settings){
+          $('[data-toggle="tooltip"]').tooltip();
+          $('[data-toggle="modal"]').tooltip();
+          if(active != ''){
+             $("#seminars_table #"+active).addClass('success');
+          }
+        }
+      })
+</script>
 
     
 @endsection

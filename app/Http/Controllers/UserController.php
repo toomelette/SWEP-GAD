@@ -29,7 +29,52 @@ class UserController extends Controller{
 
     public function index(UserFilterRequest $request){
 
-        return $this->user_service->fetch($request);
+        if(request()->ajax())
+        {   
+            return datatables()->of($this->user_service->fetchTable())
+            ->addColumn('action', function($data){
+                $button = '<div class="btn-group">
+                                <button type="button" class="btn btn-default btn-sm view_user_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#view_user_modal" title="View more" data-placement="left">
+                                    <i class="fa fa-file-text"></i>
+                                </button>
+                                <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm participant_btn" data-toggle="modal" data-target="#participant_modal" title="Participants" data-placement="top">
+                                    <i class="fa fa-users"></i>
+                                </button>
+                                <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_seminar_btn" data-toggle="modal" data-target="#edit_seminar_modal" title="Edit" data-placement="top">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button type="button" data="'.$data->slug.'" class="btn btn-sm btn-danger delete_seminar_btn" data-toggle="tooltip" title="Delete" data-placement="top">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>';
+                return $button;
+            })
+            ->addColumn('fullname', function($data){
+                return $data->firstname .' '. $data->lastname;
+            })
+            ->addColumn('online', function($data){
+                if($data->is_online == 1){
+                    return '<span class="label bg-green col-md-12">ONLINE</span>';
+                }else if($data->is_online == 0){
+                    return '<span class="label bg-gray col-md-12">OFFLINE</span>';
+                }
+            })
+            ->addColumn('active', function($data){
+                if($data->is_active == 1){
+                    return '<span class="label bg-green col-md-12">ACTIVE</span>';
+                }else if($data->is_active == 0){
+                    return '<span class="label bg-red col-md-12">INACTIVE</span>';
+                }
+                
+            })
+            ->escapeColumns([])
+            ->rawColumns(['action'])
+            ->setRowId('slug')
+            ->make();
+        }
+
+        $menus = $this->user_service->userMenus();
+        return view('dashboard.user.index')->with(['menus'=>$menus]);
 
     }
 
@@ -39,7 +84,6 @@ class UserController extends Controller{
     public function create(){
 
         return view('dashboard.user.create');
-
     }
 
     
@@ -47,14 +91,17 @@ class UserController extends Controller{
 
     public function store(UserFormRequest $request){
 
-        return $this->user_service->store($request);
+        $user = $this->user_service->store($request);
 
+        return json_encode(array('result' => 1, 'slug' => $user->slug)) ;
+        
     }
 
     
 
 
     public function show($slug){
+        
 
         return $this->user_service->show($slug);
 

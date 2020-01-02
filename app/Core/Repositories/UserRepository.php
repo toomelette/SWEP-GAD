@@ -26,7 +26,9 @@ class UserRepository extends BaseRepository implements UserInterface {
 
 
 
-
+    public function fetchTable(){
+        return $this->user->latest()->get(['slug', 'username', 'lastname', 'firstname', 'middlename', 'is_online', 'is_active']);
+    }
 
 
 	public function fetch($request){

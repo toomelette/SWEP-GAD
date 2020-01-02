@@ -29,25 +29,25 @@ class UserFormRequest extends FormRequest{
             'email'=>'required|string|email|max:90',
             'position'=>'required|string|max:90',
             'username'=>'required|string|max:45|unique:users,username,'.$this->route('user').',slug',
-            'password'=>'sometimes|required|string|min:6|max:45|confirmed',
-
+            'password'=>'sometimes|required|string|min:6|max:45|confirmed|same:password_confirmation',
+            'password_confirmation'=>'sometimes|required|string|min:6|max:45'
         ];
 
-        if(!empty($this->request->get('menu'))){
+        // if(!empty($this->request->get('menu'))){
 
-            if(!empty($this->request->get('menu'))){
-                foreach($this->request->get('menu') as $key => $value){
-                    $rules['menu.'.$key] = 'required|string';
-                } 
-            }
+        //     if(!empty($this->request->get('menu'))){
+        //         foreach($this->request->get('menu') as $key => $value){
+        //             $rules['menu.'.$key] = 'required|string';
+        //         } 
+        //     }
 
-            if(!empty($this->request->get('submenu'))){
-                foreach($this->request->get('submenu') as $key => $value){
-                    $rules['submenu.'.$key] = '';
-                }
-            }
+        //     if(!empty($this->request->get('submenu'))){
+        //         foreach($this->request->get('submenu') as $key => $value){
+        //             $rules['submenu.'.$key] = '';
+        //         }
+        //     }
 
-        }
+        // }
 
         return $rules;
 

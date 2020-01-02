@@ -150,7 +150,7 @@ class MenuRepository extends BaseRepository implements MenuInterface {
     public function getAll(){
 
         $menus = $this->cache->remember('menus:getAll', 240, function(){
-            return $this->menu->select('menu_id', 'name')->get();
+            return $this->menu->select('menu_id', 'name', 'icon')->get();
         });
         
         return $menus;

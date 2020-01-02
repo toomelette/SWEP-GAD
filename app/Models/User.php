@@ -86,7 +86,9 @@ class User extends Authenticatable{
         return strtoupper($this->firstname . " " . substr($this->middlename , 0, 1) . ". " . $this->lastname);
     }
     
-
+    // public function usertToSubMenu(){
+    //     return $this->hasManyThrough()  ;
+    // }
 
 
 

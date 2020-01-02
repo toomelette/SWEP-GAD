@@ -21,6 +21,23 @@ class __form{
     }
 
 
+    public static function textbox_password_btn($class, $name, $label, $placeholder, $old_value, $id, $error_first, $extra_attr){
+
+       return '<div class="col-md-'.$class.' form-group">
+                <label for="">'.$label.'</label>
+                <div class="input-group">
+                  <input type="password" name="'.$name.'" placeholder="'.$placeholder.'" class="form-control">
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default show_pass" data-toggle="tooltip" title="Show/Hide Password" tabindex="-1">
+                      <i class="fa fa-eye-slash"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>';
+
+    }
+
+
 
     public static function textbox_numeric($class, $key, $type, $label, $placeholder, $old_value, $error_has, $error_first, $extra_attr){
 

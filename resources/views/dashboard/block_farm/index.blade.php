@@ -32,7 +32,7 @@
               <div id="block_farm_tbl_container" style="display: none">
                 
               
-                <table class="table table-bordered table-striped table-hover" id="block_farm_tbl" style="width: 100% !important">
+                <table class="table table-bordered table-striped table-hover" id="block_farm_tbl" style="width: 100% !important; font-size: 14px">
                   <thead>
                     <tr>
                       <th>Block Farm</th>

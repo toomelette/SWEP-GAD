@@ -36,7 +36,9 @@ class UserService extends BaseService{
 
 
 
-
+    public function fetchTable(){
+        return $this->user_repo->fetchTable();
+    }
 
 
     public function fetch($request){
@@ -56,28 +58,39 @@ class UserService extends BaseService{
     public function store($request){
 
         $user = $this->user_repo->store($request);
+        // return $request->menu;
+        $user_id = $user->user_id;
+        foreach ($request->menu as $key => $menu_itself) {
+            $user_menu = $this->user_menu_repo->store($user_id, $key);
+            $user_menu_id = $user_menu->user_menu_id;
 
-        if(!empty($request->menu)){
-
-            $count_menu = count($request->menu);
-
-            for($i = 0; $i < $count_menu; $i++){
-
-                $menu = $this->menu_repo->findByMenuId($request->menu[$i]);
-                $user_menu = $this->user_menu_repo->store($user, $menu);
-                
-                if(!empty($request->submenu)){
-                    foreach($request->submenu as $data){
-                        $submenu = $this->submenu_repo->findBySubmenuId($data);
-                        if($menu->menu_id == $submenu->menu_id){
-                            $this->user_submenu_repo->store($submenu, $user_menu);
-                        }
-                    }
-                }
+            foreach ($menu_itself as $key2 => $submenu) {
+                $user_submenu = $this->user_submenu_repo->store($user_id,$submenu, $user_menu_id);
             }
         }
-        $this->event->fire('user.store');
-        return redirect()->back();
+
+        return $user;
+        // if(!empty($request->menu)){
+
+        //     $count_menu = count($request->menu);
+
+        //     for($i = 0; $i < $count_menu; $i++){
+
+        //         $menu = $this->menu_repo->findByMenuId($request->menu[$i]);
+        //         $user_menu = $this->user_menu_repo->store($user, $menu);
+                
+        //         if(!empty($request->submenu)){
+        //             foreach($request->submenu as $data){
+        //                 $submenu = $this->submenu_repo->findBySubmenuId($data);
+        //                 if($menu->menu_id == $submenu->menu_id){
+        //                     $this->user_submenu_repo->store($submenu, $user_menu);
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        // $this->event->fire('user.store');
+        // return redirect()->back();
     }
 
 
@@ -248,7 +261,10 @@ class UserService extends BaseService{
 
 
 
-
+    public function userMenus(){
+        $menus = $this->menu_repo->getAll();
+        return $menus;
+    }
 
 
 }
