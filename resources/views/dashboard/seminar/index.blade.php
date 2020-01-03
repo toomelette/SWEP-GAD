@@ -70,7 +70,7 @@
           <span aria-hidden="true">×</span></button>
           <h4 class="modal-title">New Seminar</h4>
         </div>
-        <form autocomplete="off" id="form_add_seminar">  
+        <form autocomplete="off" id="form_add_seminar" enctype="multipart/form-data">  
           <div class="modal-body">
             <div class="row">
               <div class="col-md-12">
