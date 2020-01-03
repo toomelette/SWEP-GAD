@@ -23,7 +23,7 @@
 
       @include('layouts.admin-sidenav') 
 
-      <div class="content-wrapper" style="height:auto; min-height: 69em"> 
+      <div class="content-wrapper" style="height:500em;"> 
          @yield('content')
          <footer class="main-footer">
           <div class="pull-right hidden-xs">
