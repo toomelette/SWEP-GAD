@@ -177,7 +177,7 @@
     </div>
   </div>
 
-{!! __html::blank_modal('view_seminar_modal','lg') !!}
+{!! __html::blank_modal('view_seminar_modal','') !!}
 {!! __html::blank_modal('participant_modal','lg') !!}
 
 
