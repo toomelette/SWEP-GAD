@@ -18,66 +18,57 @@
 
       @if(Auth::check())
 
-
-
       {{-- User --}}
-      @if(!$global_user_menus->isEmpty())
-      
-          @php
-          $global_user_menus = $global_user_menus->sortBy('menu_id');
-          @endphp
+        @if(!$global_user_menus->isEmpty())
+            <li class="header">NAVIGATION</li>
 
-          <li class="header">NAVIGATION</li>
-          @foreach($global_user_menus as $user_menu)
-            {{-- {{ $user_menu->menu }} --}}
-            @if($user_menu->menu->is_menu == true)
+            @foreach($global_user_menus as $user_menu)
+              @if(!empty($user_menu->menu->is_menu))
+                @if($user_menu->menu->is_menu == true)
+                 @if($user_menu->menu->is_dropdown == false)
+                  <li class="{!! Route::currentRouteNamed($user_menu->menu->route) ? 'active' : '' !!}">
+                    <a href="{{ route($user_menu->menu->route) }}">
+                      <i class="fa {{ $user_menu->menu->icon }}"></i> <span>{{ $user_menu->menu->name }}</span>
+                    </a>
+                  </li>
+                  @else
+                    <li class="treeview {!! Route::currentRouteNamed($user_menu->menu->route) ? 'active' : '' !!}">
+                      <a href="#">
+                        <i class="fa {{ $user_menu->menu->icon }}"></i> <span>{{ $user_menu->menu->name }}</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                      </a>
 
-              @if($user_menu->menu->is_dropdown == false)
+                        <ul class="treeview-menu">
 
-              <li class="{!! Route::currentRouteNamed($user_menu->menu->route) ? 'active' : '' !!}">
-                <a href="{{ route($user_menu->menu->route) }}">
-                  <i class="fa {{ $user_menu->menu->icon }}"></i> <span>{{ $user_menu->menu->name }}</span>
-                </a>
-              </li>
+                          @foreach($user_menu->userSubMenu as $user_nav)
+                            @if(!empty($user_nav->subMenu))
+                              @if($user_nav->subMenu->is_nav == true)
 
-              @else
+                                <li class="{!! Route::currentRouteNamed($user_nav->subMenu->route) ? 'active' : '' !!}">
+                                  <a href="{{ route($user_nav->subMenu->route) }}"><i class="fa fa-caret-right"></i> {{ $user_nav->subMenu->nav_name }}</a>
+                                </li>
 
-                <li class="treeview {!! Route::currentRouteNamed($user_menu->menu->route) ? 'active' : '' !!}">
-                  <a href="#">
-                    <i class="fa {{ $user_menu->menu->icon }}"></i> <span>{{ $user_menu->menu->name }}</span>
-                    <span class="pull-right-container">
-                      <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                  </a>
+                              @endif
+                            @endif
+                          @endforeach
 
-                    <ul class="treeview-menu">
+                        </ul>
 
-                      @foreach($user_menu->userSubMenu as $user_nav)
-                        @if($user_nav->subMenu->is_nav == true)
-
-                          <li class="{!! Route::currentRouteNamed($user_nav->subMenu->route) ? 'active' : '' !!}">
-                            <a href="{{ route($user_nav->subMenu->route) }}"><i class="fa fa-caret-right"></i> {{ $user_nav->subMenu->nav_name }}</a>
-                          </li>
-
-                        @endif
-
-                      @endforeach
-
-                    </ul>
-
-                </li>
-
+                    </li>         
+                  @endif
+                @else
               @endif
+              @endif
+            @endforeach
+           
 
-            @endif
+          @endif
 
-          @endforeach
 
+            
         @endif
-
-
-          
-      @endif
 
     </ul>
   </section>

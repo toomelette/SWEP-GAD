@@ -31,15 +31,16 @@ class SubmenuRepository extends BaseRepository implements SubmenuInterface {
 
 
 
-    public function store($data, $menu){
+    public function store($request){
+
 
         $submenu = new Submenu;
         $submenu->slug = $this->str->random(16);
         $submenu->submenu_id = $this->getSubmenuIdInc();
-        $submenu->menu_id = $menu->menu_id;
-        $submenu->name = $data['sub_name'];
-        $submenu->route = $data['sub_route'];
-        $submenu->is_nav = $this->__dataType->string_to_boolean($data['sub_is_nav']);
+        $submenu->menu_id = $request->menu;
+        $submenu->name = $request->name;
+        $submenu->route = $request->route;
+        $submenu->is_nav = $request->is_nav;
         $submenu->save();
         
         return $submenu;
@@ -61,6 +62,10 @@ class SubmenuRepository extends BaseRepository implements SubmenuInterface {
         
         return $submenu;
 
+    }
+
+    public function findBySlug($slug){
+        return $this->submenu->where('slug', $slug)->first();
     }
 
 
@@ -120,6 +125,25 @@ class SubmenuRepository extends BaseRepository implements SubmenuInterface {
     }
 
 
+
+    public function edit($slug){
+    }
+    
+    public function update($request, $slug){
+        $submenu = $this->findBySlug($slug);
+        $submenu->name = $request->name;
+        $submenu->route = $request->route;
+        $submenu->nav_name = $request->nav_name;
+        $submenu->is_nav = $request->is_nav;
+        $submenu->save();
+        return $submenu;
+    }   
+
+    public function destroy($slug){
+        $submenu = $this->findBySlug($slug);
+        $submenu->delete();
+        return $submenu;
+    }
 
 
 

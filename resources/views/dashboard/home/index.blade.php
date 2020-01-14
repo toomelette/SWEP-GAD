@@ -8,7 +8,7 @@
 
 <section class="content">
 
-
+</div>
 </section>
 
 @endsection

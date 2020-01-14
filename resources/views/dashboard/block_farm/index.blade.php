@@ -36,9 +36,9 @@
                   <thead>
                     <tr>
                       <th>Block Farm</th>
-                      <th>Enrolee</th>
                       <th>Mill District</th>
                       <th>Date</th>
+                      <th>Enrolee</th>
                       <th class="th-10">Sex</th>
                       <th class="action">Action</th>
                     </tr>
@@ -100,23 +100,23 @@
             <div class="col-md-12">
                   <div class="row">
                     {!! __form::textbox(
-                      '7 mill_district', 'mill_district', 'text', 'Mill District', 'Mill District', old('title'), $errors->has('title'), $errors->first('title'), ''
+                      '7 mill_district', 'mill_district', 'text', 'Mill District', 'Mill District', old('title'), '', $errors->first('title'), ''
                     ) !!}
 
                     {!! __form::textbox(
-                      '5 fund_source', 'fund_source', 'text', 'Source of Fund', 'Source of Fund', old('title'), $errors->has('title'), $errors->first('title'), ''
+                      '5 fund_source', 'fund_source', 'text', 'Source of Fund', 'Source of Fund', old('title'), '', $errors->first('title'), ''
                     ) !!}
 
                     {!! __form::textbox(
-                      '6 block_farm_name', 'block_farm_name', 'text', 'Name of Block Farm', 'Name of Block Farm', old('title'), $errors->has('title'), $errors->first('title'), ''
+                      '6 block_farm_name', 'block_farm_name', 'text', 'Name of Block Farm', 'Name of Block Farm', old('title'), '', $errors->first('title'), ''
                     ) !!}
 
                     {!! __form::textbox(
-                      '6 enrolee_name', 'enrolee_name', 'text', 'Name of Enrolee', 'Name of Enrolee', old('title'), $errors->has('title'), $errors->first('title'), ''
+                      '6 enrolee_name', 'enrolee_name', 'text', 'Name of Enrolee', 'Name of Enrolee', old('title'), '' , $errors->first('title'), ''
                     ) !!}
 
                     {!! __form::textbox(
-                      '8 address', 'address', 'text', 'Address', 'Address', old('title'), $errors->has('title'), $errors->first('title'), ''
+                      '8 address', 'address', 'text', 'Address', 'Address', old('title'), '' , $errors->first('title'), ''
                     ) !!}
 
                    {!! __form::select_static(
@@ -150,7 +150,7 @@
                     </div>
 
                     {!! __form::textbox(
-                      '2 age', 'age', 'number', 'Age', 'Age', old('title'), $errors->has('title'), $errors->first('title'), ''
+                      '2 age', 'age', 'number', 'Age', 'Age', old('title'), '' , $errors->first('title'), ''
                     ) !!}
 
 
@@ -165,7 +165,7 @@
                     ) !!}
 
                     {!! __form::textbox(
-                      '4 religion', 'religion', 'text', 'Religion', 'Religion', old('title'), $errors->has('title'), $errors->first('title'), ''
+                      '4 religion', 'religion', 'text', 'Religion', 'Religion', old('title'), '' , $errors->first('title'), ''
                     ) !!}
 
                     
@@ -174,7 +174,7 @@
                     <div class="col-md-12">
                       <div class="row">
                       {!! __form::textbox(
-                      '4 occupation', 'occupation', 'text', 'Occupation', 'Occupation *', old('title'), $errors->has('title'), $errors->first('title'), ''
+                      '4 occupation', 'occupation', 'text', 'Occupation', 'Occupation *', old('title'),  '' , $errors->first('title'), ''
                       ) !!}
 
                       {!! __form::textbox(
@@ -349,7 +349,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary add_block_farm_btn">Submit</button>
+          <button type="submit" class="btn btn-primary add_block_farm_btn"><i class="fa fa-save"> </i> Save</button>
         </div>
       </form>
     </div>
@@ -357,22 +357,9 @@
   </div>
 </div>
 
+{!! __html::blank_modal('show_block_farm_modal','lg') !!}
+{!! __html::blank_modal('edit_block_farm_modal','lg') !!}
 
-<div id="show_seminar_modal" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      
-    </div>
-  </div>
-</div>
-
-<div id="edit_block_farm_modal" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      
-    </div>
-  </div>
-</div>
 
 @endsection 
 
@@ -381,55 +368,8 @@
 
 @section('scripts')
 <script type="text/javascript">
-  function confirm(slug){
-  $.confirm({
-          title: 'Confirm!',
-          content: 'Are you sure you want to delete this item?',
-          type: 'red',
-          typeAnimated: true,
-          buttons: {
-              confirm:{
-                  btnClass: 'btn-danger',
-                 action: function(){
-                  $.ajaxSetup({
-                    headers: {
-                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                  })
-                  $(".jconfirm-holder .btn-danger").attr("disabled","disabled");
-                  $(".jconfirm-holder .btn-danger").html("<i class='fa fa-spin fa-spinner'></i> PLEASE WAIT");
-                  uri = "{{ route('dashboard.block_farm.destroy', 'slug') }}";
-                  uri = uri.replace('slug', slug);
-                  Pace.restart();
-                  $.ajax({
-                      url : uri,
-                      type: 'DELETE',
-                      success: function(response){
-                        notify("Item successfully deleted.", "success");
-                        $("tbody #"+slug).addClass('danger animated bounceOut');
-                        setTimeout(function(){
-                          block_farm_tbl.draw(false);
-                        },1000);
-                        $(".jconfirm-holder .btn-danger").removeAttr("disabled");
-                        $(".jconfirm-holder .btn-danger").html("CONFIRM");
-                      },
-                      error: function(response){
-                        notify("An error occured while deteling the item.", "danger");
-                        console.log(response);
-                        $(".jconfirm-holder .btn-danger").removeAttr("disabled");
-                        $(".jconfirm-holder .btn-danger").html("CONFIRM");
-                      }
-
-                  })
-                   
-                 }
-
-              },
-              cancel: function () {
-                  
-              }
-          }
-      }); 
+  function dt_draw(){
+    block_farm_tbl.draw(false);
   }
 </script>
 <script type="text/javascript">
@@ -459,9 +399,9 @@
       "ajax" : '{{ route("dashboard.block_farm.index") }}',
       "columns": [
           { "data": "block_farm_name" },
-          { "data": "enrolee_name" },
           { "data": "mill_district" },
           { "data": "date" },
+          { "data": "enrolee_name" },
           { "data": "sex" },
           { "data": "action" }
       ],
@@ -516,9 +456,7 @@
 
   //Submit Add Block Farm Form
   $("#add_block_farm_form").submit(function(e){
-    submit_btn_default = $(".add_block_farm_btn").html();
-    $(".add_block_farm_btn").html('<i class="fa fa-spin fa-spinner"> </i> Please wait');
-    $(".add_block_farm_btn").attr("disabled","disabled");
+    wait_button('#add_block_farm_form');
     e.preventDefault();
     Pace.restart();
     $.ajax({
@@ -530,41 +468,21 @@
         console.log(response);
         if(response.result == 1){
           notify("Block farm successfully added.","success");
-          $(".add_block_farm_btn").html(submit_btn_default);
-          $(".add_block_farm_btn").removeAttr("disabled");
-          $("#add_block_farm_form").get(0).reset();
-          $("#add_block_farm_form #mill_district").focus();
-
-          $("#add_block_farm_form .has-error").each(function(){
-            $(this).removeClass('has-error');
-            $(this).children("span").remove();
-          });
+          succeed("#add_block_farm_form", "save" ,true);
           block_farm_tbl.draw(false);
           active = response.slug;
         }
       },
       error: function(response){
         error = 0;
-        $(".add_block_farm_btn").html(submit_btn_default);
-        $(".add_block_farm_btn").removeAttr("disabled");
-
-        $("#add_block_farm_form .has-error").each(function(){
-          $(this).removeClass('has-error');
-          $(this).children("span").remove();
-        });
-
-        $.each(response.responseJSON.errors, function(i, item){
-          $("#add_block_farm_form ."+i).addClass('has-error');
-
-          $("#add_block_farm_form ."+i).append("<span class='help-block'> "+item+" </span>");
-        });
+        errored("#add_block_farm_form","save",response);
       }
     })
   })
 
   //Show BlockFarm
   $("body").on("click", ".show_block_farm_btn" , function(){
-    $("#show_seminar_modal .modal-content").html(modal_loader);
+    $("#show_block_farm_modal .modal-content").html(modal_loader);
     id = $(this).attr("data");
     uri = " {{ route('dashboard.block_farm.show' , 'slug') }} ";
     uri = uri.replace("slug",id);
@@ -573,8 +491,8 @@
       url: uri,
       type: "GET",
       success: function(response){
-        $("#show_seminar_modal .modal_loader").fadeOut(function(){
-          $("#show_seminar_modal .modal-content").html(response)
+        $("#show_block_farm_modal .modal_loader").fadeOut(function(){
+          $("#show_block_farm_modal .modal-content").html(response)
         })
       },
       error: function(response){
@@ -608,8 +526,12 @@
           });
           new AutoNumeric('#e_annual_income', autonum_settings);
           new AutoNumeric('#e_annual_expense', autonum_settings);
-       
+          $(".options").each(function(index, el) {
+            $(this).change();          
+          });
         });
+
+        
 
       },error: function(response){
         console.log(response);
@@ -624,9 +546,7 @@
     uri = "{{ route('dashboard.block_farm.update', 'slug') }}";
     uri = uri.replace('slug',edit_block_farm_slug);
     data = $(this).serialize();
-    submit_btn_default = $("#edit_block_farm_form .update_btn").html();
-    $("#edit_block_farm_form .update_btn").html("<i class='fa fa-spin fa-spinner'></i> Please wait");
-    $("#edit_block_farm_form .update_btn").attr("disabled","disabled");
+    wait_button("#edit_block_farm_form");
     Pace.restart();
     $.ajax({
       url : uri,
@@ -639,27 +559,14 @@
       success: function(response){
         if (response.result == 1) {
           notify("Block farm successfully updated","success");
-          $("#edit_block_farm_form .update_btn").html(submit_btn_default);
-          $("#edit_block_farm_form .update_btn").removeAttr("disabled");
+          succeed("#edit_block_farm_form","save",false);
           $("#edit_block_farm_modal").modal("hide");
           active = response.slug;
           block_farm_tbl.draw(false);
         }
       },
       error: function(response){
-        $("#edit_block_farm_form .has-error").each(function(){
-          $(this).removeClass('has-error');
-          $(this).children("span").remove();
-        });
-
-        $.each(response.responseJSON.errors, function(i, item){
-          $("#edit_block_farm_form ."+i).addClass('has-error');
-
-          $("#edit_block_farm_form ."+i).append("<span class='help-block'> "+item+" </span>");
-        });
-
-        $("#edit_block_farm_form .update_btn").html(submit_btn_default);
-        $("#edit_block_farm_form .update_btn").removeAttr("disabled");
+        errored("#edit_block_farm_form","save",response);
       }
     })
     
@@ -668,7 +575,7 @@
   //Delete block farm button
   $("body").on("click", ".delete_block_farm_btn", function(){
     id = $(this).attr('data');
-    confirm(id);
+    confirm("{{ route('dashboard.block_farm.destroy','slug') }}",id);
   })
   
 

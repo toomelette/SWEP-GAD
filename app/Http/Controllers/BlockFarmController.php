@@ -39,7 +39,7 @@ class BlockFarmController extends Controller{
             return datatables()->of($this->block_farm->fetchTable())
             ->addColumn('action', function($data){
                 $button = '<div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm show_block_farm_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#show_seminar_modal" title="View more" data-placement="left">
+                                <button type="button" class="btn btn-default btn-sm show_block_farm_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#show_block_farm_modal" title="View more" data-placement="left">
                                     <i class="fa fa-file-text"></i>
                                 </button>
                                 <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_block_farm_btn" data-toggle="modal" data-target="#edit_block_farm_modal" title="Edit" data-placement="top">
@@ -122,8 +122,6 @@ class BlockFarmController extends Controller{
 
     public function destroy($slug){
         $block_farm = $this->block_farm->destroy($slug);
-        if($block_farm){
-            return json_encode(array('result'=>1,'slug' => $block_farm->slug));
-        }
+        return $block_farm;
     }
 }

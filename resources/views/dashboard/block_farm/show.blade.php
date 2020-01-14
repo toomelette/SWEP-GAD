@@ -134,41 +134,12 @@
   </div>
   <div class="modal-footer">
   	<div class="row">
-		<div class="col-md-4">
-			<div class="stamps">
-				<small class="no-margin">
-					Encoded by: 
-					<b>
-						{{ $block_farm->creator['firstname'] }} {{ $block_farm->creator['lastname'] }}
-					</b> 
-				</small>
-				<br>
-				<small class="no-margin">
-					Timestamp: 
-					<b>
-						{{ date("F d, Y | h:i A",strtotime($block_farm->created_at)) }}
-					</b> 
-				</small>
-			</div>
-		</div>
-		<div class="col-md-4">
-
-			<div class="stamps">
-				<small class="no-margin">
-					Last updated by: 
-					<b>
-						{{ $block_farm->updater['firstname'] }} {{ $block_farm->updater['lastname'] }}
-					</b> 
-				</small>
-				<br>
-				<small class="no-margin">
-					Timestamp: 
-					<b>
-						{{ date("F d, Y | h:i A",strtotime($block_farm->updated_at)) }}
-					</b> 
-				</small>
-			</div>
-		</div>
+		{!! __html::timestamps(
+			$block_farm->creator['firstname'] ." ".$block_farm->creator['lastname'],
+			$block_farm->created_at,
+			$block_farm->updater['firstname'] ." ". $block_farm->updater['lastname'],
+			$block_farm->updated_at,"4"
+		) !!}	
 		<div class="col-md-4">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		</div>

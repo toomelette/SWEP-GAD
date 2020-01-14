@@ -163,12 +163,7 @@ class BlockFarmRepository extends BaseRepository implements BlockFarmInterface {
         $block_farm->bfEncounteredProblem()->delete();
 
         return $block_farm;
-        // $seminar = $this->findBySlug($slug);
-        // $seminar->delete();
-        // $seminar->seminarParticipant()->delete();
-        // $seminar->seminarSpeaker()->delete();
 
-        // return $seminar;
 
     }
 

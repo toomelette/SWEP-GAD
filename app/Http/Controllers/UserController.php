@@ -33,20 +33,34 @@ class UserController extends Controller{
         {   
             return datatables()->of($this->user_service->fetchTable())
             ->addColumn('action', function($data){
+                if($data->is_active == 0){
+                    $a = "Activate";
+                    $stat = "inactive";
+                }else{
+                    $a = "Deactivate";
+                    $stat = "active";
+                }
                 $button = '<div class="btn-group">
                                 <button type="button" class="btn btn-default btn-sm view_user_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#view_user_modal" title="View more" data-placement="left">
                                     <i class="fa fa-file-text"></i>
                                 </button>
-                                <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm participant_btn" data-toggle="modal" data-target="#participant_modal" title="Participants" data-placement="top">
-                                    <i class="fa fa-users"></i>
-                                </button>
-                                <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_seminar_btn" data-toggle="modal" data-target="#edit_seminar_modal" title="Edit" data-placement="top">
+                               
+                                <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_user_btn" data-toggle="modal" data-target="#edit_user_modal" title="Edit" data-placement="top">
                                     <i class="fa fa-edit"></i>
                                 </button>
-                                <button type="button" data="'.$data->slug.'" class="btn btn-sm btn-danger delete_seminar_btn" data-toggle="tooltip" title="Delete" data-placement="top">
+                                <button type="button" data="'.$data->slug.'" class="btn btn-sm btn-danger delete_user_btn" data-toggle="tooltip" title="Delete" data-placement="top">
                                     <i class="fa fa-trash"></i>
                                 </button>
-                            </div>';
+                                <div class="btn-group">
+                                  <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                  <span class="caret"></span></button>
+                                  <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    <li><a href="#" data="'.$data->slug.'" name="'.strtoupper($data->firstname).' '.strtoupper($data->lastname).'" class="ac_dc" status="'.$stat.'" >'.$a.'</a>
+                                    </li>
+                                    <li><a href="#" class="reset_password_btn" data="'.$data->slug.'" data-toggle="modal" data-target="#reset_password_modal" >Change Username/Password</a></li>
+                                  </ul>
+                                </div>
+                                </div>';
                 return $button;
             })
             ->addColumn('fullname', function($data){
@@ -130,7 +144,7 @@ class UserController extends Controller{
 
     public function destroy($slug){
 
-        return $this->user_service->delete($slug);
+        return $this->user_service->destroy($slug);
         
     }
 
@@ -138,18 +152,15 @@ class UserController extends Controller{
 
 
     public function activate($slug){
-
         return $this->user_service->activate($slug);
-        
     }
 
 
 
 
-    public function deactivate($slug){
 
-        return $this->user_service->deactivate($slug);
-        
+    public function deactivate($slug){
+        return $this->user_service->deactivate($slug);  
     }
 
 

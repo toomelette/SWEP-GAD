@@ -4,7 +4,7 @@ namespace App\Core\Interfaces;
  
 
 
-interface MenuInterface {
+interface ScholarsInterface {
 
 	public function fetch($request);
 
@@ -19,7 +19,5 @@ interface MenuInterface {
 	public function findByMenuId($menu_id);
 
 	public function getAll();
-
-	public function reorderMenus($slug,$order);
 		
 }

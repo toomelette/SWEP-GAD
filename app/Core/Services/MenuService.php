@@ -28,32 +28,39 @@ class MenuService extends BaseService{
 
 
 
-    public function fetch($request){
+    public function fetch($slug){
 
-        $menus = $this->menu_repo->fetch($request);
-
-        $request->flash();
-        return view('dashboard.menu.index')->with('menus', $menus);
+        return $this->menu_repo->fetch($slug);
 
     }
 
+    public function fetchTable(){
 
+        return $this->menu_repo->fetchTable();
 
+    }
 
+    public function getAll(){
+        return $this->menu_repo->getAll();
+    }
+
+    public function reorderMenus($array){
+        $inc = 0;
+        foreach ($array as $key => $value) {
+            $inc++;
+
+            $this->menu_repo->reorderMenus($value, $inc);
+        }
+
+        return $inc;
+    }
 
 
     public function store($request){
        
         $menu = $this->menu_repo->store($request);
 
-        if(!empty($request->row)){
-            foreach ($request->row as $row) {
-                $submenu = $this->submenu_repo->store($row, $menu);
-            }
-        }
-        
-        $this->event->fire('menu.store');
-        return redirect()->back();
+        return $menu;
 
     }
 
@@ -74,13 +81,10 @@ class MenuService extends BaseService{
 
 
 
-    public function update($request, $slug){
+    public function update($request , $slug){
 
         $menu = $this->menu_repo->update($request, $slug);
-
-        $this->event->fire('menu.update', $menu);
-        return redirect()->route('dashboard.menu.index');
-
+        return $menu;
     }
 
 
@@ -92,8 +96,7 @@ class MenuService extends BaseService{
 
         $menu = $this->menu_repo->destroy($slug);
 
-        $this->event->fire('menu.destroy', $menu);
-        return redirect()->back();
+        return $menu;
 
     }
 

@@ -13,7 +13,7 @@
     @yield('css')
 
   </head>
-  <body class="hold-transition {!! Auth::check() ? __sanitize::html_encode(Auth::user()->color) : '' !!}">
+  <body class="hold-transition  {!! Auth::check() ? __sanitize::html_encode(Auth::user()->color) : '' !!}">
 
     <div id="loader"></div>
 

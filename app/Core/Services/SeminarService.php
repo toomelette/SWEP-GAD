@@ -71,8 +71,8 @@ class SeminarService extends BaseService{
         $seminar = $this->seminar_repo->findbySlug($slug);
 
         if(!empty($seminar->attendance_sheet_filename)){
-
             $path = $this->__static->archive_dir() .'/'. $seminar->attendance_sheet_filename;
+            
 
             if (!File::exists($path)) { return "Cannot Detect File!"; }
 
@@ -90,8 +90,59 @@ class SeminarService extends BaseService{
 
     }
 
+    
+    public function getFileDetails($slug){
+        $seminar = $this->seminar_repo->findbySlug($slug);
+
+        if(!empty($seminar->attendance_sheet_filename)){
+            $path = $this->__static->archive_dir() .'/'. $seminar->attendance_sheet_filename;
+
+            $exists = true;
+            if (!File::exists($path)) { $exists == false; }
 
 
+
+            return [
+                'path' => $path, 
+                'exists' => $exists, 
+                'size' => $this->convert_byte(File::size($path))
+            ] ;
+
+            
+        }
+    }
+
+    public function convert_byte($int){
+        if($int > 999){
+            //KB na
+            return number_format($int/1000) . " KB" ;
+        }elseif ($int > 9999) {
+            // MB na
+            return number_format($int/1000000) . " MB";
+        }elseif ($int > 999999999) {
+           // GB
+            return number_format($int/1000000000) . " GB";
+        }else{
+            return 0 . " BYTES";
+        }
+    }
+
+    public function downloadAttendanceSheet($slug){
+
+        $seminar = $this->seminar_repo->findbySlug($slug);
+
+        if(!empty($seminar->attendance_sheet_filename)){
+            $path = $this->__static->archive_dir() .'/'. $seminar->attendance_sheet_filename;
+
+            if (!File::exists($path)) { return "Cannot Detect File!"; }
+
+            return response()->download($path) ;
+        }
+       
+        return abort(404);
+
+
+    }
 
 
     public function edit($slug){
@@ -168,9 +219,9 @@ class SeminarService extends BaseService{
 
         }
 
-        $this->event->fire('seminar.destroy', $seminar);
         
-        return json_encode(array('result' => 1));
+        
+        return $seminar;
 
     }
 

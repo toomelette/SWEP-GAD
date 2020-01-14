@@ -39,11 +39,16 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 
 	/** MENU **/
 	Route::resource('menu', 'MenuController');
+	Route::get('/get_menus', 'MenuController@getMenus')->name('menu.get_menus');
+	Route::get('/reorder_menus', 'MenuController@reorderMenus')->name('menu.reorder_menus');
 
+	Route::resource('submenu', 'SubmenuController');
 
 	/** SEMINARS **/
 	Route::get('/seminar/view_attendance_sheet/{slug}', 'SeminarController@viewAttendanceSheet')->name('seminar.view_attendance_sheet');
 	Route::get('/seminar/view_seminar/{slug}', 'SeminarController@viewSeminar')->name('seminar.view_seminar_details');
+
+	Route::get('/seminar/download_attendance_sheet/{slug}', 'SeminarController@downloadAttendanceSheet')->name('seminar.download_attendance_sheet');
 
 	Route::resource('seminar', 'SeminarController');
 	
@@ -63,8 +68,12 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 	Route::delete('/seminar/speaker/destroy/{slug}', 'SeminarController@speakerDestroy')->name('seminar.speaker_destroy');
 
 
-	/** BLOCK FARMING **/
+	/** BLOCK FARM **/
 	Route::resource('block_farm','BlockFarmController');
+
+
+	/** BLOCK FARM **/
+	Route::resource('scholars','ScholarsController');
 
 });
 

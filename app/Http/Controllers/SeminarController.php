@@ -78,7 +78,9 @@ class SeminarController extends Controller{
 
     public function show($slug){
         $seminar = $this->seminar->show($slug);
-        return view('dashboard.seminar.show')->with(['seminar'=>$seminar]);
+        $file_details = $this->seminar->getFileDetails($slug);
+
+        return view('dashboard.seminar.show')->with(['seminar'=>$seminar, 'file_details'=> $file_details]);
     }
 
 
@@ -95,6 +97,12 @@ class SeminarController extends Controller{
     public function viewAttendanceSheet($slug){
 
        return $this->seminar->viewAttendanceSheet($slug); 
+
+    }
+
+    public function downloadAttendanceSheet($slug){
+
+        return $this->seminar->downloadAttendanceSheet($slug); 
 
     }
 

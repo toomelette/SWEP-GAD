@@ -1,74 +1,44 @@
-@extends('layouts.admin-master')
+<form id="edit_menu_form" autocomplete="off" data="{{$menu->slug}}">
+  @csrf
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Add new menu</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      {!! __form::textbox(
+        '12 name', 'name', 'text', 'Name: *', 'Name',$menu->name, '', '', ''
+      ) !!}
 
-@section('content')
+      {!! __form::textbox(
+        '12 route', 'route', 'text', 'Route: *', 'Route',$menu->route, '', '', ''
+      ) !!}
 
-<section class="content-header">
-    <h1>Edit Menu</h1>
-    <div class="pull-right" style="margin-top: -25px;">
-      {!! __html::back_button(['dashboard.menu.index']) !!}
-    </div>
-</section>
+      {!! __form::textbox(
+        '12 category', 'category', 'text', 'Category: *', 'Category',$menu->category, '', '', ''
+      ) !!}
 
-<section class="content">
-            
-    <div class="box">
-        
-      <div class="box-header with-border">
-        <h3 class="box-title">Form</h3>
-        <div class="pull-right">
-            <code>Fields with asterisks(*) are required</code>
-        </div> 
-      </div>
-      
-      <form method="POST" autocomplete="off" action="{{ route('dashboard.menu.update', $menu->slug) }}">
+      {!! __form::textbox(
+        '12 icon', 'icon', 'text', 'Icon: *', 'Icon',$menu->icon, '', '', ''
+      ) !!}
 
-        <div class="box-body">
+      {!! __form::select_static(
+        '6 is_menu', 'is_menu', 'Is menu: *', $menu->is_menu, [
+          'No' => '0',
+          'Yes' => '1',             
+        ], '', '', '', ''
+      ) !!}
 
-          <div class="col-md-11">
-            
-            <input name="_method" value="PUT" type="hidden">
-            
-            @csrf    
-
-            {!! __form::textbox(
-              '4', 'name', 'text', 'Name *', 'Name', old('name') ? old('name') : $menu->name, $errors->has('name'), $errors->first('name'), ''
-            ) !!}
-
-            {!! __form::textbox(
-              '4', 'route', 'text', 'Route *', 'Route', old('route') ? old('route') : $menu->route, $errors->has('route'), $errors->first('route'), ''
-            ) !!} 
-
-            {!! __form::textbox(
-              '4', 'category', 'text', 'Category *', 'Category', old('category') ? old('category') : $menu->category, $errors->has('category'), $errors->first('category'), ''
-            ) !!}
-
-            <div class="col-md-12"></div>
-
-            {!! __form::textbox(
-              '4', 'icon', 'text', 'Icon *', 'Icon', old('icon') ? old('icon') : $menu->icon, $errors->has('icon'), $errors->first('icon'), ''
-            ) !!}
-
-            {!! __form::select_static(
-              '4', 'is_menu', 'Is Menu *', old('is_menu') ? old('is_menu') : __dataType::boolean_to_string($menu->is_menu), ['1' => 'true', '0' => 'false'], $errors->has('is_menu'), $errors->first('is_menu'), '', ''
-            ) !!}
-            
-            {!! __form::select_static(
-              '4', 'is_dropdown', 'Is Dropdown *', old('is_dropdown') ? old('is_dropdown') : __dataType::boolean_to_string($menu->is_dropdown), ['1' => 'true', '0' => 'false'], $errors->has('is_dropdown'), $errors->first('is_dropdown'), '', ''
-            ) !!}
-
-          </div>
-
-        </div>
-
-        <div class="box-footer">
-          <button type="submit" class="btn btn-default">Save <i class="fa fa-fw fa-save"></i></button>
-        </div>
-
-      </form>
-
+      {!! __form::select_static(
+        '6 is_dropdown', 'is_dropdown', 'Is dropdown: *',$menu->is_dropdown, [
+          'No' => '0',
+          'Yes' => '1',             
+        ], '', '', '', ''
+      ) !!}
     </div>
   </div>
-</section>
-
-@endsection
-
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-primary"> <i class="fa fa-save"></i> Save</button>
+  </div>
+</form>

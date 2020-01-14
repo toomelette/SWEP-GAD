@@ -53,45 +53,50 @@
 
 	@endif
 
+	
+	<hr>
+		
+		
+		@if(!empty($seminar->attendance_sheet_filename) && $file_details['exists'] )
+			<div class="text-center">
+				<label> Attendance Sheet Scanned File</label>
+			</div>
+			
+			<div class="clearfix attatchment-horizontal">
+				<div>
+					<span class="mailbox-attachment-icon"><i class="fa fa-file-pdf-o"></i></span>
+				</div>
+				<div>
+					<div class="mailbox-attachment-info">
+				        <a href="{{route('dashboard.seminar.download_attendance_sheet', $seminar->slug)}}?new={{md5(uniqid(rand(), true))}}" target="_blank" class="mailbox-attachment-name"><i class="fa fa-paperclip"></i> {{ $seminar->attendance_sheet_filename }} </a>
+				            <span class="mailbox-attachment-size" >
+				              {{ $file_details['size'] }}
+				              <a href="{{route('dashboard.seminar.download_attendance_sheet', $seminar->slug)}}?new={{md5(uniqid(rand(), true))}}" target="_blank" class="download_attendance btn btn-default btn-xs pull-right"><i class="fa fa-cloud-download fa-fw"></i> Download</a>
 
+				              <a style="margin-right: 5px" href="{{route('dashboard.seminar.view_attendance_sheet', $seminar->slug)}}" target="_blank" class="download_attendance btn btn-default btn-xs pull-right"><i class="fa fa-file-text fa-fw"></i> View</a>
+				              
+
+
+				            </span>
+				      </div>
+				</div>		
+			</div>
+		@else
+			<div class="text-center text-blue">
+				<label> <i class="fa  fa-info-circle"></i> No attendance sheet attached.</label>
+			</div>
+
+		@endif
 </div>
 <div class="modal-footer">
 	<div class="row">
-		<div class="col-md-5">
-			<div class="stamps">
-				<small class="no-margin">
-					Encoded by: 
-					<b>
-						{{ $seminar->creator['firstname'] }} {{ $seminar->creator['lastname'] }}
-					</b> 
-				</small>
-				<br>
-				<small class="no-margin">
-					Timestamp: 
-					<b>
-						{{ date("F d, Y | h:i A",strtotime($seminar->created_at)) }}
-					</b> 
-				</small>
-			</div>
-		</div>
-		<div class="col-md-5">
+		{!! __html::timestamps(
+			$seminar->creator['firstname'] ." ".$seminar->creator['lastname'],
+			$seminar->created_at,
+			$seminar->updater['firstname'] ." ". $seminar->updater['lastname'],
+			$seminar->updated_at,"5"
+		) !!}		
 
-			<div class="stamps">
-				<small class="no-margin">
-					Last updated by: 
-					<b>
-						{{ $seminar->updater['firstname'] }} {{ $seminar->updater['lastname'] }}
-					</b> 
-				</small>
-				<br>
-				<small class="no-margin">
-					Timestamp: 
-					<b>
-						{{ date("F d, Y | h:i A",strtotime($seminar->updated_at)) }}
-					</b> 
-				</small>
-			</div>
-		</div>
 		<div class="col-md-2">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		</div>

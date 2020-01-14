@@ -177,26 +177,8 @@
     </div>
   </div>
 
-
-  <div class="modal fade" id="view_seminar_modal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-body">
-          
-        </div>
-        </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="participant_modal">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-body">
-          
-        </div>
-        </div>
-    </div>
-  </div>
+{!! __html::blank_modal('view_seminar_modal','lg') !!}
+{!! __html::blank_modal('participant_modal','lg') !!}
 
 
 @endsection 
@@ -205,51 +187,9 @@
 @section('scripts')
 
 <script type="text/javascript">
-function confirm(slug){
-  $.confirm({
-          title: 'Confirm!',
-          content: 'Are you sure you want to delete this item?',
-          type: 'red',
-          typeAnimated: true,
-          buttons: {
-              confirm:{
-                  btnClass: 'btn-danger',
-                 action: function(){
-                  $.ajaxSetup({
-                    headers: {
-                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                  })
 
-                  uri = "{{ route('dashboard.seminar.destroy', 'slug') }}";
-                  uri = uri.replace('slug', slug);
-                  Pace.restart();
-                  $.ajax({
-                      url : uri,
-                      type: 'DELETE',
-                      success: function(response){
-                        notify("Item successfully deleted.", "success");
-                        $("tbody #"+slug).addClass('danger animated bounceOut');
-                        setTimeout(function(){
-                          seminars_table.draw(false);
-                        },1000)
-                      },
-                      error: function(response){
-                        notify("An error occured while deteling the item.", "danger");
-                        console.log(response)
-                      }
 
-                  })
-                   
-                 }
-
-              },
-              cancel: function () {
-                  
-              }
-          }
-      }); 
-  }
+  
 function delete_participant(slug){
   $.confirm({
     title: 'Confirm!',
@@ -293,9 +233,8 @@ function delete_participant(slug){
 }); 
 }
 
-function edit_participant(slug){
-  
-  
+function dt_draw(){
+  seminars_table.draw(false);
 }
 </script>
 
@@ -420,9 +359,7 @@ function edit_participant(slug){
       //Submit Add Seminar Form
       $("#form_add_seminar").submit(function(e){
         e.preventDefault();
-
-        $(".submit_add_seminar").html('<i class="fa fa-spinner fa-spin"></i> Please wait...');
-        $(".submit_add_seminar").attr('disabled','disabled');
+        wait_button('#form_add_seminar');
         formData = new FormData(this);
         Pace.restart();
         $.ajax({
@@ -436,16 +373,11 @@ function edit_participant(slug){
 
             console.log(response);
             notify("Your data was successfully saved", "success");
-            $("#form_add_seminar").get(0).reset();
+
             seminars_table.draw(false);
-            $(".submit_add_seminar").html('<i class="fa fa-save"></i> Save changes');
-            $(".submit_add_seminar").removeAttr('disabled');
             active = response.slug;
 
-            $("#form_add_seminar .has-error").each(function(){
-              $(this).removeClass("has-error");
-              $(this).children("span").remove();
-            });
+            succeed("#form_add_seminar","save",true);
             $("#form_add_seminar input[name='title']").focus();
             $("#table_body").html('');
           },
@@ -466,8 +398,7 @@ function edit_participant(slug){
               parent.addClass("has-error");
               parent.append('<span class="help-block">'+item+'</span>');
             });
-
-            $(".submit_add_seminar").html('<i class="fa fa-save"></i> Save changes');
+            $(".submit_add_seminar").html('<i class="fa fa-save"></i> Save');
             $(".submit_add_seminar").removeAttr('disabled');
           }
         })
@@ -574,7 +505,8 @@ function edit_participant(slug){
       
        //Delete seminar button
       $("body").on("click", ".delete_seminar_btn", function(){
-        confirm($(this).attr('data'));
+        id = $(this).attr('data');
+        confirm("{{ route('dashboard.seminar.destroy', 'slug') }}", id);
       })
 
       //Show seminar button

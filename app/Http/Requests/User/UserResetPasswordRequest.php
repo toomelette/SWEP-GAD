@@ -22,7 +22,7 @@ class UserResetPasswordRequest extends FormRequest{
 
             'username' => 'required|max:45|string',
             'user_password' => 'required|max:45|string',
-            'password' => 'required|min:6|max:45|string|confirmed'
+            'password' => 'sometimes|required|min:6|max:45|string|confirmed'
 
         ];
 

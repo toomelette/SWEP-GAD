@@ -50,6 +50,9 @@ class UserSubmenu extends Model{
         return $this->belongsTo('App\Models\Submenu','submenu_id','submenu_id');
     }
 
+    public function subMenuContent(){
+        return $this->hasOne('App\Models\Submenu','submenu_id','submenu_id');
+    }
 
 
 

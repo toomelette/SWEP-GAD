@@ -97,7 +97,7 @@ class UserRepository extends BaseRepository implements UserInterface {
         $user->lastname = $request->lastname;
         $user->email = $request->email;
         $user->position = $request->position;
-        $user->username = $request->username;
+        // $user->username = $request->username;
         $user->updated_at = $this->carbon->now();
         $user->ip_updated = request()->ip();
         $user->user_updated = $this->auth->user()->user_id;
@@ -163,7 +163,10 @@ class UserRepository extends BaseRepository implements UserInterface {
 
     public function resetPassword($instance, $request){
 
-        $instance->password = Hash::make($request->password);
+        $instance->username = $request->username;
+        if(!empty($request->password)){
+            $instance->password = Hash::make($request->password);
+        }
         $instance->is_online = 0;
         $instance->save();
 
@@ -232,9 +235,7 @@ class UserRepository extends BaseRepository implements UserInterface {
 
 	public function findBySlug($slug){
 
-        $user = $this->cache->remember('users:findBySlug:' . $slug, 240, function() use ($slug){
-            return $this->user->where('slug', $slug)->with(['userMenu', 'userMenu.userSubMenu'])->first();
-        }); 
+        $user = $this->user->where('slug', $slug)->with(['userMenu', 'userMenu.userSubMenu'])->first();
         
         if(empty($user)){ abort(404); }
 
@@ -242,7 +243,11 @@ class UserRepository extends BaseRepository implements UserInterface {
 
     }
 
+    public function findByUsername($username){
 
+        $user = $this->user->where('username', $username)->first();
+        return $user;
+    }
 
 
 

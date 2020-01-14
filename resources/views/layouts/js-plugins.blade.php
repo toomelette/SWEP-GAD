@@ -68,3 +68,6 @@
 
 {{-- Pace --}}
 <script type="text/javascript" src="{{asset('template/bower_components/PACE/pace.min.js')}}"></script>
+
+{{-- Draggable --}}
+<script type="text/javascript" src="{{asset('template/plugins/jquery-sortable/source/js/jquery-sortable-min.js')}}"></script>

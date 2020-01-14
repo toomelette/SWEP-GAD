@@ -27,25 +27,17 @@ class MenuRepository extends BaseRepository implements MenuInterface {
 
 
 
-    public function fetch($request){
+    public function fetch($slug){
 
-        $cache_key = str_slug($request->fullUrl(), '_');
-        $entries = isset($request->e) ? $request->e : 20;
-
-        $menus = $this->cache->remember('menus:fetch:' . $cache_key, 240, function() use ($request, $entries){
-
-            $menu = $this->menu->newQuery();
-            
-            if(isset($request->q)){ $this->search($menu, $request->q); }
-
-            return $this->populate($menu, $entries);
-
-        });
-
-        return $menus;
+        $menu = $this->findBySlug($slug);
+        return $menu;
 
     }
 
+
+    public function fetchTable(){
+        return $this->menu->latest()->get();
+    }
 
 
 
@@ -84,8 +76,8 @@ class MenuRepository extends BaseRepository implements MenuInterface {
         $menu->route = $request->route;
         $menu->category = $request->category;
         $menu->icon = $request->icon;
-        $menu->is_menu = $this->__dataType->string_to_boolean($request->is_menu);
-        $menu->is_dropdown = $this->__dataType->string_to_boolean($request->is_dropdown);
+        $menu->is_menu = $request->is_menu;
+        $menu->is_dropdown = $request->is_dropdown;
         $menu->updated_at = $this->carbon->now();
         $menu->ip_updated = request()->ip();
         $menu->user_updated = $this->auth->user()->user_id;
@@ -115,9 +107,7 @@ class MenuRepository extends BaseRepository implements MenuInterface {
 
     public function findBySlug($slug){
 
-        $menu = $this->cache->remember('menus:findBySlug:' . $slug, 240, function() use ($slug){
-            return $this->menu->where('slug', $slug)->first();
-        }); 
+        $menu = $this->menu->where('slug', $slug)->first();
         
         if(empty($menu)){ abort(404); }
 
@@ -149,9 +139,8 @@ class MenuRepository extends BaseRepository implements MenuInterface {
 
     public function getAll(){
 
-        $menus = $this->cache->remember('menus:getAll', 240, function(){
-            return $this->menu->select('menu_id', 'name', 'icon')->get();
-        });
+        $menus =  $this->menu->get();
+
         
         return $menus;
 
@@ -178,7 +167,13 @@ class MenuRepository extends BaseRepository implements MenuInterface {
 
 
 
+    public function reorderMenus($slug,$order){
+        $menu = $this->findBySlug($slug);
+        $menu->order = $order;
+        $menu->save();
 
+        return $menu;
+    }
 
 
     private function search($instance, $key){

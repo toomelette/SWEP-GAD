@@ -67,52 +67,52 @@
   <div class="modal-dialog modal-lg">
     <!-- Modal content-->
     <div class="modal-content">
-      <form id="add_user_form">
+      <form id="add_user_form" autocomplete="off">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">New User</h4>
         </div>
         <div class="modal-body">
-          <form id="user_create_form" class="form-horizontal">
+        
 
         <div class="box-body">                  
               @csrf
 
               <div class="row">
                   {!! __form::textbox(
-                    '4 firstname', 'firstname', 'text', 'Firstname *', 'Firstname', '', '', '', ''
+                    '4 firstname', 'firstname', 'text', 'Firstname *', 'Firstname', '', 'firstname', '', ''
                   ) !!}
 
                   {!! __form::textbox(
-                    '4 middlename', 'middlename', 'text', 'Middlename *', 'Middlename', '', '', '', ''
+                    '4 middlename', 'middlename', 'text', 'Middlename *', 'Middlename', '', 'middlename', '', ''
                   ) !!}
 
                   {!! __form::textbox(
-                    '4 lastname', 'lastname', 'text', 'Lastname *', 'Lastname', '', '', '', ''
+                    '4 lastname', 'lastname', 'text', 'Lastname *', 'Lastname', '', 'lastname', '', ''
                   ) !!}
 
               </div>
               <div class="row">
                   {!! __form::textbox(
-                    '6 email', 'email', 'email', 'Email *', 'Email', '', '', '', ''
+                    '6 email', 'email', 'email', 'Email *', 'Email', '', 'email', '', ''
                   ) !!}
 
                   {!! __form::textbox(
-                    '6 position', 'position', 'text', 'Position *', 'Position', '', '', '', ''
+                    '6 position', 'position', 'text', 'Position *', 'Position', '', 'position', '', ''
                   ) !!}
               </div>
 
               <div class="row">
                 {!! __form::textbox(
-                    '4 username', 'username', 'text', 'Username *', 'Username', '', '', '', ''
+                    '4 username', 'username', 'text', 'Username *', 'Username', '', 'username', '', ''
                 ) !!}
 
                 {!! __form::textbox_password_btn(
-                    '4 password', 'password', 'Password *', 'Password', '', '', '', ''
+                    '4 password', 'password', 'Password *', 'Password', '', 'password', '', ''
                 ) !!}
 
                 {!! __form::textbox_password_btn(
-                    '4 password_confirmation', 'password_confirmation', 'Confirm Password *', 'Confirm Password', '', '', '', ''
+                    '4 password_confirmation', 'password_confirmation', 'Confirm Password *', 'Confirm Password', '', 'password_confirmation', '', ''
                 ) !!}
 
               </div>
@@ -162,47 +162,6 @@
                 </div>
                 @endforeach
               </div>
-              {{-- <div class="row">
-                <div class="col-sm-12">
-                  <div class="box-header with-border">
-                    <h3 class="box-title">User Menu</h3>
-                    <button type="button" class="btn btn-sm bg-green pull-right add_row"><i class="fa fw fa-plus"></i> Add Row</button>
-                  </div>
-                  <table class="table table-bordered">
-                    <tr>
-                      <th style="width: 120px">Menus *</th>
-                      <th>Menu Modules</th>
-                      <th style="width: 40px"></th>
-                    </tr>
-
-                    <tbody id="table_body">
-                      @foreach ($menus as $key => $sub)
-                        <tr>
-                          <td>{{$sub->name}}</td>
-                          <td>
-                            <div class="row">
-                              <select multiple name="menu[{{$sub->menu_id}}][]" class="form-control">
-                                <option value=""></option>
-                                @foreach($sub->submenu as $key2 => $submenu)
-                                 <option value="{{$submenu->submenu_id}}">{{$submenu->name}}</option>
-                              
-                                @endforeach
-               
-                              </select>
-                              
-                            </div>
-                          </td>
-                          <td></td>
-                        </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
-                </div>
-              </div> --}}
-             
-
- 
-
           {{-- USER MENU DYNAMIC TABLE GRID --}}
           <div class="col-md-12" style="padding-top:50px;">
             <div class="box box-solid">
@@ -231,14 +190,12 @@
   </div>
 </div>
 
-<div class="modal fade" id="view_user_modal">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        
-          
-        </div>
-    </div>
-  </div>
+{!! __html::blank_modal('view_user_modal','lg') !!}
+
+{!! __html::blank_modal('edit_user_modal','lg') !!}
+
+{!! __html::blank_modal('reset_password_modal','sm') !!}
+
 
 <div style="display: none;">
   <div id="modal_loader">
@@ -257,11 +214,23 @@
 
 @section('scripts')
 <script type="text/javascript">
+  function dt_draw(){
+    users_table.draw(false);
+  }
+</script>
+<script type="text/javascript">
 
   modal_loader = $("#modal_loader").parent('div').html();
   active = '';
+  slug = "";
   //-----DATATABLES-----//
       //Initialize DataTable
+      $('#users_table')
+        .on('preXhr.dt', function ( e, settings, data ) {
+            Pace.restart();
+        } )
+
+
       users_table = $("#users_table").DataTable({
         "processing": true,
         "serverSide": true,
@@ -314,6 +283,7 @@
       });
 
 
+      //Show/Hide Password
       $("body").on("click",".show_pass", function(){
         t = $(this);
         input = $(this).parent("span").siblings('input');
@@ -328,52 +298,29 @@
 
       })
 
+      //Submit add user form
       $("#add_user_form").submit(function(e){
         e.preventDefault();
         uri = "{{ route('dashboard.user.store') }}";
-        add_user_btn = $(".add_user_btn");
-        add_user_btn_html = add_user_btn.html();
-        add_user_btn.html('<i class="fa fa-spinner fa-spin"></i> Please wait');
-        add_user_btn.attr('disabled', 'disabled');
+        wait_button("#add_user_form");
+        Pace.restart();
         $.ajax({
           url: uri,
           data: $(this).serialize(),
           type: 'POST',
           dataType: 'json',
           success: function(response) {
-             $("#add_user_form .has-error").each(function(){
-              $(this).removeClass("has-error");
-              $(this).children("span").remove();
-            });
-
-            add_user_btn.html(add_user_btn_html);
-            add_user_btn.removeAttr('disabled');
             users_table.draw(false);
             active = response.slug;
+            succeed("#add_user_form","save",true);
           },
           error: function (response) {
-            console.log(response);
-            parsed = JSON.parse(response.responseText);
-            $("#add_user_form .has-error").each(function(){
-              $(this).removeClass("has-error");
-              $(this).children("span").remove();
-            });
-
-            //console.log(parsed);
-            $.each(parsed.errors, function(i, item){
-              i = i.replace('.','-');
-              i = i.replace('.','-');
-              parent = $("#add_user_form ."+i);
-              parent.addClass("has-error");
-              parent.append('<span class="help-block">'+item+'</span>');
-            });
-            add_user_btn.html(add_user_btn_html);
-            add_user_btn.removeAttr('disabled');
-
+            errored("#add_user_form","save",response);
           }
         })
       })
 
+      //Upon changing the multiple select
       $("body").on("change", ".select_multiple", function(e){
         selected = $(":selected",this).length;
         all = $(this).children('option').length;
@@ -393,6 +340,7 @@
         }
       })
 
+      //Clearing selection of modules
       $("body").on('click', '.clear_btn', function() {
       select_element = $(this).parent('div').parent('div').siblings('.panel-body').find('.select_multiple');
 
@@ -400,12 +348,13 @@
        select_element.change();
       });
 
-
+      //Show user button
       $("body").on('click', '.view_user_btn', function() {
         id = $(this).attr('data');
         $("#view_user_modal .modal-content").html(modal_loader);
         uri  =" {{ route('dashboard.user.show','slug') }}";
         uri = uri.replace('slug',id);
+        Pace.restart();
         $.ajax({
           url: uri,
           type: 'GET',
@@ -422,6 +371,216 @@
 
       });
 
+      //Edit user button
+      $("body").on('click', '.edit_user_btn', function() {
+        id = $(this).attr('data');
+        $("#edit_user_modal .modal-content").html(modal_loader);
+        uri = " {{route('dashboard.user.edit', 'slug') }}";
+        uri = uri.replace("slug",id);
+        slug = id;
+        Pace.restart();
+        $.ajax({
+          url: uri,
+          type: 'GET',
+          success: function(response){
+            $("#edit_user_modal #modal_loader").fadeOut(function() {
+              $("#edit_user_modal .modal-content").html(response);
+              $(".select_multiple").each(function(index, el) {
+                $(this).change();
+              });
+            });
+          },
+          error: function(response){
+            console.log(response);
+          }
+        })
+
+      });
+
+      //Activate and Deactivate
+      $("body").on('click', '.ac_dc', function() {
+        status = $(this).attr("status");
+        id = $(this).attr('data');
+        ask = "deactivate";
+        btn_class = 'btn-red';
+        to_do = 'deactivate';
+        type = 'red';
+        if(status == "inactive"){
+          ask = "activate";
+          btn_class = 'btn-blue';
+          to_do = 'activate';
+          type = 'blue';
+        }
+        name = $(this).attr('name');
+        $.confirm({
+          title: 'Do you wish to '+ask+' this account?' ,
+          content: name,
+          animation: 'fade',
+          type: type,
+          typeAnimated: true,
+          buttons: {
+              cancel: function () {
+              },
+              somethingElse: {
+                  text: ask.toUpperCase(),
+                  btnClass: btn_class,
+                  keys: ['enter', 'shift'],
+                  action: function(){
+                    Pace.restart();
+                    uri = "{{ route('dashboard.user.activate','slug') }}";
+                    uri = uri.replace('slug',id);
+                    uri = uri.replace('activate',to_do);
+                    $.ajaxSetup({
+                      headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                      }
+                    })
+
+                    $.ajax({
+                      url: uri,
+                      type: 'POST',
+                      dataType: 'json',
+                      success: function(response){
+                        if(response.result==1){
+                          notify('Account successfully activated',"success");
+                          active = response.slug;
+                          users_table.draw(false);
+                        }
+                        if(response.result==2){
+                          notify('Account successfully deactivated',"warning");
+                          active = response.slug;
+                          users_table.draw(false);
+                        }
+                      },
+                      error: function(response){
+                        console.log(response);
+                      }
+                    })
+                  }
+              }
+          }
+        });
+      });
+
+
+      $("body").on("submit",'#edit_user_form', function(e){
+        e.preventDefault();
+        id = $(this).attr('data');
+        uri = " {{ route('dashboard.user.update', 'slug') }} ";
+        uri = uri.replace("slug",id);
+
+        wait_button("#edit_user_form");
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+        $.ajax({
+          url : uri,
+          type: 'PUT',
+          dataType: 'json',
+          data : $(this).serialize(),
+          success: function(response){
+            active = response.slug;
+            users_table.draw(false);
+            $("#edit_user_modal").modal('hide');
+            notify("Changes were saved successfully.", "success");
+            succeed("#edit_user_form","save",false);
+          },
+          error: function(response){
+            console.log(response);
+            errored("#edit_user_form","save",response);
+          }
+        })
+      })
+
+      $("body").on("click",".reset_password_btn", function(){
+        id = $(this).attr('data');
+        $("#reset_password_modal .modal-content").html(modal_loader);
+        uri = " {{ route('dashboard.user.reset_password', 'slug') }} ";
+        uri = uri.replace("slug",id);
+        $.ajax({
+          url: uri,
+          type: 'GET',
+          success: function(response){
+            $("#reset_password_modal #modal_loader").fadeOut(function() {
+              $("#reset_password_modal .modal-content").html(response); 
+            });
+          },
+          error: function(response){
+            console.log(response);
+          }
+       
+        })
+      })
+
+      $("body").on("submit", "#reset_password_form", function(e){
+        e.preventDefault();
+        id = $(this).attr("data");
+        uri = " {{ route('dashboard.user.reset_password_post', 'slug') }} ";
+        uri = uri.replace("slug",id);
+        wait_button("#reset_password_form");
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        })
+        $.ajax({
+          url: uri,
+          data: $(this).serialize(),
+          type: 'PATCH',
+          dataType: 'json',
+          success: function(response){
+            update_account_btn.html(update_account_btn_html);
+            update_account_btn.removeAttr('disabled');
+            console.log(response);
+            $("#reset_password_form .has-error").each(function(){
+              $(this).removeClass("has-error");
+              $(this).children("span").remove();
+            });
+            if(response.result == -1){
+              $("#reset_password_form ."+response.target).addClass('has-error');
+              $("#reset_password_form ."+response.target).append('<span class="help-block">'+response.message+'</span>');
+            }
+            if(response.result == 0){
+              notify(response.message,'warning');
+            }
+            if(response.result == 1){
+              notify("Account successfully updated.",'success');
+              $("#reset_password_modal").modal("hide");
+              active = response.slug;
+              users_table.draw(false);
+            }
+          },
+          error: function(response){
+            console.log(response);
+            errored("#reset_password_form","save",response);
+          }
+        })
+      })
+
+      $("body").on("change", ".change_pass_chk", function(){
+        prop = $(this).prop("checked");
+        if(prop == true){
+          $(".password_container input").each(function(index, el) {
+            $(this).removeAttr('disabled');
+          });
+          $(".password_container .password input").attr("name","password");
+          $(".password_container .password_confirmation input").attr("name","password_confirmation");
+        }else{
+          $(".password_container input").each(function(index, el) {
+            $(this).attr('disabled','disabled');
+            $(this).removeAttr('name');
+          });
+        }
+      });
+      
+      $("body").on("click", ".delete_user_btn", function(){
+        id = $(this).attr('data');
+        confirm("{{ route('dashboard.user.destroy', 'slug') }}",id);
+      })
 </script>
 
     

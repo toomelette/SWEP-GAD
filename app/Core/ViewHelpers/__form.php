@@ -13,20 +13,29 @@ class __form{
     /** Default **/
     public static function textbox($class, $key, $type, $label, $placeholder, $old_value, $id, $error_first, $extra_attr){
 
+        if($id == ""){
+          $id = "";
+        }else{
+          $id= 'id = "'.$id.'"';
+        }
        return '<div class="form-group col-md-'. $class .'">
                 <label for="'. $key .'">'. $label .'</label>
-                <input class="form-control" id="'. $id .'" name="'. $key .'" type="'. $type .'" value="'. self::string_value($old_value) .'" placeholder="'. $placeholder .'" '. $extra_attr .'>
+                <input class="form-control" '. $id .' name="'. $key .'" type="'. $type .'" value="'. self::string_value($old_value) .'" placeholder="'. $placeholder .'" '. $extra_attr .'>
               </div>';
 
     }
 
 
     public static function textbox_password_btn($class, $name, $label, $placeholder, $old_value, $id, $error_first, $extra_attr){
-
+        if($name == ""){
+          $name = "";
+        }else{
+          $name = 'name="'.$name.'" ';
+        }
        return '<div class="col-md-'.$class.' form-group">
                 <label for="">'.$label.'</label>
                 <div class="input-group">
-                  <input type="password" name="'.$name.'" placeholder="'.$placeholder.'" class="form-control">
+                  <input type="password" '.$name.' placeholder="'.$placeholder.'" class="form-control" '.$extra_attr.'>
                   <span class="input-group-btn">
                     <button type="button" class="btn btn-default show_pass" data-toggle="tooltip" title="Show/Hide Password" tabindex="-1">
                       <i class="fa fa-eye-slash"></i>
@@ -407,8 +416,5 @@ class __form{
       return $string;
 
     }
-
-
-
 
 }

@@ -40,6 +40,23 @@ input[data-transform=uppercase] {
     width: 100px !important
 }
 
+.th-25{
+    width: 125px !important
+}
+
+.th-30{
+    width: 150px !important
+}
+
+.w-50{
+    width: 50% !important
+}
+
+
+.w-40{
+    width: 40% !important
+}
+
 
 .modal-content  {
     -webkit-border-radius: 5px !important;
@@ -75,8 +92,77 @@ input[data-transform=uppercase] {
 .sm-margin{
     margin: 5px
 }
+
+.attatchment-horizontal{
+    width: 100%; height: 80px ; border: 1px solid #eee 
+}
+
+.attatchment-horizontal > div:first-child {
+    width: 20%; float: left
+}
+
+.attatchment-horizontal > div:nth-child(2) {
+    width: 79%; float: right; height: 78px; 
+}
+
+.attatchment-horizontal .mailbox-attachment-info{
+    height: inherit;
+}
+.attatchment-horizontal .mailbox-attachment-size{
+    padding-top: 22px;
+}
+
+.attatchment-horizontal .mailbox-attachment-icon{
+    font-size: 32px;
+}
 /*.modal-content .modal-header {
     background-color: #605ca8 !important;
     color: white;
     border-radius: 5px 5px 0px 0px !important;
 }*/
+.page-header-sm{
+    margin: 5px 0 10px 0 !important;
+    font-size: 13px;
+    font-family: inherit;
+}
+.page-header-sm {
+    padding-bottom: 01;
+    margin: 40px 0 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.on-well{
+    margin: 6px 0 3px 0 !important;
+}
+
+.table-subdetail{
+    border-top:1px solid #e7e7e7; font-size:12px; color:#7d7d7d
+}
+
+.sex-th{
+    width: 50px
+}
+
+
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
+
+.dragged {
+  position: absolute !important;
+  opacity: 0.5 !important;
+  z-index: 2000 !important;
+}
+
+ol.example li.placeholder {
+  position: relative !important;
+  /** More li styles **/
+}
+ol.example li.placeholder:before {
+  position: absolute !important;
+  /** Define arrowhead **/
+}
+
+.help-block{
+    margin-bottom: 0px !important;
+}

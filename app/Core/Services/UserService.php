@@ -58,39 +58,19 @@ class UserService extends BaseService{
     public function store($request){
 
         $user = $this->user_repo->store($request);
-        // return $request->menu;
         $user_id = $user->user_id;
-        foreach ($request->menu as $key => $menu_itself) {
-            $user_menu = $this->user_menu_repo->store($user_id, $key);
-            $user_menu_id = $user_menu->user_menu_id;
+        if(!empty($request->menu)){
+            foreach ($request->menu as $key => $menu_itself) {
+                $user_menu = $this->user_menu_repo->store($user_id, $key);
+                $user_menu_id = $user_menu->user_menu_id;
 
-            foreach ($menu_itself as $key2 => $submenu) {
-                $user_submenu = $this->user_submenu_repo->store($user_id,$submenu, $user_menu_id);
+                foreach ($menu_itself as $key2 => $submenu) {
+                    $user_submenu = $this->user_submenu_repo->store($user_id,$submenu, $user_menu_id);
+                }
             }
         }
-
         return $user;
-        // if(!empty($request->menu)){
 
-        //     $count_menu = count($request->menu);
-
-        //     for($i = 0; $i < $count_menu; $i++){
-
-        //         $menu = $this->menu_repo->findByMenuId($request->menu[$i]);
-        //         $user_menu = $this->user_menu_repo->store($user, $menu);
-                
-        //         if(!empty($request->submenu)){
-        //             foreach($request->submenu as $data){
-        //                 $submenu = $this->submenu_repo->findBySubmenuId($data);
-        //                 if($menu->menu_id == $submenu->menu_id){
-        //                     $this->user_submenu_repo->store($submenu, $user_menu);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-        // $this->event->fire('user.store');
-        // return redirect()->back();
     }
 
 
@@ -111,9 +91,12 @@ class UserService extends BaseService{
 
 
     public function edit($slug){
-
+    
     	$user = $this->user_repo->findBySlug($slug);  
-        return view('dashboard.user.edit')->with('user', $user);
+        $menus = $this->userMenus();
+
+
+        return view('dashboard.user.edit')->with(['user'=> $user,'menus'=>$menus]);
 
     }
 
@@ -125,36 +108,26 @@ class UserService extends BaseService{
     public function update($request, $slug){
 
         $user = $this->user_repo->update($request, $slug);
+        $menu = $request->menu;
 
+        $menu['M10001'] = [];
+        asort($menu);
+
+        $request->merge(['menu' => $menu]);
+
+        $user_id = $user->user_id;
         if(!empty($request->menu)){
+            foreach ($request->menu as $key => $menu_itself) {
+                $user_menu = $this->user_menu_repo->store($user_id, $key);
+                $user_menu_id = $user_menu->user_menu_id;
 
-            $count_menu = count($request->menu);
-
-            for($i = 0; $i < $count_menu; $i++){
-
-                $menu = $this->menu_repo->findByMenuId($request->menu[$i]);
-                $user_menu = $this->user_menu_repo->store($user, $menu);
-
-                if(!empty($request->submenu)){
-
-                    foreach($request->submenu as $data){
-
-                        $submenu = $this->submenu_repo->findBySubmenuId($data);
-
-                        if($menu->menu_id === $submenu->menu_id){
-                            $this->user_submenu_repo->store($submenu, $user_menu);
-                        }
-
-                    }
-
+                foreach ($menu_itself as $key2 => $submenu) {
+                    $user_submenu = $this->user_submenu_repo->store($user_id,$submenu, $user_menu_id);
                 }
-
             }
-            
         }
 
-        $this->event->fire('user.update', $user);
-        return redirect()->route('dashboard.user.index');
+        return $user;
 
     }
 
@@ -163,12 +136,11 @@ class UserService extends BaseService{
 
 
 
-    public function delete($slug){
+    public function destroy($slug){
 
         $user = $this->user_repo->destroy($slug);
 
-        $this->event->fire('user.destroy', $user);
-        return redirect()->back();
+        return $user;
 
     }
 
@@ -181,8 +153,9 @@ class UserService extends BaseService{
 
         $user = $this->user_repo->activate($slug);  
 
-        $this->event->fire('user.activate', $user);
-        return redirect()->back();
+        if($user){
+            return json_encode(array('result'=> 1, 'slug'=>$user->slug));
+        }
 
     }
 
@@ -195,8 +168,9 @@ class UserService extends BaseService{
 
         $user = $this->user_repo->deactivate($slug);  
         
-        $this->event->fire('user.deactivate', $user);
-        return redirect()->back();
+        if($user){
+            return json_encode(array('result'=> 2, 'slug'=>$user->slug));
+        }
 
     }
 
@@ -233,29 +207,40 @@ class UserService extends BaseService{
 
     public function resetPasswordPost($request, $slug){
 
+        
         $user = $this->user_repo->findBySlug($slug);  
 
-        if ($request->username == $this->auth->user()->username && Hash::check($request->user_password, $this->auth->user()->password)) {
-            
-            if($user->username == $this->auth->user()->username){
+        if($slug == $this->auth->user()->slug){
+            return json_encode(array('result'=>0, 'message'=>'Please refer to profile page if you want to reset your own password.'));
 
-                $this->session->flash('USER_RESET_PASSWORD_OWN_ACCOUNT_FAIL', 'Please refer to profile page if you want to reset your own password.');
-                return redirect()->back();
+        }else{
+            if(Hash::check($request->user_password, $this->auth->user()->password)){
+                $checking_username = $this->user_repo->findByUsername($request->username);
+                
+                if(empty($checking_username)){
+                    $instance = $this->user_repo->resetPassword($user, $request);
+                    if($instance){
+                        return json_encode(array('result'=>1,'slug'=>$instance->slug)) ;
+                    }
+                }else{
+                    if($slug == $checking_username->slug){
+                        $instance = $this->user_repo->resetPassword($user, $request);
+                        if($instance){
+                            return json_encode(array('result'=>1,'slug'=>$instance->slug)) ;
+                        }
 
+                    }else{
+                        return json_encode(array('result'=>-1, 'message'=>'Username already exists', 'target'=>'username'));
+                    }
+                }
             }else{
-
-                $this->user_repo->resetPassword($user, $request);
-
-                $this->event->fire('user.reset_password_post', $user);
-                return redirect()->route('dashboard.user.index');
-
+                return json_encode(array('result'=>-1, 'message'=>'Your password is incorrect', 'target'=>'user_password'));
             }
-            
         }
+ 
 
-        $this->session->flash('USER_RESET_PASSWORD_CONFIRMATION_FAIL', 'The credentials you provided does not match the current user!');
-        return redirect()->back();
-
+        
+        
     }
 
 

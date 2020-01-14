@@ -116,9 +116,7 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
 
     public function findBySlug($slug){
 
-        $seminar = $this->cache->remember('seminars:findBySlug:' . $slug, 240, function() use ($slug){
-            return $this->seminar->where('slug', $slug)->first();
-        }); 
+        $seminar = $this->seminar->where('slug', $slug)->first();
         
         if(empty($seminar)){ abort(404); }
 

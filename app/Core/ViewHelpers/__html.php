@@ -231,6 +231,70 @@ class __html{
     }
 
 
+    public static function timestamps($creator, $creator_timestamp, $editor, $editor_timestamp, $class){
 
+    	return '<div class="col-md-'.$class.'">
+			<div class="stamps">
+				<small class="no-margin">
+					Encoded by: 
+					<b>
+						'.$creator.'
+					</b> 
+				</small>
+				<br>
+				<small class="no-margin">
+					Timestamp: 
+					<b>
+						'.date("F d, Y | h:i A",strtotime($creator_timestamp)).'
+					</b> 
+				</small>
+			</div>
+		</div>
+		<div class="col-md-'.$class.'">
+
+			<div class="stamps">
+				<small class="no-margin">
+					Last updated by: 
+					<b>
+						'.$editor.'
+					</b> 
+				</small>
+				<br>
+				<small class="no-margin">
+					Timestamp: 
+					<b>
+						'.date("F d, Y | h:i A",strtotime($editor_timestamp)).'
+					</b> 
+				</small>
+			</div>
+		</div>';
+    }
+
+
+    public static function check_null($var){
+		if($var == ""){
+			return "N/A";
+		}else{
+			return $var;
+		}
+	}
+
+	public static function blank_modal($id, $size){
+		return '<div class="modal fade" id="'.$id.'">
+				    <div class="modal-dialog modal-'.$size.'">
+				      <div class="modal-content">
+				        </div>
+				    </div>
+				  </div>';
+	}
+	public static function modal_loader(){
+		return '<div style="display: none;">
+				    <div id="modal_loader">
+				      <center>
+				        <img style="width: 70px; margin: 40px 0;" src="'.asset("images/loader.gif").'">
+				      </center>
+				    </div>
+				  </div>';
+	}
 
 }

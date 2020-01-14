@@ -170,6 +170,10 @@ class __js{
     }
 
 
+    public static function modal_loader(){
+
+    	return 'modal_loader = $("#modal_loader").parent("div").html();';
+    }
 
 
 

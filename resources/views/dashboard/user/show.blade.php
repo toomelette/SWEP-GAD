@@ -69,10 +69,18 @@
             <label>{{ $menu->menu->name }}</label>
             <div class="row">
               {{-- {{ $menu->menu->subMenu}} --}}
-              @foreach($menu->menu->subMenu as $submenu)
-              <div class="col-md-4">
-                <li>{{ str_replace($menu->menu->name, '', $submenu->name) }}</li>
-              </div>
+              @foreach($user->userSubmenu as $submenu)
+              
+               
+                @if(!empty($submenu->subMenuContent) && !empty($menu->menu))
+                  @if($menu->menu->menu_id == $submenu->subMenuContent->menu_id)
+                    <div class="col-md-4">
+                       <li>
+                        {{ str_replace($menu->menu->name, '', $submenu->subMenuContent->name) }}
+                      </li>
+                    </div>
+                  @endif
+                @endif
               
               @endforeach
               
@@ -86,5 +94,15 @@
   </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+  <div class="row">
+    {!! __html::timestamps(
+      $user->creator['firstname'] ." ".$user->creator['lastname'],
+      $user->created_at,
+      $user->updater['firstname'] ." ". $user->updater['lastname'],
+      $user->updated_at,"4"
+    ) !!} 
+    <div class="col-md-4">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+  </div>
 </div>

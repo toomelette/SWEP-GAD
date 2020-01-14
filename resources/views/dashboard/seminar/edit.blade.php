@@ -104,7 +104,7 @@
 
   <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="submit" class="btn btn-success pull-right update_seminar_btn"> <i class="fa fa-fw fa-save"></i> Save changes</button>
+    <button type="submit" class="btn btn-primary pull-right update_seminar_btn"> <i class="fa fa-fw fa-save"></i> Save</button>
   </div>
 </form>     
 

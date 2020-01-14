@@ -91,6 +91,14 @@ class User extends Authenticatable{
     // }
 
 
+    public function creator(){
+        return $this->hasOne("App\Models\User","user_id","user_created");
+    }
+
+    public function updater(){
+        return $this->hasOne("App\Models\User","user_id","user_updated");
+    }
+
 
 
 

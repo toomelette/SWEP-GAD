@@ -273,6 +273,6 @@
 	</div>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		<button type="submit" class="btn btn-primary update_btn">Save changes</button>
+		<button type="submit" class="btn btn-primary update_btn"><i class="fa fa-save"></i> Save</button>
 	</div>
 </form>
