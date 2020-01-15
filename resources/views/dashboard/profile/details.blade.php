@@ -202,7 +202,7 @@
   </div>
 
 </section>
-
+</div>
 @endsection
 
 

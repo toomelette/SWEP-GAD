@@ -10,12 +10,14 @@
 		@endphp
 
 		@foreach($menus as $menu)
-			<li data="{{$menu->slug}}">
-		      <span class="handle ui-sortable-handle">
-		            <i class="fa fa-arrows"></i>
-		       </span>
-		      <span class="text">{{$menu->name}}</span>
-		    </li>
+			@if($menu->is_menu != 0)
+				<li data="{{$menu->slug}}">
+			      <span class="handle ui-sortable-handle">
+			            <i class="fa fa-arrows"></i>
+			       </span>
+			      <span class="text">{{$menu->name}}</span>
+			    </li>
+		    @endif
 	    @endforeach
 	</ol>
 

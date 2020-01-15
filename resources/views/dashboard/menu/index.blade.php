@@ -34,7 +34,7 @@
                       <th class="th-10">Icon</th>
                       <th class="th-10">Menu</th>
                       <th class="th-10">Dropdown</th>
-                      <th class="action">Action</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -167,8 +167,11 @@
                 url : uri,
                 type: 'DELETE',
                 success: function(response){
+
                   notify("Item successfully deleted.", "success");
                   submenu_tbl.row("#"+slug).remove().draw();
+                  active = response.menu_id;
+                  menu_tbl.draw(false);
                 },
                 error: function(response){
                   notify("An error occured while deteling the item.", "danger");
@@ -226,7 +229,7 @@
         {
           "targets" : 7,
           "orderable" : false,
-          "class" : 'action'
+          "class" : 'action-3'
         },
         {
           "targets": 3, 
@@ -386,7 +389,8 @@
 
                 $("#"+response.slug).addClass('success');
 
-                
+                active = id;
+                menu_tbl.draw(false);
 
 
                 },
@@ -557,6 +561,10 @@
             $(this).removeClass('success');
           });
           $(".submenu_table #"+r.slug).addClass('success');
+
+          active = r.menu_id;
+          menu_tbl.draw(false);
+
 
 
         },

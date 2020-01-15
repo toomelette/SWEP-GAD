@@ -490,8 +490,8 @@ function dt_draw(){
                       parent.append('<span class="help-block">'+item+'</span>');
                     });
 
-                    update_participant_btn.html(default_update_seminar_btn);
-                    update_participant_btn.removeAttr("disabled");
+                    update_seminar_btn.html(default_update_seminar_btn);
+                    update_seminar_btn.removeAttr("disabled");
                   }
                 })
               })

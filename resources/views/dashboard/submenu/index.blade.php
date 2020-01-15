@@ -17,7 +17,7 @@
 				        
 
 				        {!! __form::textbox(
-				            '4 route', 'route', 'text', 'Route: *', 'Route','', '', '', ''
+				            '4 route', 'route', 'text', 'Route: *', $menu->route.'.example','', '', '', ''
 				        ) !!}
 
 				        {!! __form::textbox(
@@ -55,7 +55,7 @@
 						<th>Route</th>
 						<th>Nav name</th>
 						<th>Nav</th>
-						<th>Action</th>
+						<th style="width: 70px !important">Action</th>
 					</tr>
 				</thead>
 				<tbody>

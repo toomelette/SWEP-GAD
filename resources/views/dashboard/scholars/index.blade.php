@@ -49,7 +49,7 @@
           </div>
 
     </div>
-
+    
   </section>
 
 @endsection
@@ -271,8 +271,6 @@
 
   {!! __html::blank_modal('show_scholars_modal','lg') !!}
   {!! __html::blank_modal('edit_scholars_modal','lg') !!}
-
-
   {!! __html::modal_loader() !!}
 
 
@@ -357,7 +355,23 @@
   })
 
 
+
+
   style_datatable("#scholars_table");
+
+  //Search Bar Styling
+      $('#scholars_table_filter input').css("width","300px");
+      $("#scholars_table_filter input").attr("placeholder","Press enter to search");
+
+      //Need to press enter to search
+      $('#scholars_table_filter input').unbind();
+      $('#scholars_table_filter input').bind('keyup', function (e) {
+          if (e.keyCode == 13) {
+              scholars_tbl.search(this.value).draw();
+          }
+      });
+
+
   
 
   $("#add_scholar_form").submit(function (e) {

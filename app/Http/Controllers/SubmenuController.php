@@ -64,8 +64,9 @@ class SubmenuController extends Controller{
 
     public function update(SubmenuFormRequest $request, $slug){
         
-       return $this->submenu->update($request, $slug);
-
+       $submenu = $this->submenu->update($request, $slug);
+       $submenu->menu_id = $submenu->menu->slug;
+       return $submenu;
     }
 
     
@@ -73,8 +74,9 @@ class SubmenuController extends Controller{
 
     public function destroy($slug){
         
-       return $this->submenu->destroy($slug);
-
+       $submenu = $this->submenu->destroy($slug);
+       $submenu->menu_id = $submenu->menu->slug;
+       return $submenu;
     }
 
 
