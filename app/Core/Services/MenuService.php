@@ -70,7 +70,7 @@ class MenuService extends BaseService{
 
 
     public function edit($slug){
-
+        
         $menu = $this->menu_repo->findbySlug($slug);
         return view('dashboard.menu.edit')->with('menu', $menu);
 

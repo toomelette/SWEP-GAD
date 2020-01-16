@@ -97,15 +97,19 @@ class SeminarService extends BaseService{
         if(!empty($seminar->attendance_sheet_filename)){
             $path = $this->__static->archive_dir() .'/'. $seminar->attendance_sheet_filename;
 
-            $exists = true;
-            if (!File::exists($path)) { $exists == false; }
+            $exists = 'false';
+            $size = 0;
+            if (File::exists($path)) {
+                $exists = 'true'; 
+                $size = $this->convert_byte(File::size($path));
+            }
 
 
 
             return [
                 'path' => $path, 
                 'exists' => $exists, 
-                'size' => $this->convert_byte(File::size($path))
+                'size' => $size
             ] ;
 
             
@@ -114,10 +118,10 @@ class SeminarService extends BaseService{
 
     public function convert_byte($int){
         if($int > 999){
-            //KB na
+            //KB
             return number_format($int/1000) . " KB" ;
         }elseif ($int > 9999) {
-            // MB na
+            // MB
             return number_format($int/1000000) . " MB";
         }elseif ($int > 999999999) {
            // GB

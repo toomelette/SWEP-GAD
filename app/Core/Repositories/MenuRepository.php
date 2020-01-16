@@ -39,11 +39,7 @@ class MenuRepository extends BaseRepository implements MenuInterface {
         return $this->menu->latest()->get();
     }
 
-
-
-
     public function store($request){
-
         $menu = new Menu;
         $menu->menu_id = $this->getMenuIdInc();
         $menu->slug = $this->str->random(16);
@@ -140,8 +136,6 @@ class MenuRepository extends BaseRepository implements MenuInterface {
     public function getAll(){
 
         $menus =  $this->menu->get();
-
-        
         return $menus;
 
     }

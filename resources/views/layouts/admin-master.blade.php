@@ -13,11 +13,9 @@
     @yield('css')
 
   </head>
-<<<<<<< HEAD
   <body class="hold-transition  {!! Auth::check() ? __sanitize::html_encode(Auth::user()->color) : '' !!}">
-=======
-  <body class="hold-transition {!! Auth::check() ? __sanitize::html_encode(Auth::user()->color) : '' !!}" style="zoom:90%;">
->>>>>>> b25201b4524dd7dc33129432ab3171174807c35c
+
+  <body class="hold-transition {!! Auth::check() ? __sanitize::html_encode(Auth::user()->color) : '' !!}">
 
     <div id="loader"></div>
 

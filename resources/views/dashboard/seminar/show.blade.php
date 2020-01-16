@@ -24,7 +24,7 @@
 	      </dl>
 	</div>
 	
-	<!-- {{ print_r($seminar->seminarSpeaker) }} -->
+
 	@if ($seminar->seminarSpeaker->count() > 0)
 		<div class="well well-sm">
 			<p class="text-center"> <b>Speakers</b> </p>
@@ -55,9 +55,8 @@
 
 	
 	<hr>
-		
-		
-		@if(!empty($seminar->attendance_sheet_filename) && $file_details['exists'] )
+
+		@if(!empty($seminar->attendance_sheet_filename) && $file_details['exists'] == 'true' )
 			<div class="text-center">
 				<label> Attendance Sheet Scanned File</label>
 			</div>
@@ -69,22 +68,29 @@
 				<div>
 					<div class="mailbox-attachment-info">
 				        <a href="{{route('dashboard.seminar.download_attendance_sheet', $seminar->slug)}}?new={{md5(uniqid(rand(), true))}}" target="_blank" class="mailbox-attachment-name"><i class="fa fa-paperclip"></i> {{ $seminar->attendance_sheet_filename }} </a>
-				            <span class="mailbox-attachment-size" >
-				              {{ $file_details['size'] }}
-				              <a href="{{route('dashboard.seminar.download_attendance_sheet', $seminar->slug)}}?new={{md5(uniqid(rand(), true))}}" target="_blank" class="download_attendance btn btn-default btn-xs pull-right"><i class="fa fa-cloud-download fa-fw"></i> Download</a>
-
-				              <a style="margin-right: 5px" href="{{route('dashboard.seminar.view_attendance_sheet', $seminar->slug)}}" target="_blank" class="download_attendance btn btn-default btn-xs pull-right"><i class="fa fa-file-text fa-fw"></i> View</a>
-				              
-
-
-				            </span>
+			            <span class="mailbox-attachment-size" >
+			              {{ $file_details['size'] }}
+			              <a href="{{route('dashboard.seminar.download_attendance_sheet', $seminar->slug)}}?new={{md5(uniqid(rand(), true))}}" target="_blank" class="download_attendance btn btn-default btn-xs pull-right"><i class="fa fa-cloud-download fa-fw"></i> Download</a>
+			              <a style="margin-right: 5px" href="{{route('dashboard.seminar.view_attendance_sheet', $seminar->slug)}}" target="_blank" class="download_attendance btn btn-default btn-xs pull-right"><i class="fa fa-file-text fa-fw"></i> View</a>
+			            </span>
 				      </div>
 				</div>		
 			</div>
 		@else
-			<div class="text-center text-blue">
-				<label> <i class="fa  fa-info-circle"></i> No attendance sheet attached.</label>
-			</div>
+			@if($file_details['exists'] == 'false')
+				<div class="text-center text-warning">
+					<label>
+						<i class="fa fa-info-circle"></i> File not found.
+					</label>
+				</div>
+			@else
+				<div class="text-center text-blue">
+					<label>
+						<i class="fa  fa-info-circle"></i> 
+						No attendance sheet attached.
+					</label>
+				</div>
+			@endif
 
 		@endif
 </div>

@@ -116,7 +116,7 @@ class MenuController extends Controller{
 
 
     public function edit($slug){
-        
+
         return $this->menu->edit($slug);
 
 

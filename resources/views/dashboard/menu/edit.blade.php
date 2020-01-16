@@ -2,7 +2,7 @@
   @csrf
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">&times;</button>
-    <h4 class="modal-title">Add new menu</h4>
+    <h4 class="modal-title"><i class="fa {{$menu->icon}}"></i> {{$menu->name}}</h4>
   </div>
   <div class="modal-body">
     <div class="row">
