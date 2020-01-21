@@ -37,7 +37,7 @@ class __static{
     // File Directories
     public static function archive_dir(){
 
-        return '/home/swep_gad_storage/';
+        return 'E:/swep_gad_storage/';
     
     }
 

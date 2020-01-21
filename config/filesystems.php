@@ -45,7 +45,7 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => '/home/swep_gad_storage/',
+            'root' => 'E:/swep_gad_storage/',
         ],
         
         'public' => [
