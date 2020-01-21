@@ -266,13 +266,15 @@ function populate_modal(target_modal, response){
     //Search Bar Styling
     $(target_table+'_filter input').css("width","300px");
     $(target_table+"_filter input").attr("placeholder","Press enter to search");
-
+    $(target_table+"_wrapper .dt-buttons").addClass('col-md-4');
+    $(target_table+"_wrapper .dataTables_length ").addClass('col-md-3');
+    $(".buttons-html5").each(function(index, el) {
+      $(this).addClass('btn-sm');
+    });
   }
 
 function load_modal(target_modal){
     $(target_modal+" .modal-content").html(modal_loader);
-
-
 }
 
 

@@ -1,14 +1,9 @@
 @extends('layouts.admin-master')
-
 @section('content')
-                                                                                                                                                                                                                            
   <section class="content-header">
       <h1>Manage Scholars</h1>
   </section>
-
   <section class="content">
-    
-
       {{-- Table Grid --}}        
       <div class="box">
             <div class="box-header with-border">
@@ -17,12 +12,45 @@
                 <button type="button" class="btn bg-purple" data-toggle="modal" data-target="#add_scholar_modal"><i class="fa fa-plus"></i> New Scholar</button>
               </div>
             </div>
+            <div class="panel">
+              <div class="box-header with-border">
+                <h4 class="box-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#advanced_filters" aria-expanded="true" class="">
+                    <i class="fa fa-filter"></i>  Advanced Filters <i class=" fa  fa-angle-down"></i>
+                  </a>
+                </h4>
+              </div>
+              <div id="advanced_filters" class="panel-collapse collapse" aria-expanded="true">
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-md-1 col-sm-2 col-lg-2">
+                      <label>Sex:</label>
+                      <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_sex filters">
+                        <option value="">All</option>
+                        <option value="MALE">Male</option>
+                        <option value="FEMALE">Female</option>
+                      </select>
+                    </div>
+                    <div class="col-md-1 col-sm-2 col-lg-2">
+                      <label>Scholarship:</label>
+                      <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_scholarship filters">
+                        <option value="">All</option>
+                        <option value="TESDA">TESDA</option>
+                        <option value="CHED-U">CHED-Undergraduate</option>
+                        <option value="CHED-G">CHED-Graduate</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <!-- /.box-header -->
             <div class="box-body">
               <div id="scholars_table_container" style="display: none">
                 <table class="table table-bordered table-striped table-hover" id="scholars_table" style="width: 100% !important">
                   <thead>
                     <tr>
+  
                       <th>Name & Address</th>
                       <th>Mill District</th>
                       <th style="width: 50px">Scholarship</th>
@@ -287,6 +315,36 @@
   function dt_draw(){
     scholars_tbl.draw();
   }
+
+  function filter_dt(){
+    sex = $(".filter_sex").val();
+    scholarship_type = $(".filter_scholarship").val();
+    scholars_tbl.ajax.url(
+      "{{ route('dashboard.scholars.index') }}?sex="+sex+"&scholarship_type="+scholarship_type).load();
+
+    $(".filters").each(function(index, el) {
+      if($(this).val() != ''){
+        $(this).parent("div").addClass('has-success');
+        $(this).siblings('label').addClass('text-green');
+      }else{
+        $(this).parent("div").removeClass('has-success');
+        $(this).siblings('label').removeClass('text-green');
+      }
+    });
+  }
+
+  // function toggle_visibility(){
+  //   column = scholars_tbl.column(0);
+  //   column.visible( ! column.visible() );
+
+  //   if(column.visible() == true){
+  //     $('.chkbox').iCheck({
+  //         checkboxClass: 'icheckbox_flat-green',
+  //         radioClass: 'iradio_minimal',
+  //         increaseArea: '20%' // optional
+  //       });
+  //   }
+  // }
 </script>
 <script type="text/javascript">
   {!! __js::modal_loader() !!}
@@ -300,9 +358,13 @@
   //-----DATATABLES-----//
   //Initialize DataTable
   scholars_tbl = $("#scholars_table").DataTable({
+    'dom' : 'lBfrtip',
     "processing": true,
     "serverSide": true,
-    "ajax" : '{{ route("dashboard.scholars.index") }}',
+    "ajax" : {
+      url : '{{ route("dashboard.scholars.index") }}',
+      type: 'GET',
+    },
     "columns": [
         { "data": "fullname" },
         { "data": "mill_district" },
@@ -312,13 +374,15 @@
         { "data": "sex" },
         { "data": "action" }
     ],
-    // buttons: [
-    //     'copy', 'excel', 'pdf'
-    // ],
+    "buttons": [
+        {!! __js::dt_buttons() !!}
+    ],
+    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
     "columnDefs":[
       {
-        "targets" : [ 0 , 1 , 2],
-        "visible" : true
+        // "targets" : 0,
+        // "visible" : false,
+        // "class" : "dt-select"
       },
       {
         "targets" : 5,
@@ -340,6 +404,10 @@
         $('#tbl_loader').fadeOut(function(){
           $("#scholars_table_container").fadeIn();
         });
+
+        
+
+
       },
     "language": 
       {          
@@ -351,6 +419,12 @@
       if(active != ''){
          $("#scholars_table #"+active).addClass('success');
       }
+      $('.chkbox').iCheck({
+        checkboxClass: 'icheckbox_flat-green',
+        radioClass: 'iradio_minimal',
+        increaseArea: '20%' // optional
+      });
+
     }
   })
 
@@ -358,20 +432,24 @@
 
 
   style_datatable("#scholars_table");
+  
 
   //Search Bar Styling
-      $('#scholars_table_filter input').css("width","300px");
-      $("#scholars_table_filter input").attr("placeholder","Press enter to search");
+    $('#scholars_table_filter input').css("width","300px");
+    $("#scholars_table_filter input").attr("placeholder","Press enter to search");
 
-      //Need to press enter to search
-      $('#scholars_table_filter input').unbind();
-      $('#scholars_table_filter input').bind('keyup', function (e) {
-          if (e.keyCode == 13) {
-              scholars_tbl.search(this.value).draw();
-          }
-      });
+    //Need to press enter to search
+    $('#scholars_table_filter input').unbind();
+    $('#scholars_table_filter input').bind('keyup', function (e) {
+        if (e.keyCode == 13) {
+            scholars_tbl.search(this.value).draw();
+        }
+    });
 
 
+  $("body").on("change",".filters",function(){
+    filter_dt();
+  })
   
 
   $("#add_scholar_form").submit(function (e) {

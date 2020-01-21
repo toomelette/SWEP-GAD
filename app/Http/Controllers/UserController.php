@@ -31,7 +31,9 @@ class UserController extends Controller{
 
         if(request()->ajax())
         {   
-            return datatables()->of($this->user_service->fetchTable())
+
+            $data = request();
+            return datatables()->of($this->user_service->fetchTable($data))
             ->addColumn('action', function($data){
                 if($data->is_active == 0){
                     $a = "Activate";

@@ -33,10 +33,45 @@ class ScholarsRepository extends BaseRepository implements ScholarsInterface {
     }
 
 
-    public function fetchTable(){
+    public function fetchTable($data){
+        $get = $this->scholars;
+        
+        if(!empty($data->sex)){
+            switch ($data->sex) {
+                case '':
+                    $get = $get;
+                    break;
+                case 'MALE':
+                    $get = $get->where("sex","=","MALE");
+                    break;
+                case 'FEMALE':
+                    $get = $get->where("sex","=","FEMALE");
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+        }
 
-        return $this->scholars->latest()->get(['slug','lastname', 'firstname', 'middlename', 'scholarship_applied', 'course_applied','school', 'mill_district', 'birth', 'sex', 'address_province','address_city']);
-    
+        if(!empty($data->scholarship_type)){
+            switch ($data->scholarship_type) {
+                case 'TESDA':
+                    $get = $get->where("scholarship_applied","=","TESDA");
+                    break;
+                case 'CHED-U':
+                    $get = $get->where("scholarship_applied","=","CHED-U");
+                    break;
+                case 'CHED-G':
+                    $get = $get->where("scholarship_applied","=","CHED-G");
+                    break;
+                default:
+                    $get = $get;
+                    break;
+            }
+        }
+        
+       
+        return $get->latest()->get(['slug','lastname', 'firstname', 'middlename', 'scholarship_applied', 'course_applied','school', 'mill_district', 'birth', 'sex', 'address_province','address_city']);
     }
 
 

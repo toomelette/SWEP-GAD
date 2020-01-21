@@ -64,14 +64,12 @@
           @endif
           @foreach($user->userMenu as $menu)
           {{-- <div class="well well-sm"> --}}
-            
-          
-            <label>{{ $menu->menu->name }}</label>
+            @if(!empty($menu->menu))
+            <label>
+              {{ $menu->menu->name }}
+            </label>
             <div class="row">
-              {{-- {{ $menu->menu->subMenu}} --}}
               @foreach($user->userSubmenu as $submenu)
-              
-               
                 @if(!empty($submenu->subMenuContent) && !empty($menu->menu))
                   @if($menu->menu->menu_id == $submenu->subMenuContent->menu_id)
                     <div class="col-md-4">
@@ -86,7 +84,8 @@
               
             </div>
             <hr class="sm-margin">
-          {{-- </div> --}}
+
+          @endif
           @endforeach
         </div>
       </div>

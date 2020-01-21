@@ -33,9 +33,9 @@ class ScholarsService extends BaseService{
 
     }
 
-    public function fetchTable(){
+    public function fetchTable($data){
 
-        return $this->scholars_repo->fetchTable();
+        return $this->scholars_repo->fetchTable($data);
 
     }
 

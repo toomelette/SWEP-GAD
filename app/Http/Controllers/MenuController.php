@@ -28,8 +28,9 @@ class MenuController extends Controller{
     public function index(){
         
        if(request()->ajax())
-        {   
-            return datatables()->of($this->menu->fetchTable())
+        {      
+            $data = request();
+            return datatables()->of($this->menu->fetchTable($data))
             ->addColumn('action', function($data){
                 $button = '<div class="btn-group">
                                 <button type="button" class="btn btn-default btn-sm list_submenus_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#list_submenus" title="Submenus" data-placement="left">
@@ -107,7 +108,7 @@ class MenuController extends Controller{
    
 
     public function store(MenuFormRequest $request){
-
+        
         return $this->menu->store($request);
 
     }

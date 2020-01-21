@@ -175,8 +175,19 @@ class __js{
     	return 'modal_loader = $("#modal_loader").parent("div").html();';
     }
 
-
+    public static function dt_buttons(){
+    	$a = '"';
+    	return "{extend : 'excel' , text: '<i class=".$a."fa fa-file-excel-o fa-fw".$a."></i>Excel'},
+        {extend : 'copy' , text: '<i class=".$a."fa fa-copy fa-fw".$a."></i>Copy'},
+        {extend : 'pdf' , text: '<i class=".$a."fa fa-file-pdf-o fa-fw".$a."></i>PDF'}
+    ";
+    }
 
 
 
 }
+
+//,{text: 'Select multiple', className:'btn-sm',
+    //action: function ( e, dt, node, config ) {
+      //  toggle_visibility();
+    	//}}

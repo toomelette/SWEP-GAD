@@ -20,7 +20,7 @@
 
 <script type="text/javascript" src="{{ asset('template/plugins/price-format/jquery.priceformat.min.js') }}"></script>
 
-<script type="text/javascript" src="{{ asset('template/plugins/iCheck/icheck.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('template/plugins/icheck/icheck.js') }}"></script>
 
 <script type="text/javascript" src="{{ asset('template/plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
 
@@ -41,6 +41,10 @@
 <script type="text/javascript" src="{{ asset('template/bower_components/Flot/jquery.flot.categories.js') }}"></script>
 
 
+<script type="text/javascript" src="{{ asset('template/plugins/chartjs/dist/Chart.min.js') }}"></script>
+
+
+
 {{-- Notify --}}
 <script type="text/javascript" src="{{ asset('template/plugins/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 
@@ -53,6 +57,9 @@
 <script src="{{asset('template/plugins/DataTables/Buttons-1.6.1/js/buttons.colVis.min.js')}}"></script>
 <script src="{{asset('template/plugins/DataTables/JSZip-2.5.0/jszip.min.js')}}"></script>
 <script src="{{asset('template/plugins/DataTables/pdfmake-0.1.36/pdfmake.min.js')}}"></script>
+<script src="{{asset('template/plugins/DataTables/pdfmake-0.1.36/vfs_fonts.js')}}"></script>
+<script src="{{asset('template/plugins/DataTables/Select-1.3.1/js/dataTables.select.min.js')}}"></script>
+
 
 {{-- Moment --}}
 <script type="text/javascript" src="{{asset('template/plugins/moment/moment.js')}}"></script>
@@ -71,3 +78,8 @@
 
 {{-- Draggable --}}
 <script type="text/javascript" src="{{asset('template/plugins/jquery-sortable/source/js/jquery-sortable-min.js')}}"></script>
+
+<script type="text/javascript" src="{{asset('template/plugins/jQuery-Mask-Plugin/src/jquery.mask.js')}}"></script>
+
+
+

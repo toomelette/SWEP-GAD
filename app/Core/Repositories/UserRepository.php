@@ -26,8 +26,40 @@ class UserRepository extends BaseRepository implements UserInterface {
 
 
 
-    public function fetchTable(){
-        return $this->user->latest()->get(['slug', 'username', 'lastname', 'firstname', 'middlename', 'is_online', 'is_active']);
+    public function fetchTable($data){
+        $get = $this->user;
+
+        if(!empty($data->is_online)){
+            switch ($data->is_online) {
+                case 'online':
+                    $get = $get->where("is_online","=",1);
+                    break;
+                case 'offline':
+                    $get = $get->where("is_online","=",0);
+                    break;
+                default:
+                    $get = $get;
+                    break;
+            }
+        }
+
+        if(!empty($data->is_active)){
+            switch ($data->is_active) {
+                case 'active':
+                    $get = $get->where("is_active","=",1);
+                    break;
+                case 'inactive':
+                    $get = $get->where("is_active","=",0);
+                    break;
+                default:
+                    $get = $get;
+                    break;
+            }
+        }
+
+
+        $get = $get->latest()->get(['slug', 'username', 'lastname', 'firstname', 'middlename', 'is_online', 'is_active']);
+        return $get;
     }
 
 

@@ -28,7 +28,9 @@ class ScholarsController extends Controller{
 
         if(request()->ajax())
         {   
-            return datatables()->of($this->scholars->fetchTable())
+            $data = request();
+            
+            return datatables()->of($this->scholars->fetchTable($data))
             ->addColumn('action', function($data){
                 $button = '<div class="btn-group">
                                 <button type="button" class="btn btn-default btn-sm show_scholars_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#show_scholars_modal" title="View more" data-placement="left">
@@ -51,6 +53,23 @@ class ScholarsController extends Controller{
                         </div>';
 
 
+            })->editColumn('scholarship_applied',function($data){
+
+                switch ($data->scholarship_applied) {
+                    case 'TESDA':
+                        return "TESDA";
+                        break;
+                    case 'CHED-U':
+                        return "CHED, Undergraduate";
+                        break;
+                    case 'CHED-G':
+                        return "CHED, Graduate";
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+ 
             })->editColumn('course_school',function($data){
 
                 return '<div>'.$data->course_applied.'
@@ -58,7 +77,7 @@ class ScholarsController extends Controller{
                                 '.$data->school.'
                             </div>
                         </div>';
-
+ 
             })->editColumn('sex',function($data){
                 if($data->sex == "MALE"){
                     return '<span class="label bg-green col-md-12"><i class="fa fa-male"></i> '.$data->sex.'</span>';

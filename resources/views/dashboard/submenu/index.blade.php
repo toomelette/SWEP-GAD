@@ -89,5 +89,17 @@
 	</div>
 </div>
 <div class="modal-footer">
-	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	<div class="row">
+		{!! __html::timestamps(
+	      $menu->creator['firstname'] ." ".$menu->creator['lastname'],
+	      $menu->created_at,
+	      $menu->updater['firstname'] ." ". $menu->updater['lastname'],
+	      $menu->updated_at,"4"
+	    ) !!} 
+	    <div class="col-md-4">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		</div>
+	
+	</div>
+	
 </div>

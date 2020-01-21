@@ -394,6 +394,7 @@
   //-----DATATABLES-----//
     //Initialize DataTable
     block_farm_tbl = $("#block_farm_tbl").DataTable({
+      'dom' : 'lBfrtip',
       "processing": true,
       "serverSide": true,
       "ajax" : '{{ route("dashboard.block_farm.index") }}',
@@ -405,9 +406,9 @@
           { "data": "sex" },
           { "data": "action" }
       ],
-      // buttons: [
-      //     'copy', 'excel', 'pdf'
-      // ],
+      "buttons": [
+          {!! __js::dt_buttons() !!}
+      ],
       "columnDefs":[
         {
           "targets" : [ 0 , 1 , 2],
@@ -443,8 +444,7 @@
     })
 
     //Search Bar Styling
-    $('#block_farm_tbl_filter input').css("width","300px");
-    $("#block_farm_tbl_filter input").attr("placeholder","Press enter to search");
+    style_datatable('#block_farm_tbl');
 
     //Need to press enter to search
     $('#block_farm_tbl_filter input').unbind();

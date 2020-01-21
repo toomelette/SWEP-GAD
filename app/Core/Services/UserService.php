@@ -36,8 +36,8 @@ class UserService extends BaseService{
 
 
 
-    public function fetchTable(){
-        return $this->user_repo->fetchTable();
+    public function fetchTable($data){
+        return $this->user_repo->fetchTable($data);
     }
 
 

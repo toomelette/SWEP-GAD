@@ -19,7 +19,37 @@
                 </div>
               </div>
             </div>
-            <!-- /.box-header -->
+            <div class="panel">
+            <div class="box-header with-border">
+              <h4 class="box-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#advanced_filters" aria-expanded="true" class="">
+                  <i class="fa fa-filter"></i>  Advanced Filters <i class=" fa  fa-angle-down"></i>
+                </a>
+              </h4>
+            </div>
+            <div id="advanced_filters" class="panel-collapse collapse" aria-expanded="true" style="">
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-1 col-sm-2 col-lg-2">
+                    <label>Is menu:</label>
+                    <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_menu filters">
+                      <option value="">All</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                  </div>
+                  <div class="col-md-1 col-sm-2 col-lg-2">
+                    <label>Is dropdown:</label>
+                    <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_dropdown filters">
+                      <option value="">All</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
             <div class="box-body">
               <div id="menu_table_container" style="display: none">
                 
@@ -190,6 +220,23 @@
 }); 
 }
 
+function filter_dt(){
+    is_menu = $(".filter_menu").val();
+    is_dropdown = $(".filter_dropdown").val();
+    menu_tbl.ajax.url(
+      "{{ route('dashboard.menu.index') }}?is_menu="+is_menu+"&is_dropdown="+is_dropdown).load();
+
+    $(".filters").each(function(index, el) {
+      if($(this).val() != ''){
+        $(this).parent("div").addClass('has-success');
+        $(this).siblings('label').addClass('text-green');
+      }else{
+        $(this).parent("div").removeClass('has-success');
+        $(this).siblings('label').removeClass('text-green');
+      }
+    });
+  }
+
 
 </script>
 <script type="text/javascript">
@@ -267,6 +314,10 @@
 
     style_datatable("#menu_table");
 
+    $(".filters").change(function(){
+      filter_dt();
+    })
+
     $(".change_menu_btn").click(function(){
       load_modal('#change_menu_modal');
       $.ajax({
@@ -314,6 +365,7 @@
         type: 'POST',
         dataType: 'json',
         success: function(response){
+          console.log(response);
           succeed("#add_menu_form",'save',true);
           notify("Menu has been added successfully","success");
           active = response.slug;

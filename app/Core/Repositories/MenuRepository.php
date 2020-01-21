@@ -4,9 +4,7 @@ namespace App\Core\Repositories;
  
 use App\Core\BaseClasses\BaseRepository;
 use App\Core\Interfaces\MenuInterface;
-
 use App\Models\Menu;
-
 
 class MenuRepository extends BaseRepository implements MenuInterface {
 	
@@ -35,8 +33,41 @@ class MenuRepository extends BaseRepository implements MenuInterface {
     }
 
 
-    public function fetchTable(){
-        return $this->menu->latest()->get();
+    public function fetchTable($data){
+        $get = $this->menu;
+
+        if(!empty($data->is_menu)){
+            switch ($data->is_menu) {
+                case 'yes':
+                    $get = $get->where("is_menu", "=", "1");
+                    break;
+                case 'no':
+                    $get = $get->where("is_menu", "=", "0");
+                    break;
+                default:
+                    $get = $get;
+                    break;
+            }
+        }
+
+        if(!empty($data->is_dropdown)){
+            switch ($data->is_dropdown) {
+                case 'yes':
+                    $get = $get->where("is_dropdown", "=", "1");
+                    break;
+                case 'no':
+                    $get = $get->where("is_dropdown", "=", "0");
+                    break;
+                default:
+                    $get = $get;
+                    break;
+            }
+        }
+
+
+        return $get->latest()->get();
+
+
     }
 
     public function store($request){
@@ -47,8 +78,8 @@ class MenuRepository extends BaseRepository implements MenuInterface {
         $menu->route = $request->route;
         $menu->category = $request->category;
         $menu->icon = $request->icon;
-        $menu->is_menu = $this->__dataType->string_to_boolean($request->is_menu);
-        $menu->is_dropdown = $this->__dataType->string_to_boolean($request->is_dropdown);
+        $menu->is_menu = $request->is_menu;
+        $menu->is_dropdown = $request->is_dropdown;
         $menu->created_at = $this->carbon->now();
         $menu->updated_at = $this->carbon->now();
         $menu->ip_created = request()->ip();
@@ -56,7 +87,6 @@ class MenuRepository extends BaseRepository implements MenuInterface {
         $menu->user_created = $this->auth->user()->user_id;
         $menu->user_updated = $this->auth->user()->user_id;
         $menu->save();
-        
         return $menu;
 
     }
@@ -81,6 +111,7 @@ class MenuRepository extends BaseRepository implements MenuInterface {
 
         return $menu;
 
+
     }
 
 
@@ -103,7 +134,12 @@ class MenuRepository extends BaseRepository implements MenuInterface {
 
     public function findBySlug($slug){
 
-        $menu = $this->menu->where('slug', $slug)->first();
+        $menu = $this->cache->remember('menu:findBySlug:' . $slug, 240, function() use ($slug){
+            return $this->menu->where('slug', $slug)->first();
+        }); 
+
+
+        // $menu = $this->menu->where('slug', $slug)->first();
         
         if(empty($menu)){ abort(404); }
 

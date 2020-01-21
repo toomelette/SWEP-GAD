@@ -171,3 +171,11 @@ ol.example li.placeholder:before {
 .help-block{
     margin-bottom: 0px !important;
 }
+
+#advanced_filters{
+    background-color: #efefef;
+}
+
+.dt-select{
+    width: 20px !important;
+}

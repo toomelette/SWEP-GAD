@@ -60,7 +60,9 @@
             @endif
 
 
-        </b> </p>
+        </b>
+      </p>
+      <br>
       <table class="table table-hover table-bordered" id="participant_tbl" style="width: 100% !important">
 
         <thead>

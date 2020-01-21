@@ -292,6 +292,7 @@ function dt_draw(){
     //-----DATATABLES-----//
       //Initialize DataTable
       seminars_table = $("#seminars_table").DataTable({
+        'dom' : 'lBfrtip',
         "processing": true,
         "serverSide": true,
         "ajax" : '{{ route("dashboard.seminar.index") }}',
@@ -307,7 +308,7 @@ function dt_draw(){
             { "data": "action" }
         ],
         buttons: [
-            'copy', 'excel', 'pdf'
+            {!! __js::dt_buttons() !!}
         ],
         "columnDefs":[
           {
@@ -344,8 +345,7 @@ function dt_draw(){
       })
 
       //Search Bar Styling
-      $('#seminars_table_filter input').css("width","300px");
-      $("#seminars_table_filter input").attr("placeholder","Press enter to search");
+      style_datatable('#seminars_table');
 
       //Need to press enter to search
       $('#seminars_table_filter input').unbind();
@@ -561,14 +561,31 @@ function dt_draw(){
             $("#participant_modal #edit_seminar_modal_loader").fadeOut(function(){
               $("#participant_modal .modal-content").html(response);      
               participant_tbl = $("#participant_tbl").DataTable({
-
+                'dom' : 'lBfrtip',
                 "columnDefs":[
                   {
                     "targets" : 5,
                     "orderable" : false
-                  }  
+                  } 
+                ],
+                "buttons": [
+                  {
+                    'extend': 'excel',
+                    'exportOptions':{
+                      'columns' : [0,1,2,3,4]
+                    },
+                    'text': '<i class="fa fa-file-excel-o fa-fw"></i> Export as Excel'
+                  }
                 ]
-              });      
+              });  
+
+
+              $("#participant_tbl_filter").addClass('col-md-3 pull-right');
+              $("#participant_tbl_wrapper .dataTables_length").addClass('col-md-3');
+
+              $("#participant_tbl_wrapper .buttons-html5").each(function(index, el) {
+                $(this).addClass('btn-sm');
+              });
             });
             
           }

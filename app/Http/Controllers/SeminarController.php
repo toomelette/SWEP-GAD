@@ -30,15 +30,17 @@ class SeminarController extends Controller{
 
         if(request()->ajax())
         {   
-    
+            
             return datatables()->of($this->seminar->fetchTable())
             ->addColumn('action', function($data){
+
                 $user = auth()->user();
                 $have_access_to = [];
                 foreach ($user->userSubmenu as $userSubmenu) {
-                    $have_access_to[$userSubmenu->subMenu->route]="";
+                    if(!empty($userSubmenu->subMenu)){
+                        $have_access_to[$userSubmenu->subMenu->route]="";
+                    } 
                 }
-
 
                 $button = '<div class="btn-group">';
 
