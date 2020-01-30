@@ -24,7 +24,7 @@
 
 <script type="text/javascript" src="{{ asset('template/plugins/price-format/jquery.priceformat.min.js') }}"></script>
 
-<script type="text/javascript" src="{{ asset('template/plugins/icheck/icheck.js') }}"></script>
+{{-- <script type="text/javascript" src="{{ asset('template/plugins/icheck/icheck.js') }}"></script> --}}
 
 <script type="text/javascript" src="{{ asset('template/plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
 
@@ -87,8 +87,6 @@
 
 {{-- Draggable --}}
 <script type="text/javascript" src="{{asset('template/plugins/jquery-sortable/source/js/jquery-sortable-min.js')}}"></script>
-
-<script type="text/javascript" src="{{asset('template/plugins/jQuery-Mask-Plugin/src/jquery.mask.js')}}"></script>
 
 
 
