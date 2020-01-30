@@ -333,18 +333,7 @@
     });
   }
 
-  // function toggle_visibility(){
-  //   column = scholars_tbl.column(0);
-  //   column.visible( ! column.visible() );
 
-  //   if(column.visible() == true){
-  //     $('.chkbox').iCheck({
-  //         checkboxClass: 'icheckbox_flat-green',
-  //         radioClass: 'iradio_minimal',
-  //         increaseArea: '20%' // optional
-  //       });
-  //   }
-  // }
 </script>
 <script type="text/javascript">
   {!! __js::modal_loader() !!}
@@ -419,12 +408,6 @@
       if(active != ''){
          $("#scholars_table #"+active).addClass('success');
       }
-      $('.chkbox').iCheck({
-        checkboxClass: 'icheckbox_flat-green',
-        radioClass: 'iradio_minimal',
-        increaseArea: '20%' // optional
-      });
-
     }
   })
 
