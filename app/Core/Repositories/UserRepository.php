@@ -345,6 +345,29 @@ class UserRepository extends BaseRepository implements UserInterface {
 
 
 
+    public function total_encoded(){
+        $slug = $this->auth->user()->slug;
+        $user = $this->findBySlug($slug);
+
+        $block_farm = $user->block_farm_created->count();
+        $seminar = $user->seminar_created->count();
+        $scholar = $user->scholar_created->count();
+
+        return $block_farm + $seminar + $scholar;
+
+    }
+
+    public function total_updated(){
+        $slug = $this->auth->user()->slug;
+        $user = $this->findBySlug($slug);
+
+        $block_farm = $user->block_farm_updated->count();
+        $seminar = $user->seminar_updated->count();
+        $scholar = $user->scholar_updated->count();
+
+        return $block_farm + $seminar + $scholar;
+
+    }
 
 
 }

@@ -30,11 +30,12 @@ class ProfileRepository extends BaseRepository implements ProfileInterface {
 
 
 
-    public function updateUsername($request, $slug){
+    public function updateUsername($request){
 
-        $user = $this->user_repo->findBySlug($slug);
+        $user_id = $this->auth->user()->slug;
+
+        $user = $this->user_repo->findBySlug($user_id);
         $user->username = $request->username;
-        $user->is_online = 0;
         $user->save();
 
         return $user;
@@ -45,11 +46,11 @@ class ProfileRepository extends BaseRepository implements ProfileInterface {
 
 
 
-    public function updatePassword($request, $slug){
-
-        $user = $this->user_repo->findBySlug($slug);
+    public function updatePassword($request){
+        $user_id = $this->auth->user()->slug;
+        $user = $this->user_repo->findBySlug($user_id);
         $user->password = Hash::make($request->password);
-        $user->is_online = 0;
+        //$user->is_online = 0;
         $user->save();
 
         return $user;
@@ -60,16 +61,27 @@ class ProfileRepository extends BaseRepository implements ProfileInterface {
 
 
 
-    public function updateColor($request, $slug){
-        
-        $user = $this->user_repo->findBySlug($slug);
-        $user->color = $request->color;
+    public function updateColor($color){
+        $user_id = $this->auth->user()->slug;
+
+        $user = $this->user_repo->findBySlug($user_id);
+
+        $user->color = $color;
         $user->save();
 
-        return $user;
+        return $user->color;
 
     }
 
+    public function total_encoded(){
+
+        return $this->user_repo->total_encoded();
+    }
+
+        public function total_updated(){
+
+        return $this->user_repo->total_updated();
+    }
 
 
 

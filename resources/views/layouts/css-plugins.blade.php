@@ -9,6 +9,9 @@
 
 <link type="text/css" rel="stylesheet" href="{{asset('template/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css')}}">
 
+<link type="text/css" rel="stylesheet" href="{{asset('template/bower_components/bootstrap-daterangepicker/daterangepicker.css')}}">
+
+
 <link type="text/css" rel="stylesheet" href="{{asset('template/dist/css/AdminLTE.min.css')}}">
 
 <link type="text/css" rel="stylesheet" href="{{asset('template/dist/css/skins/_all-skins.min.css')}}">

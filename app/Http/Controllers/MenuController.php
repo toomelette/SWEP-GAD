@@ -71,7 +71,7 @@ class MenuController extends Controller{
                     $value->name = str_replace($data->name, '', $value->name);
                     $ret = $ret . $value->name .' | ';
                 }
-                return substr_replace($ret ,"", -2);;
+                return substr_replace($ret ,"", -2);
             }) 
             ->editColumn('icon', function($data){
                 return '<center><span><i class="fa '.$data->icon.'"></i></span></center>';

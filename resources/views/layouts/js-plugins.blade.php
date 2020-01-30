@@ -14,6 +14,10 @@
 
 <script type="text/javascript" src="{{ asset('template/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 
+
+
+
+
 <script type="text/javascript" src="{{ asset('template/plugins/pjax/jquery.pjax.js') }}"></script>
 
 <script type="text/javascript" src="{{ asset('template/plugins/toast/jquery.toast.min.js') }}"></script>
@@ -63,6 +67,11 @@
 
 {{-- Moment --}}
 <script type="text/javascript" src="{{asset('template/plugins/moment/moment.js')}}"></script>
+
+{{-- Date Range --}}
+<script type="text/javascript" src="{{ asset('template/bower_components/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+
+
 
 {{-- DataTable Date Render --}}
 <script type="text/javascript" src="{{asset('template/plugins/dataTables-date/dt-date.js')}}"></script>

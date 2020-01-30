@@ -183,7 +183,21 @@ class __js{
     ";
     }
 
-
+    public static function show_hide_password(){
+    	$a = "'";
+    	return '$("body").on("click",".show_pass", function(){
+        t = $(this);
+        input = $(this).parent("span").siblings("input");
+        
+        if(input.attr("type")=="password"){
+          input.attr("type","text");
+          t.html("<i class='.$a.'fa fa-eye'.$a.'></i>");
+        }else{
+          input.attr("type","password");
+          t.html("<i class='.$a.'fa fa-eye-slash'.$a.'></i>");
+        }
+      })';
+    }
 
 }
 

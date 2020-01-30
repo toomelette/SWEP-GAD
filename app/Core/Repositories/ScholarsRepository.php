@@ -5,6 +5,7 @@ namespace App\Core\Repositories;
 use App\Core\BaseClasses\BaseRepository;
 use App\Core\Interfaces\ScholarsInterface;
 
+use App\Core\Interfaces\ActivityLogInterface;
 use App\Models\Scholars;
 
 
@@ -13,12 +14,13 @@ class ScholarsRepository extends BaseRepository implements ScholarsInterface {
 
 
     protected $scholars;
+    protected $activity_log_repo;
 
 
-
-	public function __construct(Scholars $scholars){
+	public function __construct(Scholars $scholars,ActivityLogInterface $activity_log_repo){
 
         $this->scholars = $scholars;
+        $this->activity_log_repo = $activity_log_repo;
         parent::__construct();
 
     }
@@ -113,6 +115,17 @@ class ScholarsRepository extends BaseRepository implements ScholarsInterface {
         $scholars->user_created = $this->auth->user()->user_id;
         $scholars->user_updated = $this->auth->user()->user_id;
         $scholars->save();
+
+        //LOGGING
+        $activity_log = collect();
+        $activity_log->module = 'scholar';
+        $activity_log->event = __FUNCTION__;
+        $activity_log->slug = $scholars->slug;
+        $activity_log->remarks = "New data: "
+                                .$scholars->lastname. ", ".$scholars->firstname;
+        $this->activity_log_repo->store($activity_log);
+
+
         return $scholars;
     }
 
@@ -123,6 +136,8 @@ class ScholarsRepository extends BaseRepository implements ScholarsInterface {
     public function update($request, $slug){
 
         $scholars = $this->findBySlug($slug);
+        $scholars_old = $scholars->getOriginal();
+
         $scholars->scholarship_applied = $request->scholarship_applied;
         $scholars->course_applied = $request->course_applied;
         $scholars->school = $request->school;
@@ -155,6 +170,15 @@ class ScholarsRepository extends BaseRepository implements ScholarsInterface {
         $scholars->user_updated = $this->auth->user()->user_id;
         $scholars->save();
 
+        //LOGGING
+        $activity_log = collect();
+        $activity_log->module = 'scholar';
+        $activity_log->event = __FUNCTION__;
+        $activity_log->slug = $scholars->slug;
+        $activity_log->original = $scholars_old;
+        $activity_log->obj = $scholars;
+        $this->activity_log_repo->store($activity_log);
+        
         return $scholars;
 
     }
@@ -167,6 +191,16 @@ class ScholarsRepository extends BaseRepository implements ScholarsInterface {
 
         $scholars = $this->findBySlug($slug);
         $scholars->delete();
+
+        //LOGGING
+        $activity_log = collect();
+        $activity_log->module = 'scholar';
+        $activity_log->event = __FUNCTION__;
+        $activity_log->slug = $scholars->slug;
+        $activity_log->remarks = "DELETED: "
+                                .$scholars->lastname. ", "
+                                .$scholars->firstname;
+        $this->activity_log_repo->store($activity_log);
 
         return $scholars;
 
@@ -236,7 +270,13 @@ class ScholarsRepository extends BaseRepository implements ScholarsInterface {
 
 
 
+    public function all_male(){
+        return $this->scholars->where('sex','=',"MALE")->get();
+    }
 
+    public function all_female(){
+        return $this->scholars->where('sex','=',"FEMALE")->get();
+    }
 
 
 }

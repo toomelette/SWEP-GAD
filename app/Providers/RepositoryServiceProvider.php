@@ -35,6 +35,8 @@ class RepositoryServiceProvider extends ServiceProvider {
 
 		$this->app->bind('App\Core\Interfaces\ScholarsInterface', 'App\Core\Repositories\ScholarsRepository');
 
+		$this->app->bind('App\Core\Interfaces\ActivityLogInterface', 'App\Core\Repositories\ActivityLogRepository');
+
 
 	}
 

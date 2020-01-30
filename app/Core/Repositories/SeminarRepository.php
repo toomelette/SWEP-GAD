@@ -6,6 +6,7 @@ use App\Core\BaseClasses\BaseRepository;
 use App\Core\Interfaces\SeminarInterface;
 
 use App\Models\Seminar;
+use App\Core\Interfaces\ActivityLogInterface;
 
 
 class SeminarRepository extends BaseRepository implements SeminarInterface {
@@ -13,9 +14,11 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
 
 
     protected $seminar;
+    protected $activity_log_repo;
 
-	public function __construct(Seminar $seminar){
+	public function __construct(Seminar $seminar,ActivityLogInterface $activity_log_repo){
         $this->seminar = $seminar;
+        $this->activity_log_repo = $activity_log_repo;
         parent::__construct();
     }
 
@@ -49,6 +52,8 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
     public function store($request, $filename){
 
         $seminar = new Seminar;
+        
+
         $seminar->seminar_id = $this->getSeminarIdInc();
         $seminar->slug = $this->str->random(16);
         $seminar->title = $request->title;
@@ -65,6 +70,15 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
         $seminar->user_updated = $this->auth->user()->user_id;
         $seminar->save();
         
+        //LOGGING
+        $activity_log = collect();
+        $activity_log->module = 'seminar';
+        $activity_log->event = __FUNCTION__;
+        $activity_log->slug = $seminar->slug;
+        $activity_log->remarks = "New data: ".$seminar->title;
+        $this->activity_log_repo->store($activity_log);
+
+
         return $seminar;
 
     }
@@ -75,7 +89,9 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
 
     public function update($request, $filename, $seminar){
 
+        $seminar_old = $seminar->getOriginal();
         $seminar->title = $request->title;
+        
         $seminar->sponsor = $request->sponsor;
         $seminar->venue = $request->venue;
         $seminar->date_covered_from = $this->__dataType->date_parse($request->date_covered_from);
@@ -87,6 +103,16 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
         $seminar->save();
 
         $seminar->seminarSpeaker()->delete();
+
+        //LOGGING
+        $activity_log = collect();
+        $activity_log->module = 'seminar';
+        $activity_log->event = __FUNCTION__;
+        $activity_log->slug = $seminar->slug;
+        $activity_log->original = $seminar_old;
+        $activity_log->obj = $seminar;
+        $this->activity_log_repo->store($activity_log);
+
 
         return $seminar;
 
@@ -102,6 +128,15 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
         $seminar->delete();
         $seminar->seminarParticipant()->delete();
         $seminar->seminarSpeaker()->delete();
+
+        //LOGGING
+        $activity_log = collect();
+        $activity_log->module = 'seminar';
+        $activity_log->event = __FUNCTION__;
+        $activity_log->slug = $seminar->slug;
+        $activity_log->remarks = "DELETED: ".$seminar->title;
+        $this->activity_log_repo->store($activity_log);
+
 
         return $seminar;
 

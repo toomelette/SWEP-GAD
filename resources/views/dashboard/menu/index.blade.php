@@ -20,36 +20,36 @@
               </div>
             </div>
             <div class="panel">
-            <div class="box-header with-border">
-              <h4 class="box-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#advanced_filters" aria-expanded="true" class="">
-                  <i class="fa fa-filter"></i>  Advanced Filters <i class=" fa  fa-angle-down"></i>
-                </a>
-              </h4>
-            </div>
-            <div id="advanced_filters" class="panel-collapse collapse" aria-expanded="true" style="">
-              <div class="box-body">
-                <div class="row">
-                  <div class="col-md-1 col-sm-2 col-lg-2">
-                    <label>Is menu:</label>
-                    <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_menu filters">
-                      <option value="">All</option>
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                    </select>
-                  </div>
-                  <div class="col-md-1 col-sm-2 col-lg-2">
-                    <label>Is dropdown:</label>
-                    <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_dropdown filters">
-                      <option value="">All</option>
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                    </select>
+              <div class="box-header with-border">
+                <h4 class="box-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#advanced_filters" aria-expanded="true" class="">
+                    <i class="fa fa-filter"></i>  Advanced Filters <i class=" fa  fa-angle-down"></i>
+                  </a>
+                </h4>
+              </div>
+              <div id="advanced_filters" class="panel-collapse collapse" aria-expanded="true" style="">
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-md-1 col-sm-2 col-lg-2">
+                      <label>Is menu:</label>
+                      <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_menu filters">
+                        <option value="">All</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                      </select>
+                    </div>
+                    <div class="col-md-1 col-sm-2 col-lg-2">
+                      <label>Is dropdown:</label>
+                      <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_dropdown filters">
+                        <option value="">All</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
             <div class="box-body">
               <div id="menu_table_container" style="display: none">
                 
@@ -130,7 +130,7 @@
               '12 category', 'category', 'text', 'Category: *', 'Category','', '', '', ''
             ) !!}
 
-            {!! __form::textbox(
+            {!! __form::textbox_icon(
               '12 icon', 'icon', 'text', 'Icon: *', 'Icon','', '', '', ''
             ) !!}
 
@@ -470,6 +470,9 @@ function filter_dt(){
         type: 'GET',
         success: function(response){
           populate_modal("#edit_menu_modal",response);
+          setTimeout(function(){
+            $(".with-icon").keyup();
+          },500);
         },
         error: function(response){
 
@@ -631,6 +634,12 @@ function filter_dt(){
       delete_submenu(id);
 
     })
+
+    $("body").on("keyup", ".with-icon", function(){
+      $(this).siblings('.input-group-addon').html("<i class='fa "+$(this).val()+"'></i>");
+    })
+
+
 
 </script>
 @endsection

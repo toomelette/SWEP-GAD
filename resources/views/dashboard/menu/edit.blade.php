@@ -18,7 +18,7 @@
         '12 category', 'category', 'text', 'Category: *', 'Category',$menu->category, '', '', ''
       ) !!}
 
-      {!! __form::textbox(
+      {!! __form::textbox_icon(
         '12 icon', 'icon', 'text', 'Icon: *', 'Icon',$menu->icon, '', '', ''
       ) !!}
 

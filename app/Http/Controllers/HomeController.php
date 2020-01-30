@@ -28,8 +28,15 @@ class HomeController extends Controller{
 
 
     public function index(){
+    	$scholars = $this->home->scholars();
 
-    	return $this->home->view();
+    	return view('dashboard.home.index')->with([
+    		'scholars'=>[
+    			"male" => $scholars->male,
+    			"female" => $scholars->female,
+    			"total" => $scholars->male + $scholars->female
+    		]
+    	]);
 
     }
     

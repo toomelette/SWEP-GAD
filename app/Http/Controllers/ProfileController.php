@@ -29,34 +29,97 @@ class ProfileController extends Controller{
 
 	public function details(){
 
-        return view('dashboard.profile.details');
+        if(request()->ajax())
+        {   
+            $data = request();
+            if(!empty($data->date_range)){
+                if($data->date_range != ''){
+                    $data->start_date = date("Y-m-d",strtotime(substr($data->date_range, 0, 10)));
+                    $data->end_date = date("Y-m-d",strtotime(substr($data->date_range, -10)));
+                }
+            }
+
+            return datatables()->of($this->profile_service->fetchTable($data))
+            ->editColumn('module', function($data){
+                switch ($data->module) {
+                    case 'seminar':
+                        return "Seminars";
+                        break;
+                    case 'block_farm':
+                        return "Block Farm";
+                        break;
+                    case 'scholar':
+                        return "Scholars";
+                        break;
+                    default:
+                        return $data->module;
+                        break;
+                }
+            })
+            ->editColumn('event',function($data){
+                switch ($data->event) {
+                    case 'store':
+                        return '<span class="label bg-blue col-md-12">ADD </span>';
+                        break;
+                    case 'update':
+                        return '<span class="label bg-green col-md-12">EDIT </span>';
+                        break;
+                    case 'destroy':
+                        return '<span class="label bg-red col-md-12">DELETE </span>';
+                        break;
+
+                    default:
+                        return '<span class="label bg-purple col-md-12">'.$data->event.' </span>';
+                        break;
+                }
+            })
+            ->editColumn('created_at', function($data){
+                return date("M. d, 'y | h:i A", strtotime($data->created_at));
+            })
+            ->editColumn('created_at_raw', function($data){
+                return $data->created_at;
+            })
+            ->escapeColumns([])
+            ->setRowId('id')
+            ->make();
+        }
+        $modules = $this->profile_service->modules();
+        $events = $this->profile_service->events();
+        $total_encoded = $this->profile_service->total_encoded();
+        $total_updated = $this->profile_service->total_updated();
+        return view('dashboard.profile.details')->with([
+            'total_encoded' => $total_encoded, 
+            'total_updated' => $total_updated,
+            'modules' => $modules,
+            'events' => $events
+        ]);
         
     }
 
 
 
 
-    public function updateAccountUsername(ProfileUpdateAccountUsernameRequest $request, $slug){
+    public function updateAccountUsername(ProfileUpdateAccountUsernameRequest $request){
 
-        return $this->profile_service->updateAccountUsername($request, $slug);
+        return $this->profile_service->updateAccountUsername($request);
         
     }
 
 
 
 
-    public function updateAccountPassword(ProfileUpdateAccountPasswordRequest $request, $slug){
+    public function updateAccountPassword(ProfileUpdateAccountPasswordRequest $request){
 
-        return $this->profile_service->updateAccountPassword($request, $slug);
+        return $this->profile_service->updateAccountPassword($request);
         
     }
 
 
     
 
-    public function updateAccountColor(ProfileUpdateAccountColorRequest $request, $slug){
-
-        return $this->profile_service->updateAccountColor($request, $slug);
+    public function updateAccountColor(){
+        $color = request()->get('color');
+        return $this->profile_service->updateAccountColor($color);
         
     }
 

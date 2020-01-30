@@ -78,6 +78,8 @@ class BlockFarm extends Model{
         return $this->hasOne("App\Models\User","user_id","user_updated");
     }
 
+    
+
     // public function blockFarmProblem() {
     //     return $this->hasMany('App\Models\blockFarmProblem','slug','slug');
     // }

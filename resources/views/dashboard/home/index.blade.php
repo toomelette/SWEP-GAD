@@ -7,6 +7,7 @@
 </section>
 
 <section class="content">
+	
 	<div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
@@ -69,12 +70,32 @@
         </div>
         <!-- ./col -->
       </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="panel">
+          <div class="panel-body">
+            <center>
+              <label>Scholars</label>  
+            </center>
+            <hr class="no-margin">
+            <canvas id="scholars_m_f" width="400" height="250"></canvas>
+            <center>
+              <p>Total # of Scholars: <b>{{$scholars['total']}}</b></p>
+            </center>
+          </div>
+        </div>
+      </div>
+   {{--  </div>
 
-     <div class="row">
-     	<div class="col-md-12">
+     <div class="row"> --}}
+     	<div class="col-md-8">
      		<div class="panel">
      			<div class="panel-body">
-     				<canvas id="scholars" width="400" height="100"></canvas>
+            <center>
+              <label>Sample Data</label>  
+            </center>
+            <hr class="no-margin">
+     				<canvas id="scholars" width="400" height="118"></canvas>
      			</div>
      		</div>
      	</div>
@@ -88,45 +109,67 @@
 @section('scripts')
 
 <script type="text/javascript">
-	var ctx = $('#scholars');
-	var scholars = new Chart(ctx, {
-	    type: 'line',
-	    data: {
-	        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-	        datasets: [
-	        	{
-		            label: 'Male Scholars',
-		            data: [12, 19, 3, 5, 2, 3, 25, 34, 15, 2, 11, 54],
-		            backgroundColor: [
-		                'rgba(51, 153, 255, 0.2)'
-		            ],
-		            borderColor: [
-		                'rgba(0, 76, 153, 1)'
-		            ],
-		            borderWidth: 1.2
-	        	},
-	        	{
-		            label: 'Female Scholars',
-		            data: [10, 3, 4, 6, 9, 3, 16, 42, 18, 11, 5, 30],
-		            backgroundColor: [
-		                'rgba(255, 99, 132, 0.2)'
-		            ],
-		            borderColor: [
-		                'rgba(255, 99, 132, 1)'
-		            ],
-		            borderWidth: 1.2
-	        	}
-	        ]
-	    },
-	    options: {
-	        scales: {
-	            yAxes: [{
-	                ticks: {
-	                    beginAtZero: true
-	                }
-	            }]
-	        }
-	    }
-	});
+	$(document).ready(function(){
+    var ctx = $('#scholars');
+    var scholars = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [
+            {
+              //label: 'Male Scholars',
+              data: [12, 19, 3, 5, 2, 3, 25, 34, 15, 2, 11, 54],
+              backgroundColor: [
+                  'rgba(51, 153, 255, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(0, 76, 153, 1)'
+              ],
+              borderWidth: 1.2
+            },
+            // {
+            //     label: 'Female Scholars',
+            //     data: [10, 3, 4, 6, 9, 3, 16, 42, 18, 11, 5, 30],
+            //     backgroundColor: [
+            //         'rgba(255, 99, 132, 0.2)'
+            //     ],
+            //     borderColor: [
+            //         'rgba(255, 99, 132, 1)'
+            //     ],
+            //     borderWidth: 1.2
+            // }
+          ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    var myPieChart = new Chart($("#scholars_m_f"), {
+        type: 'pie',
+        data: {
+          datasets: [
+            {
+              data: [{{$scholars['male']}}, {{$scholars['female']}}],
+              backgroundColor: [
+                'rgb(60,179,113)',
+                'rgb(255,105,180)',
+              ]
+            }
+          ],
+          labels: [
+              'Male',
+              'Female',
+          ],
+          borderColor: '#ddffee'
+         }
+    });
+  })
 </script>
 @endsection

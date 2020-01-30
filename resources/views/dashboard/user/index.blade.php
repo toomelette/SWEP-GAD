@@ -338,19 +338,7 @@
       });
 
       //Show/Hide Password
-      $("body").on("click",".show_pass", function(){
-        t = $(this);
-        input = $(this).parent("span").siblings('input');
-        
-        if(input.attr("type")=="password"){
-          input.attr("type","text");
-          t.html("<i class='fa fa-eye'></i>");
-        }else{
-          input.attr("type","password");
-          t.html("<i class='fa fa-eye-slash'></i>");
-        }
-
-      })
+      {!! __js::show_hide_password() !!}
 
       //Submit add user form
       $("#add_user_form").submit(function(e){

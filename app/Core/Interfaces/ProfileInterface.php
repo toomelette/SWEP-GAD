@@ -6,10 +6,10 @@ namespace App\Core\Interfaces;
 
 interface ProfileInterface {
 
-	public function updateUsername($request, $slug);
+	public function updateUsername($request);
 
-	public function updatePassword($request, $slug);
+	public function updatePassword($request);
 
-	public function updateColor($request, $slug);
+	public function updateColor($color);
 		
 }

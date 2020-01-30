@@ -6,15 +6,18 @@ use App\Core\BaseClasses\BaseRepository;
 use App\Core\Interfaces\BlockFarmInterface;
 
 use App\Models\BlockFarm;
-
+use App\Core\Interfaces\ActivityLogInterface;
 
 class BlockFarmRepository extends BaseRepository implements BlockFarmInterface {
 	
 
     protected $block_farm;
+    protected $activity_log_repo;
 
-	public function __construct(BlockFarm $block_farm){
+	public function __construct(BlockFarm $block_farm,ActivityLogInterface $activity_log_repo){
+
         $this->block_farm = $block_farm;
+        $this->activity_log_repo = $activity_log_repo;
         parent::__construct();
     }
 
@@ -86,26 +89,16 @@ class BlockFarmRepository extends BaseRepository implements BlockFarmInterface {
         $block_farm->user_updated = $this->auth->user()->user_id;
         $block_farm->save();
 
-        return $block_farm;
+        //LOGGING
+        $activity_log = collect();
+        $activity_log->module = 'block_farm';
+        $activity_log->event = __FUNCTION__;
+        $activity_log->slug = $block_farm->slug;
+        $activity_log->remarks = "New data: ".$block_farm->block_farm_name;
+        $this->activity_log_repo->store($activity_log);
 
-        // $seminar = new Seminar;
-        // $seminar->seminar_id = $this->getSeminarIdInc();
-        // $seminar->slug = $this->str->random(16);
-        // $seminar->title = $request->title;
-        // $seminar->sponsor = $request->sponsor;
-        // $seminar->venue = $request->venue;
-        // $seminar->date_covered_from = $this->__dataType->date_parse($request->date_covered_from);
-        // $seminar->date_covered_to = $this->__dataType->date_parse($request->date_covered_to);
-        // $seminar->attendance_sheet_filename = $filename;
-        // $seminar->created_at = $this->carbon->now();
-        // $seminar->updated_at = $this->carbon->now();
-        // $seminar->ip_created = request()->ip();
-        // $seminar->ip_updated = request()->ip();
-        // $seminar->user_created = $this->auth->user()->user_id;
-        // $seminar->user_updated = $this->auth->user()->user_id;
-        // $seminar->save();
-        
-        // return $seminar;
+
+        return $block_farm;
 
     }
 
@@ -115,6 +108,9 @@ class BlockFarmRepository extends BaseRepository implements BlockFarmInterface {
 
     public function update($request,  $slug){
         $block_farm = $this->findBySlug($slug);
+        $block_farm_old = $block_farm->getOriginal();
+
+
         $block_farm->date = $this->__dataType->date_parse($request->date);
         $block_farm->mill_district = $request->mill_district;
         $block_farm->fund_source = $request->fund_source;
@@ -147,6 +143,17 @@ class BlockFarmRepository extends BaseRepository implements BlockFarmInterface {
         $block_farm->user_updated = $this->auth->user()->user_id;
         $block_farm->save();
         $block_farm->bfEncounteredProblem()->delete();
+
+        //LOGGING
+        $activity_log = collect();
+        $activity_log->module = 'block_farm';
+        $activity_log->event = __FUNCTION__;
+        $activity_log->slug = $block_farm->slug;
+        $activity_log->original = $block_farm_old;
+        $activity_log->obj = $block_farm;
+        $this->activity_log_repo->store($activity_log);
+
+
         return $block_farm;
  
 
@@ -161,6 +168,15 @@ class BlockFarmRepository extends BaseRepository implements BlockFarmInterface {
 
         $block_farm->delete();
         $block_farm->bfEncounteredProblem()->delete();
+
+        //LOGGING
+        $activity_log = collect();
+        $activity_log->module = 'block_farm';
+        $activity_log->event = __FUNCTION__;
+        $activity_log->slug = $block_farm->slug;
+        $activity_log->remarks = "DELETED: ".$block_farm->block_farm_name;
+        $this->activity_log_repo->store($activity_log);
+
 
         return $block_farm;
 

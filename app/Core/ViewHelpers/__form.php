@@ -25,6 +25,26 @@ class __form{
 
     }
 
+    public static function textbox_icon($class, $key, $type, $label, $placeholder, $old_value, $id, $error_first, $extra_attr){
+
+        if($id == ""){
+          $id = "";
+        }else{
+          $id= 'id = "'.$id.'"';
+        }
+
+       return '<div class="form-group col-md-'. $class .'">
+              <label for="'. $key .'">'. $label .'</label>
+              <div class="input-group">  
+                <input class="form-control with-icon" '. $id .' name="'. $key .'" type="'. $type .'" value="'. self::string_value($old_value) .'" placeholder="'. $placeholder .'" '. $extra_attr .'>
+                <span class="input-group-addon"></span>
+              </div></div>';
+
+    }
+
+
+
+
 
     public static function textbox_password_btn($class, $name, $label, $placeholder, $old_value, $id, $error_first, $extra_attr){
         if($name == ""){
