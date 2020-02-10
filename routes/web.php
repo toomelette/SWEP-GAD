@@ -72,9 +72,10 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 	/** BLOCK FARM **/
 	Route::resource('block_farm','BlockFarmController');
 
-
-	/** BLOCK FARM **/
+	/** SCHOLARS **/
 	Route::resource('scholars','ScholarsController');
+
+	Route::resource('mill_district', 'MillDistrictController');
 
 });
 

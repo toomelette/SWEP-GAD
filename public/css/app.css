@@ -227,3 +227,7 @@ ol.example li.placeholder:before {
 .bg-none{
     background-color: #eaeaea;
 }
+
+.name{
+    width: 200px !important
+}

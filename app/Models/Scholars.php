@@ -22,6 +22,7 @@ class Scholars extends Model{
 
         'slug' => '' ,
         'scholar_id' => '' , 
+        'resolution_no' => '',
         'scholarship_applied' => '' , 
         'course_applied' => '' , 
         'school' => '' , 
@@ -81,7 +82,10 @@ class Scholars extends Model{
     
     
 
-
+    public function millDistrict()
+    {
+        return $this->hasOne('App\Models\MillDistrict', 'slug', 'mill_district');
+    }
 
 
 

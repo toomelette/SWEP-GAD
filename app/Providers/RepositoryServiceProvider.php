@@ -37,6 +37,9 @@ class RepositoryServiceProvider extends ServiceProvider {
 
 		$this->app->bind('App\Core\Interfaces\ActivityLogInterface', 'App\Core\Repositories\ActivityLogRepository');
 
+		$this->app->bind('App\Core\Interfaces\MillDistrictInterface', 'App\Core\Repositories\MillDistrictRepository');
+
+		$this->app->bind('App\Core\Interfaces\TempInterface', 'App\Core\Repositories\TempRepository');
 
 	}
 

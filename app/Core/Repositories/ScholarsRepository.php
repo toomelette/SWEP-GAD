@@ -60,17 +60,23 @@ class ScholarsRepository extends BaseRepository implements ScholarsInterface {
                 case 'TESDA':
                     $get = $get->where("scholarship_applied","=","TESDA");
                     break;
-                case 'CHED-U':
-                    $get = $get->where("scholarship_applied","=","CHED-U");
+                case 'CHED':
+                    $get = $get->where("scholarship_applied","=","CHED");
                     break;
-                case 'CHED-G':
-                    $get = $get->where("scholarship_applied","=","CHED-G");
+                case 'SRA':
+                    $get = $get->where("scholarship_applied","=","SRA");
                     break;
                 default:
                     $get = $get;
                     break;
             }
         }
+
+        if(!empty($data->mill_district)){
+            $get = $get->where('mill_district','=',$data->mill_district);
+        }
+
+
         
        
         return $get->latest()->get(['slug','lastname', 'firstname', 'middlename', 'scholarship_applied', 'course_applied','school', 'mill_district', 'birth', 'sex', 'address_province','address_city']);
@@ -80,7 +86,9 @@ class ScholarsRepository extends BaseRepository implements ScholarsInterface {
 
     public function store($request){
         $scholars = New Scholars;
-        $scholars->slug = $this->str->random(32);
+        //$scholars->slug = $this->str->random(32);
+        $scholars->slug = $request->slug;
+        $scholars->resolution_no = $request->resolution_no;
         $scholars->scholarship_applied = $request->scholarship_applied;
         $scholars->course_applied = $request->course_applied;
         $scholars->school = $request->school;
@@ -238,7 +246,10 @@ class ScholarsRepository extends BaseRepository implements ScholarsInterface {
     }
 
 
-
+    public function getAllCourses(){
+        return $this->scholars
+        ->distinct('course_applied')->get();
+    }
 
 
 

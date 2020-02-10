@@ -63,7 +63,7 @@
 <script src="{{asset('template/plugins/DataTables/pdfmake-0.1.36/pdfmake.min.js')}}"></script>
 <script src="{{asset('template/plugins/DataTables/pdfmake-0.1.36/vfs_fonts.js')}}"></script>
 <script src="{{asset('template/plugins/DataTables/Select-1.3.1/js/dataTables.select.min.js')}}"></script>
-
+<script src="{{asset('template/plugins/DataTables/RowGroup-1.1.1/js/dataTables.rowGroup.min.js')}}"></script>
 
 {{-- Moment --}}
 <script type="text/javascript" src="{{asset('template/plugins/moment/moment.js')}}"></script>

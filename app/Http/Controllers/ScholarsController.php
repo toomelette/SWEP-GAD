@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Core\Services\ScholarsService;
+use App\Core\Services\MillDistrictService;
 use App\Http\Requests\Scholar\ScholarsFormRequest;
 
 
@@ -14,12 +15,12 @@ class ScholarsController extends Controller{
 
     protected $scholars;
 
+    protected $mill_district;
 
-
-    public function __construct(ScholarsService $scholars){
+    public function __construct(ScholarsService $scholars,MillDistrictService $mill_district){
 
         $this->scholars = $scholars;
-
+        $this->mill_district = $mill_district;
     }
 
 
@@ -59,11 +60,11 @@ class ScholarsController extends Controller{
                     case 'TESDA':
                         return "TESDA";
                         break;
-                    case 'CHED-U':
-                        return "CHED, Undergraduate";
+                    case 'CHED':
+                        return "CHED";
                         break;
-                    case 'CHED-G':
-                        return "CHED, Graduate";
+                    case 'SRA':
+                        return "SRA";
                         break;
                     default:
                         # code...
@@ -89,7 +90,14 @@ class ScholarsController extends Controller{
                 
             })
             ->editColumn('birth', function($data){
-                return date("F d, Y",strtotime($data->birth));
+                return date("M. d, Y",strtotime($data->birth));
+            })
+            ->editColumn('mill_district', function($data){
+
+                if($data->millDistrict['mill_district'] == ''){
+                    return $data->mill_district;
+                }
+                return $data->millDistrict['mill_district'];
             })
             ->escapeColumns([])
             ->setRowId('slug')
@@ -97,8 +105,24 @@ class ScholarsController extends Controller{
         }
 
 
-        
-       return view('dashboard.scholars.index') ;
+    //return $this->scholars->insert();
+
+    $mill_districts = $this->mill_district->fetchAll();
+    $mills = [];
+
+    $courses = $this->scholars->getAllCourses();
+    foreach ($mill_districts as $key => $mill_district) {
+        if(isset($mills[$mill_district->location][$mill_district->mill_district])){
+            $mills[$mill_district->location][$mill_district->mill_district] = [$mill_district->mill_district];
+        }else{
+            $mills[$mill_district->location][$mill_district->mill_district] = $mill_district->slug;
+        }
+    }
+
+    return view('dashboard.scholars.index')->with([
+        'mill_districts' => $mills,
+        'courses' => $courses
+    ]);
     }
 
     

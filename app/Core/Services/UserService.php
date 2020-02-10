@@ -57,6 +57,14 @@ class UserService extends BaseService{
 
     public function store($request){
 
+        $menu = $request->menu;
+
+        $menu['M10001'] = [];
+        asort($menu);
+
+        $request->merge(['menu' => $menu]);
+
+
         $user = $this->user_repo->store($request);
         $user_id = $user->user_id;
         if(!empty($request->menu)){

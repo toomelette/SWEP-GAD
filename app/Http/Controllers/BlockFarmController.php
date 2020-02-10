@@ -124,4 +124,7 @@ class BlockFarmController extends Controller{
         $block_farm = $this->block_farm->destroy($slug);
         return $block_farm;
     }
+
+    
+    
 }

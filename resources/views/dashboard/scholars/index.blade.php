@@ -36,10 +36,40 @@
                       <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_scholarship filters">
                         <option value="">All</option>
                         <option value="TESDA">TESDA</option>
-                        <option value="CHED-U">CHED-Undergraduate</option>
-                        <option value="CHED-G">CHED-Graduate</option>
+                        <option value="CHED">CHED</option>
+                        <option value="SRA">SRA</option>
                       </select>
                     </div>
+                    {{-- @php 
+                    print('<pre>'.print_r($mill_districts,true).'</pre>')
+                    @endphp --}}
+
+                    <div class="col-md-1 col-sm-2 col-lg-2">
+                      <label>Mill Disrict:</label>
+                      <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_mill_district filters">
+                        <option value="">All</option>
+                        @foreach($mill_districts as $key=> $location)
+                        <optgroup label="{{$key}}">
+                          @foreach($location as $mill_district => $slug)
+                          <option value="{{$slug}}">
+                            {{$mill_district}}
+                          </option>
+                          @endforeach
+                        </optgroup>
+                        
+                        @endforeach
+                      </select>
+                    </div>
+                    {{dd($courses)}}
+                    <div class="col-md-1 col-sm-2 col-lg-2">
+                      <label>Course:</label>
+                      <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_course filters">
+                        <option value="">All</option>
+                        
+                      </select>
+                    </div>
+
+
                   </div>
                 </div>
               </div>
@@ -319,8 +349,10 @@
   function filter_dt(){
     sex = $(".filter_sex").val();
     scholarship_type = $(".filter_scholarship").val();
+    mill_district = $(".filter_mill_district").val();
+
     scholars_tbl.ajax.url(
-      "{{ route('dashboard.scholars.index') }}?sex="+sex+"&scholarship_type="+scholarship_type).load();
+      "{{ route('dashboard.scholars.index') }}?sex="+sex+"&scholarship_type="+scholarship_type+"&mill_district="+mill_district).load();
 
     $(".filters").each(function(index, el) {
       if($(this).val() != ''){
@@ -369,9 +401,8 @@
     "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
     "columnDefs":[
       {
-        // "targets" : 0,
-        // "visible" : false,
-        // "class" : "dt-select"
+        "targets" : 0,
+        "class" : "name"
       },
       {
         "targets" : 5,
@@ -469,7 +500,7 @@
       url :  uri,
       type: 'GET',
       success: function(response){
-
+        
         populate_modal("#show_scholars_modal",response);
       },
       errors: function(response){
@@ -505,7 +536,7 @@
     e.preventDefault();
     id = $(this).attr('data');
     wait_button("#edit_scholars_form");
-    uri = "{{ route('dashboard.scholars.update','slug') }}",
+    uri = "{{ route('dashboard.scholars.update','slug') }}";
     uri = uri.replace('slug',id);
 
     $.ajax({
