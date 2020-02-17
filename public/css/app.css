@@ -228,6 +228,47 @@ ol.example li.placeholder:before {
     background-color: #eaeaea;
 }
 
-.name{
-    width: 200px !important
+.scholars_name{
+    width: 300px !important
+}
+
+.tab-content{
+    background-color: #f7f7f7 !important
+}
+
+.nav-tabs .active a{
+    background-color: #f7f7f7 !important
+}
+
+.dtrg-group td{
+    background-color: #cccccc !important;
+}
+
+.dataTable thead tr{
+    background-color: #605ca8 !important;
+    color: white
+}
+
+
+
+
+
+.modal-backdrop{
+  background-color: #2f2f2f !important
+}
+
+.editable{
+    background-color: #fff !important;
+    width: 137px !important;
+    text-align: center;
+}
+
+.x-tbl>tbody>tr>td:first-child{
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+
+.x-tbl>thead>tr>th:first-child{
+    padding-left: 5px !important;
+    padding-right: 5px !important;
 }

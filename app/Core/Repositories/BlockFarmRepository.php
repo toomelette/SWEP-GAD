@@ -223,7 +223,15 @@ class BlockFarmRepository extends BaseRepository implements BlockFarmInterface {
     }
 
 
+    public function list($query){
+        $block_farm = $this->block_farm->select('slug','block_farm_name')->where('block_farm_name','like','%'.$query.'%')->get();
+        $list = [];
 
+        foreach ($block_farm as $key => $value) {
+            array_push($list, ['id' => $value['slug'], 'name'=> $value['block_farm_name']]);
+        }
+        return $list;
+    }
 
 
 

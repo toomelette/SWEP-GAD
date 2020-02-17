@@ -98,7 +98,7 @@ class __form{
       
        return '<div class="form-group col-md-'. $class .' '. self::error_response($error_has) .'">
                 <label for="'. $key .'">'. $label .'</label>
-                <select name="'. $key .'" id="'. $key .'" class="form-control '. $select2 .'" '. $extra_attr .' style="font-size:15px;">
+                <select name="'. $key .'" class="form-control '. $select2 .'" '. $extra_attr .' style="font-size:15px;">
                   <option value="">Select</option>
                   '. self::static_options($array, $old_value) .'
                 </select>
@@ -106,6 +106,39 @@ class __form{
               </div>';
     }
 
+
+    public static function select_static_group($class, $key, $label, $old_value, $array, $error_has, $error_first, $select2, $extra_attr){
+
+      $select = '<div class="form-group col-md-'. $class .' 
+                  '. self::error_response($error_has) .'">
+                  <label for="'. $key .'">'. $label .'</label>
+                  <select name="'. $key .'" id="'. $key .'" class="form-control '. $select2 .'" '. $extra_attr .' style="font-size:15px;">
+                  <option value="">Select</option>';
+      foreach ($array as $key => $value) {
+        if(is_array($value)){
+          $select = $select.'<optgroup label="'.$key.'">';
+            foreach ($value as $key2 => $value2) {
+              $select = $select. self::optionAddSelected($key2, $value2, $old_value);
+            }
+          $select = $select.'</optgroup>';
+        }else{
+          $select = $select. self::optionAddSelected($key, $value, $old_value);
+        }
+      }
+      
+      $select = $select.'</select>
+                  '. self::error_message($error_has, $error_first) .'
+                </div>';
+       return $select;
+    }
+
+    public static function optionAddSelected($optval, $text, $old_value){
+      if($optval == $old_value){
+        return '<option value="'.$optval.'" selected>'.$text.'</option>';
+      }else{
+        return '<option value="'.$optval.'">'.$text.'</option>';
+      }
+    }
 
     public static function checkbox($class, $name, $label, $all_options, $checked_options, $extra_attr){
       $options_html = '';

@@ -7,6 +7,7 @@ use App\Core\Services\BlockFarmService;
 use App\Core\Services\BlockFarmProblemService;
 use App\Core\Services\BFEncounteredProblemService;
 use App\Http\Requests\BlockFarm\BlockFarmFormRequest;
+use App\Core\Services\MillDistrictService;
 use Datatables;
 
 
@@ -20,11 +21,14 @@ class BlockFarmController extends Controller{
 
     protected $block_farm;
     protected $block_farm_problem;
+    protected $mill_district;
 
-    public function __construct(BlockFarmService $block_farm, BlockFarmProblemService $block_farm_problem, BFEncounteredProblemService $bf_encountered_problem){
+    public function __construct(BlockFarmService $block_farm, BlockFarmProblemService $block_farm_problem, BFEncounteredProblemService $bf_encountered_problem,MillDistrictService $mill_district){
+
     	$this->block_farm = $block_farm;
     	$this->block_farm_problem = $block_farm_problem;
         $this->bf_encountered_problem = $bf_encountered_problem;
+        $this->mill_district = $mill_district;
     }
 
     public function create(){
@@ -92,7 +96,9 @@ class BlockFarmController extends Controller{
 
     	$data = $problems_array;
 
-    	return view("dashboard.block_farm.index",compact('data'));
+    	return view("dashboard.block_farm.index",compact('data'))->with([
+            'mill_districts_list' => $this->mill_district->mills()
+        ]);
 
     }
 
@@ -125,6 +131,6 @@ class BlockFarmController extends Controller{
         return $block_farm;
     }
 
-    
+  
     
 }

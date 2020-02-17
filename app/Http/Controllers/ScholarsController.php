@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 use App\Core\Services\ScholarsService;
 use App\Core\Services\MillDistrictService;
 use App\Http\Requests\Scholar\ScholarsFormRequest;
-
+use Yajra\DataTables\Html\Builder;
 
 
 
@@ -25,7 +25,12 @@ class ScholarsController extends Controller{
 
 
     
-    public function index(){
+    public function index(Builder $builder){
+        $html = $builder->parameters([
+            'rowGroup'=> [
+                'dataSrc' => ['mill_district']
+            ]
+        ]);
 
         if(request()->ajax())
         {   
@@ -52,8 +57,6 @@ class ScholarsController extends Controller{
                                 '.$data->address_city.', '.$data->address_province.'
                             </div>
                         </div>';
-
-
             })->editColumn('scholarship_applied',function($data){
 
                 switch ($data->scholarship_applied) {
@@ -107,24 +110,41 @@ class ScholarsController extends Controller{
 
     //return $this->scholars->insert();
 
-    $mill_districts = $this->mill_district->fetchAll();
-    $mills = [];
+       
+        $mills_grp = $this->mill_district->mills_grp();
 
-    $courses = $this->scholars->getAllCourses();
-    foreach ($mill_districts as $key => $mill_district) {
-        if(isset($mills[$mill_district->location][$mill_district->mill_district])){
-            $mills[$mill_district->location][$mill_district->mill_district] = [$mill_district->mill_district];
-        }else{
-            $mills[$mill_district->location][$mill_district->mill_district] = $mill_district->slug;
+        $courses = $this->scholars->getAllCourses();
+    
+
+
+        $c = [ 
+                "Bachelor of Science"=>[],
+                "Master of Science"=>[],
+                "Other"=>[],
+            ];
+
+        foreach ($courses as $key => $course) {
+            if(
+                substr($course, 0,2) == "MS" || substr($course, 0,17) == "Master of Science"
+            ){
+                array_push($c["Master of Science"], $course);
+            }elseif(
+                substr($course, 0,2) == "BS" || substr($course, 0,19) == "Bachelor of Science"
+            ){
+                array_push($c["Bachelor of Science"], $course);
+            }else{
+                array_push($c["Other"], $course);
+            }
         }
+
+        return view('dashboard.scholars.index', compact('html'))->with([
+            'mill_districts' => $mills_grp,
+            'mill_districts_list' => $this->mill_district->mills(),
+            'courses' => $c
+        ]);
     }
 
-    return view('dashboard.scholars.index')->with([
-        'mill_districts' => $mills,
-        'courses' => $courses
-    ]);
-    }
-
+   
     
 
     public function create(){
@@ -153,7 +173,13 @@ class ScholarsController extends Controller{
     }
 
     public function edit($slug){
-        return $this->scholars->edit($slug);
+        $scholars = $this->scholars->edit($slug);
+        $mills = $this->mill_district->mills();
+        return view('dashboard.scholars.edit')
+        ->with([
+            'scholars'=>$scholars,
+            'mill_districts_list' => $mills
+        ]);;
     }
 
 

@@ -69,10 +69,17 @@ class BlockFarmService extends BaseService{
         return $this->block_farm_repo->fetchTable();
     }
 
+    public function list($query){
+        return $this->block_farm_repo->list($query);
+    }
     // public function __construct(BlockFarmInterface $block_farm_repo){
     //     $this->block_farm_repo = $block_farm_repo;
     //     parent::__construct();
     // }
+
+    public function get($slug){
+        return $this->block_farm_repo->findBySlug($slug);
+    }
 
     
 }

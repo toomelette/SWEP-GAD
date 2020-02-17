@@ -60,12 +60,26 @@
                         @endforeach
                       </select>
                     </div>
-                    {{dd($courses)}}
+
+
+
+               
                     <div class="col-md-1 col-sm-2 col-lg-2">
                       <label>Course:</label>
                       <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_course filters">
                         <option value="">All</option>
-                        
+                        @if(isset($courses))
+                          @php
+                            // $courses->sortBy('course_applied')
+                          @endphp
+                          @foreach($courses as $key => $bs_ms)
+                            <optgroup label="{{$key}}">
+                              @foreach($bs_ms as $course)
+                                <option value="{{$course}}">{{$course}}</option>
+                              @endforeach
+                            </optgroup>
+                          @endforeach
+                        @endif
                       </select>
                     </div>
 
@@ -128,192 +142,223 @@
             <span aria-hidden="true">×</span></button>
             <h4 class="modal-title">New Scholar</h4>
           </div>
-          <div class="modal-body">            
-              <div class="row">
-                {!! __form::select_static(
-                    '3 scholarship_applied', 'scholarship_applied', 'Scholarship applied for: *', '' , [
-                      'TESDA' => 'TESDA', 
-                      'CHED, Undergraduate Degree' => 'CHED-U', 
-                      'CHED, Graduate Degree' => 'CHED-G', 
-                    ], '', '', '', ''
-                ) !!}
-
-                {!! __form::textbox(
-                  '5 course_applied', 'course_applied', 'text', 'Title of course applied for: *', 'Title of course applied for', '', '', '', ''
-                ) !!}
-
-                {!! __form::textbox(
-                  '4 school', 'school', 'text', 'Name of State University/College: *', 'Name of State University/College', '', '', '', ''
-                ) !!}
-
-              </div>
-              
-              <p class="page-header-sm text-info">
-                Information about the scholar
-              </p>
-
-              <div class="row">
-                {!! __form::textbox(
-                  '4 firstname', 'firstname', 'text', 'First Name *', 'First Name', '', '', '', ''
-                ) !!}
-
-                {!! __form::textbox(
-                  '4 middlename', 'middlename', 'text', 'Middle Name *', 'Middle Name', '', '', '', ''
-                ) !!}
-
-                {!! __form::textbox(
-                  '4 lastname', 'lastname', 'text', 'Last Name *', 'Last Name', '', '', '', ''
-                ) !!}
-              </div>
-
-              <div class="row">
-                {!! __form::textbox(
-                  '4 mill_district', 'mill_district', 'text', 'Mill District *', 'Mill District', '', '', '', ''
-                ) !!}
-
-
-                {!! __form::datepicker(
-                  '3 birth', 'birth',  'Birthday *', old('date_covered_from') ? old('date_covered_from') : Carbon::now()->format('m/d/Y'), '', ''
-                ) !!}
-
-
-                {!! __form::select_static(
-                  '2 sex', 'sex', 'Sex: *', '' , [
-                    'Male' => 'MALE', 
-                    'Female' => 'FEMALE', 
+          <div class="modal-body">
+            <div class="row">
+              {!! __form::select_static(
+                  '3 scholarship_applied', 'scholarship_applied', 'Scholarship applied for: *', '' , [
+                    'TESDA' => 'TESDA', 
+                    'CHED' => 'CHED', 
+                    'SRA' => 'SRA', 
                   ], '', '', '', ''
-                ) !!}
+              ) !!}
 
-                {!! __form::select_static(
-                  '3 civil_status', 'civil_status', 'Civil Status*', old('is_menu'), [
-                    'Single' => 'Single',
-                    'Married' => 'Married',
-                    'Divorced' => 'Divorced',
-                    'Separated' => 'Separated',
-                    'Widowed' => 'Widowed'               
-                  ], $errors->has('is_menu'), $errors->first('is_menu'), '', ''
-                ) !!}
-              </div>
+              {!! __form::textbox(
+                '5 course_applied', 'course_applied', 'text', 'Title of course applied for: *', 'Title of course applied for', '', '', '', ''
+              ) !!}
 
-              <p class="page-header-sm text-info">
-                Address of the scholar
-              </p>
+              {!! __form::textbox(
+                '4 school', 'school', 'text', 'Name of State University/College: *', 'Name of State University/College', '', '', '', ''
+              ) !!}
 
-              <div class="row">
-                {!! __form::textbox(
-                  '3 address_province', 'address_province', 'text', 'Province *', 'Province', '', '', '', ''
-                ) !!}
+            </div>
 
-                {!! __form::textbox(
-                  '3 address_city', 'address_city', 'text', 'City/Municipality *', 'City/Municipality', '', '', '', ''
-                ) !!}
 
-                {!! __form::textbox(
-                  '6 address_specific', 'address_specific', 'text', 'Detailed address *', 'Detailed address', '', '', '', ''
-                ) !!}
+            <div class="nav-tabs-custom">
+              <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Personal Information *</a></li>
+                <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">Occupation and Relatives</a></li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane active" id="tab_1">
+                  <p class="page-header-sm text-info">
+                    Information about the scholar
+                  </p>
 
-              </div>
-                
+                  <div class="row">
+                    {!! __form::textbox(
+                      '4 firstname', 'firstname', 'text', 'First Name *', 'First Name', '', '', '', ''
+                    ) !!}
 
-              <div class="row">
+                    {!! __form::textbox(
+                      '4 middlename', 'middlename', 'text', 'Middle Name *', 'Middle Name', '', '', '', ''
+                    ) !!}
 
-                {!! __form::textbox(
-                  '5 address_no_years', 'address_no_years', 'number', 'Number of years living in present address *', 'Number of years living in present address', '', '', '', 'min="0"'
-                ) !!}
-
-                {!! __form::textbox(
-                  '3 phone', 'phone', 'text', 'Phone No. *', 'Phone No.', '', '', '', ''
-                ) !!}
-
-                {!! __form::textbox(
-                  '4 citizenship', 'citizenship', 'text', 'Citizenship *', 'Citizenship', '', '', '', ''
-                ) !!}
-
-              </div>
-
-              <p class="page-header-sm text-info">
-                Occupation of the scholar (Leave blank if not applicable)
-              </p>
-                
-              <div class="row">
-                {!! __form::textbox(
-                  '5 occupation', 'occupation', 'text', 'Occupation', 'Occupation', '', '', '', ''
-                ) !!}
-
-                {!! __form::textbox(
-                  '7 office_name', 'office_name', 'text', 'Name of Company', 'Name of Company', '', '', '', ''
-                ) !!}
-
-                {!! __form::textbox(
-                  '7 office_address', 'office_address', 'text', 'Office Address', 'Office Address', '', '', '', ''
-                ) !!}
-
-                {!! __form::textbox(
-                  '5 office_phone', 'office_phone', 'text', 'Phone No.', 'Phone No.', '', '', '', ''
-                ) !!}
-              </div>
-              
-              <p class="page-header-sm text-info">
-                Information of Scholar's Immediate relative
-              </p>
-
-              
-                <div class="row">
-
-                  <div class="col-md-4">
-                    <div class="panel panel-default">
-                      <div class="panel-heading">
-                        Mother
-                      </div>
-                      <div class="panel-body">
-                        <div class="row">
-                          {!! __form::textbox(
-                          '12 father_name', 'mother_name', 'text', "Mother's Name", "Mother's Name", '', '', '', ''
-                          ) !!}
-                          {!! __form::textbox(
-                          '12 mother_phone', 'mother_phone', 'text', "Phone No.", "Phone No.", '', '', '', ''
-                          ) !!}
-                        </div>
-                      </div>
-                    </div>
+                    {!! __form::textbox(
+                      '4 lastname', 'lastname', 'text', 'Last Name *', 'Last Name', '', '', '', ''
+                    ) !!}
                   </div>
 
-                  <div class="col-md-4">
-                    <div class="panel panel-default">
-                      <div class="panel-heading">
-                        Father
-                      </div>
-                      <div class="panel-body">
-                        <div class="row">
-                          {!! __form::textbox(
-                          '12 father_name', 'father_name', 'text', "Father's Name", "Father's Name", '', '', '', ''
-                          ) !!}
-                          {!! __form::textbox(
-                          '12 father_phone', 'father_phone', 'text', "Phone No.", "Phone No.", '', '', '', ''
-                          ) !!}
-                        </div>
-                      </div>
-                    </div>
+                  <div class="row">
+
+                    {!! __form::select_static(
+                      '4 mill_district', 'mill_district', 'Mill District: *', '' , $mill_districts_list , '', '', '', ''
+                    ) !!}
+
+
+                   {{--  {!! __form::textbox(
+                      '4 mill_district', 'mill_district', 'text', 'Mill District *', 'Mill District', '', '', '', ''
+                    ) !!} --}}
+
+
+                    {!! __form::datepicker(
+                      '3 birth', 'birth',  'Birthday *', old('date_covered_from') ? old('date_covered_from') : Carbon::now()->format('m/d/Y'), '', ''
+                    ) !!}
+
+
+                    {!! __form::select_static(
+                      '2 sex', 'sex', 'Sex: *', '' , [
+                        'Male' => 'MALE', 
+                        'Female' => 'FEMALE', 
+                      ], '', '', '', ''
+                    ) !!}
+
+                    {!! __form::select_static(
+                      '3 civil_status', 'civil_status', 'Civil Status*', old('is_menu'), [
+                        'Single' => 'Single',
+                        'Married' => 'Married',
+                        'Divorced' => 'Divorced',
+                        'Separated' => 'Separated',
+                        'Widowed' => 'Widowed'               
+                      ], $errors->has('is_menu'), $errors->first('is_menu'), '', ''
+                    ) !!}
                   </div>
 
-                  <div class="col-md-4">
-                    <div class="panel panel-default">
-                      <div class="panel-heading">
-                        Spouse (Leave blank if N/A)
-                      </div>
-                      <div class="panel-body">
-                        <div class="row">
-                          {!! __form::textbox(
-                          '12 spouse_name', 'spouse_name', 'text', "Name of Spouse", "Name of Spouse", '', '', '', ''
-                          ) !!}
-                          {!! __form::textbox(
-                          '12 spouse_phone', 'spouse_phone', 'text', "Phone No.", "Phone No.", '', '', '', ''
-                          ) !!}
-                        </div>
-                      </div>
-                    </div>
+                  <p class="page-header-sm text-info">
+                    Address of the scholar
+                  </p>
+
+                  <div class="row">
+                    {!! __form::textbox(
+                      '3 address_province', 'address_province', 'text', 'Province *', 'Province', '', '', '', ''
+                    ) !!}
+
+                    {!! __form::textbox(
+                      '3 address_city', 'address_city', 'text', 'City/Municipality *', 'City/Municipality', '', '', '', ''
+                    ) !!}
+
+                    {!! __form::textbox(
+                      '6 address_specific', 'address_specific', 'text', 'Detailed address *', 'Detailed address', '', '', '', ''
+                    ) !!}
+
                   </div>
+
+                  <div class="row">
+                      {!! __form::textbox(
+                        '5 address_no_years', 'address_no_years', 'number', 'Number of years living in present address *', 'Number of years living in present address', '', '', '', 'min="0"'
+                      ) !!}
+
+                      {!! __form::textbox(
+                        '3 phone', 'phone', 'text', 'Phone No. *', 'Phone No.', '', '', '', ''
+                      ) !!}
+
+                      {!! __form::textbox(
+                        '4 citizenship', 'citizenship', 'text', 'Citizenship *', 'Citizenship', '', '', '', ''
+                      ) !!}
+                    </div>
                 </div>
+                  <!-- /.tab-pane -->
+                  <div class="tab-pane" id="tab_2">
+                    <p class="page-header-sm text-info">
+                      Occupation of the scholar (Leave blank if not applicable)
+                    </p>
+                      
+                    <div class="row">
+                      {!! __form::textbox(
+                        '5 occupation', 'occupation', 'text', 'Occupation', 'Occupation', '', '', '', ''
+                      ) !!}
+
+                      {!! __form::textbox(
+                        '7 office_name', 'office_name', 'text', 'Name of Company', 'Name of Company', '', '', '', ''
+                      ) !!}
+
+                      {!! __form::textbox(
+                        '7 office_address', 'office_address', 'text', 'Office Address', 'Office Address', '', '', '', ''
+                      ) !!}
+
+                      {!! __form::textbox(
+                        '5 office_phone', 'office_phone', 'text', 'Phone No.', 'Phone No.', '', '', '', ''
+                      ) !!}
+                    </div>
+                    
+                    <p class="page-header-sm text-info">
+                      Information of Scholar's Immediate relative
+                    </p>
+
+                    
+                      <div class="row">
+
+                        <div class="col-md-4">
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              Mother
+                            </div>
+                            <div class="panel-body">
+                              <div class="row">
+                                {!! __form::textbox(
+                                '12 father_name', 'mother_name', 'text', "Mother's Name", "Mother's Name", '', '', '', ''
+                                ) !!}
+                                {!! __form::textbox(
+                                '12 mother_phone', 'mother_phone', 'text', "Phone No.", "Phone No.", '', '', '', ''
+                                ) !!}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-4">
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              Father
+                            </div>
+                            <div class="panel-body">
+                              <div class="row">
+                                {!! __form::textbox(
+                                '12 father_name', 'father_name', 'text', "Father's Name", "Father's Name", '', '', '', ''
+                                ) !!}
+                                {!! __form::textbox(
+                                '12 father_phone', 'father_phone', 'text', "Phone No.", "Phone No.", '', '', '', ''
+                                ) !!}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-4">
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              Spouse (Leave blank if N/A)
+                            </div>
+                            <div class="panel-body">
+                              <div class="row">
+                                {!! __form::textbox(
+                                '12 spouse_name', 'spouse_name', 'text', "Name of Spouse", "Name of Spouse", '', '', '', ''
+                                ) !!}
+                                {!! __form::textbox(
+                                '12 spouse_phone', 'spouse_phone', 'text', "Phone No.", "Phone No.", '', '', '', ''
+                                ) !!}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                  <!-- /.tab-pane -->
+
+                  <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+              </div>
+
+
+
+              
+              
+              
+                
+
+              
+
+              
           </div>
 
           <div class="modal-footer">
@@ -350,9 +395,9 @@
     sex = $(".filter_sex").val();
     scholarship_type = $(".filter_scholarship").val();
     mill_district = $(".filter_mill_district").val();
-
+    course = $(".filter_course").val();
     scholars_tbl.ajax.url(
-      "{{ route('dashboard.scholars.index') }}?sex="+sex+"&scholarship_type="+scholarship_type+"&mill_district="+mill_district).load();
+      "{{ route('dashboard.scholars.index') }}?sex="+sex+"&scholarship_type="+scholarship_type+"&mill_district="+mill_district+"&course="+course).load();
 
     $(".filters").each(function(index, el) {
       if($(this).val() != ''){
@@ -371,10 +416,7 @@
   {!! __js::modal_loader() !!}
   active = '';
 
-  $('#scholars_table')
-    .on('preXhr.dt', function ( e, settings, data ) {
-        Pace.restart();
-    } )
+
  
   //-----DATATABLES-----//
   //Initialize DataTable
@@ -402,7 +444,7 @@
     "columnDefs":[
       {
         "targets" : 0,
-        "class" : "name"
+        "class" : "scholars_name"
       },
       {
         "targets" : 5,
@@ -415,8 +457,8 @@
         "class" : 'action'
       },
       {
-        "targets": 4, 
-        // "render" : $.fn.dataTable.render.moment( 'MMMM D, YYYY' )
+        "targets": 1, 
+        "visible": false
       }
     ],
     "responsive": false,
@@ -424,10 +466,6 @@
         $('#tbl_loader').fadeOut(function(){
           $("#scholars_table_container").fadeIn();
         });
-
-        
-
-
       },
     "language": 
       {          
@@ -439,7 +477,11 @@
       if(active != ''){
          $("#scholars_table #"+active).addClass('success');
       }
-    }
+    },
+    'rowGroup': {
+        'dataSrc': 'mill_district'
+    },
+    "order": [[ 1, "asc" ], [0, 'asc']]
   })
 
 

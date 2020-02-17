@@ -88,5 +88,12 @@
 {{-- Draggable --}}
 <script type="text/javascript" src="{{asset('template/plugins/jquery-sortable/source/js/jquery-sortable-min.js')}}"></script>
 
+{{--  EXCEL EDITABLE --}}
+<script type="text/javascript" src="{{asset('template/plugins/excel-editable/dist/js/excel-table.js')}}"></script>
 
+{{--  TYPEAHEAD --}}
+<script type="text/javascript" src="{{asset('template/plugins/typeahead/js/bootstrap-typeahead.min.js')}}"></script>
 
+{{-- BS MODAL --}}
+{{-- <script type="text/javascript" src="{{asset('template/plugins/bootstrap-modal/js/bootstrap-modal.js')}}"></script>
+<script type="text/javascript" src="{{asset('template/plugins/bootstrap-modal/js/bootstrap-modalmanager.js')}}"></script> --}}

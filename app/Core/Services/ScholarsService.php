@@ -136,8 +136,8 @@ class ScholarsService extends BaseService{
 
     public function edit($slug){
 
-        $scholars = $this->scholars_repo->findBySlug($slug);
-        return view('dashboard.scholars.edit')->with(['scholars'=>$scholars]);
+        return $scholars = $this->scholars_repo->findBySlug($slug);
+         
 
     }
 

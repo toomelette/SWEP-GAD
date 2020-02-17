@@ -11,7 +11,7 @@ class Temp extends Model{
 
     
 
-    protected $table = 'temp';
+    protected $table = 'sra';
 
     public $timestamps = false;
 

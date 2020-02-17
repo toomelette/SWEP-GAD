@@ -1,4 +1,3 @@
-
 <link type="text/css" rel="stylesheet" href="{{asset('template/bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
 
 <link type="text/css" rel="stylesheet" href="{{asset('template/bower_components/font-awesome/css/font-awesome.min.css')}}">
@@ -26,7 +25,7 @@
 <link type="text/css" rel="stylesheet" href="{{ asset('template/plugins/bootstrap-fileinput/css/fileinput.min.css') }}">
 
 <link type="text/css" rel="stylesheet" href="{{ asset('css/app.css') }}">
-
+<link type="text/css" rel="stylesheet" href="{{ asset('css/icomoon/style.css') }}">
 <link type="text/css" rel="stylesheet" href="{{ asset('css/font.css') }}">
 
 
@@ -49,3 +48,13 @@
 
 {{-- PACE --}}
 <link rel="stylesheet" href="{{asset('template/plugins/pace/pace.min.css')}}">
+
+{{-- EXCEL EDITABLE --}}
+<link rel="stylesheet" href="{{asset('template/plugins/excel-editable/dist/css/excel-table.css')}}">
+
+
+
+{{-- BS MODAL --}}
+{{-- <link rel="stylesheet" href="{{asset('template/plugins/bootstrap-modal/css/bootstrap-modal.css')}}">
+ --}}
+

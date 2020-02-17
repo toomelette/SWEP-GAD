@@ -1,3 +1,13 @@
+<?php
+
+  $table_sessions = [ Session::get('SEMINAR_UPDATE_SUCCESS_SLUG') ];
+
+?>
+
+
+
+
+
 @extends('layouts.admin-master')
 
 @section('content')
@@ -99,6 +109,8 @@
             <ul class="nav nav-tabs">
               <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Enrolee's Information</a></li>
               <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">Production Data</a></li>
+              <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="false">Members</a></li>
+
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="tab_1">
@@ -325,6 +337,34 @@
                   </div>
                 </div>
               </div>
+
+              <div class="tab-pane" id="tab_3">
+                <button class="btn bg-purple btn-sm pull-right" type="button" data-toggle="modal" data-target="#add_member_modal" > <i class="fa fa-plus"></i> Add member</button>
+
+                <div class="row">
+                  <br>
+                  <div class="col-md-12" style="margin-top: 15px">
+                    <table class="table table-bordered table-striped table-hover" id="bf_members_table" style="width: 100% !important; font-size: 14px">
+                      <thead>
+                        <tr>
+                          <th>Data</th>
+                          <th>Fullname</th>
+                          <th>Bday</th> 
+                          <th class="th-10">Sex</th>
+                          <th class="action">Civil Status</th>
+                          <th>Address</th>
+                          <th>Contact</th>
+                          <th class="action">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>   
+                      </tbody>
+                    </table>  
+                  </div>
+                </div>
+                <button class="btn btn-primary" type="button" id="get_data">Get data</button>
+
+              </div>
             </div>
           </div>
         </div>
@@ -337,6 +377,138 @@
 
   </div>
 </div>
+
+<div id="add_member_modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form id="add_member_form">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Add member to Block Farm</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            {!! __form::textbox(
+              '4 lastname', 'lastname', 'text', 'Last Name *', 'Last Name', '' ,'' , '', ''
+            ) !!}
+
+            {!! __form::textbox(
+              '4 firstname', 'firstname', 'text', 'First Name *', 'First Name', '' ,'' , '', ''
+            ) !!}
+
+            {!! __form::textbox(
+              '4 middlename', 'middlename', 'text', 'Middle Name *', 'Middle Name', '' ,'' , '', ''
+            ) !!}
+
+            {!! __form::datepicker(
+              '4 bday', 'bday',  'Birthday *', old('date_covered_from') ? old('date_covered_from') : Carbon::now()->format('m/d/Y'), $errors->has('date_covered_from'), $errors->first('date_covered_from')
+            ) !!}
+
+
+
+            {!! __form::select_static(
+              '4 sex', 'sex', 'Sex *', old('is_menu'), [
+                'MALE' => 'MALE',
+                'FEMALE' => 'FEMALE'          
+              ], $errors->has('is_menu'), $errors->first('is_menu'), '', ''
+            ) !!}
+
+            {!! __form::select_static(
+              '4 civil_status', 'civil_status', 'Civil Status*', old('is_menu'), [
+                'Single' => 'Single',
+                'Married' => 'Married',
+                'Divorced' => 'Divorced',
+                'Separated' => 'Separated',
+                'Widowed' => 'Widowed'               
+              ], $errors->has('is_menu'), $errors->first('is_menu'), '', ''
+            ) !!}
+
+            {!! __form::textbox(
+              '8 address', 'address', 'text', 'Address *', 'Address', '' ,'' , '', ''
+            ) !!}
+
+            {!! __form::textbox(
+              '4 phone', 'phone', 'text', 'Contact no. *', 'Contact no.', '' ,'' , '', ''
+            ) !!}
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+        </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+
+<div id="edit_member_modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form id="edit_member_form">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Edit</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            {!! __form::textbox(
+              '4 lastname', 'lastname', 'text', 'Last Name *', 'Last Name', '' ,'' , '', ''
+            ) !!}
+
+            {!! __form::textbox(
+              '4 firstname', 'firstname', 'text', 'First Name *', 'First Name', '' ,'' , '', ''
+            ) !!}
+
+            {!! __form::textbox(
+              '4 middlename', 'middlename', 'text', 'Middle Name *', 'Middle Name', '' ,'' , '', ''
+            ) !!}
+
+            {!! __form::datepicker(
+              '4 bday', 'bday',  'Birthday *', old('date_covered_from') ? old('date_covered_from') : Carbon::now()->format('m/d/Y'), $errors->has('date_covered_from'), $errors->first('date_covered_from')
+            ) !!}
+
+
+
+            {!! __form::select_static(
+              '4 sex', 'sex', 'Sex *', old('is_menu'), [
+                'MALE' => 'MALE',
+                'FEMALE' => 'FEMALE'          
+              ], $errors->has('is_menu'), $errors->first('is_menu'), '', ''
+            ) !!}
+
+            {!! __form::select_static(
+              '4 civil_status', 'civil_status', 'Civil Status*', old('is_menu'), [
+                'Single' => 'Single',
+                'Married' => 'Married',
+                'Divorced' => 'Divorced',
+                'Separated' => 'Separated',
+                'Widowed' => 'Widowed'               
+              ], $errors->has('is_menu'), $errors->first('is_menu'), '', ''
+            ) !!}
+
+            {!! __form::textbox(
+              '8 address', 'address', 'text', 'Address *', 'Address', '' ,'' , '', ''
+            ) !!}
+
+            {!! __form::textbox(
+              '4 phone', 'phone', 'text', 'Contact no. *', 'Contact no.', '' ,'' , '', ''
+            ) !!}
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+        </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+
+
 
 {!! __html::blank_modal('show_block_farm_modal','lg') !!}
 {!! __html::blank_modal('edit_block_farm_modal','lg') !!}
@@ -424,6 +596,14 @@
       }
     })
 
+    bf_members_tbl = $("#bf_members_table").DataTable({
+      "columnDefs":[
+        {
+          "targets" : 0,
+          "visible" : false
+        }
+      ]
+    });
 
     //Search Bar Styling
     style_datatable('#block_farm_tbl');
@@ -435,6 +615,91 @@
             block_farm_tbl.search(this.value).draw();
         }
     });
+
+  //Submit Member
+
+  $("#add_member_form").submit(function(e) {
+    e.preventDefault();
+    form = $("#add_member_form").serializeArray();
+    data = {};
+    $.each(form, function(i,item){
+      data[item.name] = item.value;
+    })
+    member_id ='member-'+makeid(16);
+    var memberNode = bf_members_tbl
+    .row.add( [ 
+      {
+        "data": {
+          'id' : member_id,
+          'lastname': data.lastname,
+          'firstname': data.firstname,
+          'middlename': data.middlename,
+          'bday': data.bday,
+          'sex': data.sex,
+          'civil_status' :data.civil_status,
+          'address' : data.address,
+          'data': data.phone
+        }
+      }, 
+      data.lastname+", "+data.firstname+" "+data.middlename.charAt(0)+".",
+      data.bday,
+      data.sex, 
+      data.civil_status,
+      data.address, 
+      data.phone,
+      '<div class="btn-group">'+
+          '<button type="button" data="'+member_id+'" class="btn btn-default btn-sm edit_member_btn" data-toggle="modal" data-target="" title="" data-placement="top" data-original-title="Edit">'+
+              '<i class="fa fa-edit"></i>'+
+          '</button>'+
+          '<button type="button" data="" class="btn btn-sm btn-danger remove_member " data-toggle="tooltip" title="" data-placement="top" data-original-title="Delete">'+
+              '<i class="fa fa-trash"></i>'+
+          '</button>'+
+      '</div>',
+    ] )
+    .draw()
+    .node().id = member_id;
+
+    $( memberNode )
+    .css( 'color', 'red' )
+    .animate( { color: 'black' } );
+
+    console.log(memberNode);
+  });
+
+
+  $("#get_data").click(function(){
+    alert();
+    console.log(bf_members_tbl.rows().data());
+  })
+
+  $("body").on("click",".edit_member_btn", function(){
+    m_id = $(this).attr('data');
+    d = bf_members_tbl.rows().data();
+    edit_data = {};
+    $.each(d, function(a, b){
+      if(b[0]['data']['id'] == m_id){
+        edit_data = b[0]['data'];
+      }
+      edit_modal = $("#edit_member_modal");
+
+    $.each(edit_data, function(c, d){
+      $("#edit_member_form").find("input[name='"+c+"']").val(d);
+      $("."+c+" option[value='"+d+"']").attr('selected','selected');
+    })
+      edit_modal.modal('show');
+    });
+
+    console.log(edit_data);
+  })
+
+  $('body').on( 'click', '.remove_member', function () {
+    bf_members_tbl
+      .row( $(this).parents('tr') )
+      .remove()
+      .draw();
+  });
+
+
 
   //Submit Add Block Farm Form
   $("#add_block_farm_form").submit(function(e){

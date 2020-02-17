@@ -41,6 +41,10 @@ class RepositoryServiceProvider extends ServiceProvider {
 
 		$this->app->bind('App\Core\Interfaces\TempInterface', 'App\Core\Repositories\TempRepository');
 
+		$this->app->bind('App\Core\Interfaces\BFMemberInterface', 'App\Core\Repositories\BFMemberRepository');
+
+		$this->app->bind('App\Core\Interfaces\BFMemberFamilyInterface', 'App\Core\Repositories\BFMemberFamilyRepository');
+
 	}
 
 

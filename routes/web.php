@@ -71,6 +71,8 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 
 	/** BLOCK FARM **/
 	Route::resource('block_farm','BlockFarmController');
+	Route::resource('bf_member','BFMemberController');
+
 
 	/** SCHOLARS **/
 	Route::resource('scholars','ScholarsController');

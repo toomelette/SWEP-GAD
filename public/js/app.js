@@ -193,7 +193,7 @@ function notify(message, type){
 
 
 function unmark_required(target_form){
-    $(target_form + " .has-error").each(function(){
+    $(target_form + " .has-error:not(.except)").each(function(){
       $(this).removeClass('has-error');
       $(this).children("span").remove();
     });
@@ -240,6 +240,7 @@ function errored(target_form, type, response){
     unwait_button(target_form,type);
     unmark_required(target_form);
     mark_required(target_form,response);
+    notify("Please fill out required fields", "warning");
 }
 
 
@@ -336,4 +337,12 @@ function confirm(target_route, slug){
 
 
 
-
+function makeid(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}

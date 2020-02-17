@@ -76,6 +76,10 @@ class ScholarsRepository extends BaseRepository implements ScholarsInterface {
             $get = $get->where('mill_district','=',$data->mill_district);
         }
 
+        if(!empty($data->course)){
+            $get = $get->where('course_applied','=',$data->course);
+        }
+
 
         
        
@@ -86,8 +90,8 @@ class ScholarsRepository extends BaseRepository implements ScholarsInterface {
 
     public function store($request){
         $scholars = New Scholars;
-        //$scholars->slug = $this->str->random(32);
-        $scholars->slug = $request->slug;
+        $scholars->slug = $this->str->random(32);
+        //$scholars->slug = $request->slug;
         $scholars->resolution_no = $request->resolution_no;
         $scholars->scholarship_applied = $request->scholarship_applied;
         $scholars->course_applied = $request->course_applied;
@@ -248,7 +252,9 @@ class ScholarsRepository extends BaseRepository implements ScholarsInterface {
 
     public function getAllCourses(){
         return $this->scholars
-        ->distinct('course_applied')->get();
+        ->groupBy('course_applied')
+        ->orderBy('course_applied','ASC')
+        ->pluck('course_applied');
     }
 
 

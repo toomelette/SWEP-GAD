@@ -88,6 +88,29 @@ class MillDistrictService extends BaseService{
     }
 
 
+    public function mills(){
+        $mill_districts = $this->fetchAll();
+        $mills = [];
+        foreach ($mill_districts as $key => $mill_district) {
+            $mills[$mill_district->mill_district] = $mill_district->slug;
+        }
+        ksort($mills);
+        return $mills;
+    }
+
+    public function mills_grp(){
+        $mill_districts = $this->fetchAll();
+        $mills = [];
+        $mill_districts = $mill_districts;
+        foreach ($mill_districts as $key => $mill_district) {
+            if(isset($mills[$mill_district->location][$mill_district->mill_district])){
+                $mills[$mill_district->location][$mill_district->mill_district] = [$mill_district->mill_district];
+            }else{
+                $mills[$mill_district->location][$mill_district->mill_district] = $mill_district->slug;
+            }
+        }
+        return  $mills;
+    }
 
 
 
