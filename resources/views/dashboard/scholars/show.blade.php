@@ -72,6 +72,8 @@
 						Address
 					</p>
 
+					<dt>Mill District:</dt>
+					<dd> {{ $scholars->millDistrict->mill_district or $scholars->mill_district }}</dd>
 
 					<dt>Province:</dt>
 					<dd> {{ $scholars->address_province }}</dd>

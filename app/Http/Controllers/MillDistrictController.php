@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 //use Illuminate\Http\Request;
 use App\Core\Services\MillDistrictService;
+use App\Core\Services\BlockFarmService;
 // use App\Core\Services\BlockFarmProblemService;
 // use App\Core\Services\BFEncounteredProblemService;
 use App\Http\Requests\MillDistrict\MillDistrictFormRequest;
@@ -19,12 +20,12 @@ class MillDistrictController extends Controller{
 
 
     protected $mill_district;
-    
+    protected $block_farm;
 
-    public function __construct(MillDistrictService $mill_district){
+    public function __construct(MillDistrictService $mill_district,BlockFarmService $block_farm){
         
         $this->mill_district = $mill_district;
-        
+        $this->block_farm = $block_farm;
     }
 
     public function create(){
@@ -39,7 +40,7 @@ class MillDistrictController extends Controller{
             return datatables()->of($this->mill_district->fetchTable($data))
             ->addColumn('action', function($data){
                 $button = '<div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm " data="'.$data->slug.'" data-toggle="modal" data-target ="#list_submenus" title="Submenus" data-placement="left">
+                                <button type="button" class="btn btn-default btn-sm show_mill_district_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#show_mill_district_modal" title="View more" data-placement="left">
                                     <i class="fa fa-file-text"></i>
                                 </button>
                                 <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_mill_district_btn" data-toggle="modal" data-target="#edit_mill_district_modal" title="Edit" data-placement="top">
@@ -57,8 +58,11 @@ class MillDistrictController extends Controller{
         }
 
 
+
         $regions = json_encode($this->regions());
-        return view('dashboard.mill_district.index')->with(['regions'=>$regions]);
+        return view('dashboard.mill_district.index')->with([
+            'regions'=>$regions
+        ]);
     }
 
     public function store(MillDistrictFormRequest $request){
@@ -68,7 +72,26 @@ class MillDistrictController extends Controller{
     }
 
     public function show($slug){
-        return 'Show';
+        $bf_members = 1;
+        $mill_district = $this->mill_district->show($slug);
+
+        $block_farms = $mill_district->blockFarms;
+
+        $members = [];
+        foreach($block_farms as $block_farm){
+            
+            $m = [];
+            foreach($block_farm->blockFarmMembers as $bf_members){
+                $members[$bf_members->slug] = $bf_members;
+            }
+
+            // $members[$block_farm->slug] = $m;
+        }
+
+        return view('dashboard.mill_district.show')->with([
+            'mill_district' => $mill_district,
+            'bf_members' => $members
+        ]) ;
     }
 
     public function edit($slug){

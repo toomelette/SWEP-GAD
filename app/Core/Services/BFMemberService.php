@@ -57,15 +57,42 @@ class BFMemberService extends BaseService{
     }
 
     public function edit($slug){
-      
+        $bf_member = $this->bf_member_repo->findBySlug($slug);
+        return $bf_member;
     }
 
     public function update($request, $slug){
-       
+
+        $block_farm_repo = $this->block_farm_repo->findBySlug($request->chosen_bf);
+
+        if(empty($block_farm_repo)){
+            abort(404);
+        }
+
+
+        $bf_member = $this->bf_member_repo->update($request, $slug);
+        $bf_member->familyMembers()->delete();
+
+        if(!empty($request->family_members)){
+            foreach ($request->family_members as $key => $member) {
+                $member_collection = collect();
+                foreach ($member as $name => $value) {
+                    $member_collection->$name = $value;
+                    $member_collection->bf_member = $bf_member->slug;
+                }
+                $this->bf_family_repo->store($member_collection);
+            }
+        }
+
+        
+
+        return $bf_member;
     }
 
     public function destroy($slug){
-        
+        $bf_member = $this->bf_member_repo->destroy($slug);
+        $bf_member->familyMembers()->delete();
+        return $bf_member;
     }
     
     public function fetchTable($data){

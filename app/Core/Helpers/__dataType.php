@@ -158,9 +158,8 @@ class __dataType{
       $whole_arr = array_reverse(explode(",",$wholenum)); 
       krsort($whole_arr); 
       $rettxt = ""; 
-
+      
       foreach($whole_arr as $key => $i){ 
-
         if($i > 0 && $i < 20){ 
           $rettxt .= $ones[$i]; 
         }elseif($i > 0 && $i < 100){

@@ -8,6 +8,7 @@
 
   <section class="content">
     <div class="box">
+
       <div class="box-header with-border">
         <h3 class="box-title">List of Block Farm Members</h3>
         <div class="pull-right">
@@ -21,6 +22,7 @@
           <table class="table table-bordered table-striped table-hover" id="bf_member_table" style="width: 100% !important; font-size: 14px">
             <thead>
               <tr>
+                <th>Slug</th>
                 <th>Fullname</th>
                 <th>Block Farm</th>
                 <th>Birthday</th>
@@ -65,16 +67,16 @@
               <div class="col-md-8">
                 <label>Block Farm *</label>
                 <div class="input-group block_farm except">
-                  <input autocomplete="off" id="block_farm_search" name="block_farm" placeholder="Block Farm the farmer belongs to" type="text" class="form-control">
+                  <input autocomplete="off" name="block_farm" placeholder="Block Farm the farmer belongs to" type="text" class="form-control block_farm_search add">
                   <span class="input-group-btn">
-                    <button  type="button" class="btn btn-warning btn-flat clear_btn" >
+                    <button  type="button" class="btn btn-warning btn-flat clear_btn" data= "add">
                       <i class="fa fa-times"></i>
                     </button>
                   </span>
                 </div>
               </div>
               {{-- {!! __form::textbox(
-                '8 block_farm', 'block_farm', 'text', '', '', old('title'), 'block_farm_search' , $errors->first('title'), 'autocomplete="off"'
+                '8 block_farm', 'block_farm', 'text', '', '', old('title'), .block_farm_search' , $errors->first('title'), 'autocomplete="off"'
               ) !!} --}}
 
               @php
@@ -118,7 +120,7 @@
                     ) !!}
 
                     {!! __form::datepicker(
-                      '3 bday', 'bday',  'Birthday *', old('date_covered_from') ? old('date_covered_from') : Carbon::now()->format('m/d/Y'), $errors->has('date_covered_from'), $errors->first('date_covered_from')
+                      '3 bday', 'bday',  'Birthday *', old('date_covered_from') ? old('date_covered_from') : Carbon::now()->format('m/d/Y'), '', $errors->first('date_covered_from')
                     ) !!}
                   </div>
                   <div class="row">
@@ -351,7 +353,7 @@
 
 
   <div id="add_family_modal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog pop-up" role="document">
       <div class="modal-content">
         <form id="add_family_form">
           <div class="modal-header">
@@ -440,7 +442,7 @@
   </div><!-- /.modal -->
 
   <div id="edit_family_modal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog pop-up" role="document">
       <div class="modal-content">
         <form id="edit_family_form">
           <div class="modal-header">
@@ -533,8 +535,204 @@
     </div><!-- /.modal-dialog -->
   </div>
 
+  {!! __html::blank_modal('edit_bf_member_modal','lg') !!}
+  
+
+  <div id='add_family_modal_edit' class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog pop-up" role="document">
+      <div class="modal-content">
+        <form id="add_family_form_edit">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Add family member</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              {!! __form::textbox(
+                '4 lastname', 'lastname', 'text', 'Last Name', 'Last Name', old('title'), '' , $errors->first('title'), ''
+              ) !!}
+
+              {!! __form::textbox(
+                '4 firstname', 'firstname', 'text', 'First Name', 'First Name', old('title'), '' , $errors->first('title'), ''
+              ) !!}
+
+              {!! __form::textbox(
+                '4 middlename', 'middlename', 'text', 'Middle Name', 'Middle Name', old('title'), '' , $errors->first('title'), ''
+              ) !!}
+
+              {!! __form::select_static(
+                '4 sex', 'sex', 'Sex*', '', 
+                [
+                  "MALE" => "MALE",
+                  "FEMALE" => "FEMALE"
+                ]
+                , $errors->has('is_menu'), $errors->first('is_menu'), '', ''
+              ) !!}
+
+              {!! __form::datepicker(
+                '4 bday', 'bday',  'Birthday *', old('date_covered_from') ? old('date_covered_from') : Carbon::now()->format('m/d/Y'), $errors->has('date_covered_from'), $errors->first('date_covered_from')
+              ) !!}
+
+
+
+              {!! __form::select_static(
+                '4 civil_status', 'civil_status', 'Civil Status*', old('is_menu'), [
+                  'Single' => 'Single',
+                  'Married' => 'Married',
+                  'Divorced' => 'Divorced',
+                  'Separated' => 'Separated',
+                  'Widowed' => 'Widowed'               
+                ], $errors->has('is_menu'), $errors->first('is_menu'), '', ''
+              ) !!}
+
+              {!! __form::select_static(
+                '4 educ_att', 'educ_att', 'Educational Attainment*', old('is_menu'), [
+                  'Doctoral Degree' => 'Doctoral Degree', 
+                  'Masteral Degree' => 'Masteral Degree', 
+                  'College Graduate' => 'College Graduate', 
+                  'College Level' => 'College Level', 
+                  'High School Graduate' => 'High School Graduate', 
+                  'High School Level' => 'High School Level',
+                  'Elementary Graduate' => 'Elementary Graduate',
+                  'Pre-Elementary' => 'Pre-Elementary',
+                  'None' => 'None'
+                  
+                ], $errors->has('is_menu'), $errors->first('is_menu'), '', ''
+              ) !!}
+
+              {!! __form::select_static_group(
+                '4 eco_status', 'eco_status', 'Economic Status*', '1', [
+                  'Economically inactive' => [
+                    'Student' => 'Student',
+                    'Retired Employee' => 'Retired Employee',
+                    'Aged/Sicked' => 'Aged/Sicked',
+                    'House help' => 'House help',
+                    'Others' => 'Others',
+                  ],
+                  'Economically active' => [
+                    'On-farm'=>'On-farm',
+                    'Off-farm'=> 'Off-farm'
+                  ]
+          
+                ], $errors->has('is_menu'), $errors->first('is_menu'), '', ''
+              ) !!}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+          </div>
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+  <div id="edit_family_modal_edit" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog pop-up" role="document">
+      <div class="modal-content">
+        <form id="edit_family_form_edit">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Edit family member</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div style="display:none">
+              {!! __form::textbox(
+                '4 id', 'id', 'text', 'ID', 'ID', old('title'), '' , $errors->first('title'), ''
+              ) !!}
+            </div>
+
+              {!! __form::textbox(
+                '4 lastname', 'lastname', 'text', 'Last Name', 'Last Name', old('title'), '' , $errors->first('title'), ''
+              ) !!}
+
+              {!! __form::textbox(
+                '4 firstname', 'firstname', 'text', 'First Name', 'First Name', old('title'), '' , $errors->first('title'), ''
+              ) !!}
+
+              {!! __form::textbox(
+                '4 middlename', 'middlename', 'text', 'Middle Name', 'Middle Name', old('title'), '' , $errors->first('title'), ''
+              ) !!}
+
+              {!! __form::select_static(
+                '4 sex', 'sex', 'Sex*', '', 
+                [
+                  "MALE" => "MALE",
+                  "FEMALE" => "FEMALE"
+                ]
+                , $errors->has('is_menu'), $errors->first('is_menu'), '', ''
+              ) !!}
+              {!! __form::datepicker(
+                '4 bday', 'bday',  'Birthday *', old('date_covered_from') ? old('date_covered_from') : Carbon::now()->format('m/d/Y'), $errors->has('date_covered_from'), $errors->first('date_covered_from')
+              ) !!}
+
+
+
+              {!! __form::select_static(
+                '4 civil_status', 'civil_status', 'Civil Status*', old('is_menu'), [
+                  'Single' => 'Single',
+                  'Married' => 'Married',
+                  'Divorced' => 'Divorced',
+                  'Separated' => 'Separated',
+                  'Widowed' => 'Widowed'               
+                ], $errors->has('is_menu'), $errors->first('is_menu'), '', ''
+              ) !!}
+
+              {!! __form::select_static(
+                '4 educ_att', 'educ_att', 'Educational Attainment*', old('is_menu'), [
+                  'Doctoral Degree' => 'Doctoral Degree', 
+                  'Masteral Degree' => 'Masteral Degree', 
+                  'College Graduate' => 'College Graduate', 
+                  'College Level' => 'College Level', 
+                  'High School Graduate' => 'High School Graduate', 
+                  'High School Level' => 'High School Level',
+                  'Elementary Graduate' => 'Elementary Graduate',
+                  'Pre-Elementary' => 'Pre-Elementary',
+                  'None' => 'None'
+                  
+                ], '', $errors->first('is_menu'), '', ''
+              ) !!}
+
+              {!! __form::select_static_group(
+                '4 eco_status', 'eco_status', 'Economic Status*', '1', [
+                  'Economically inactive' => [
+                    'Student' => 'Student',
+                    'Retired Employee' => 'Retired Employee',
+                    'Aged/Sicked' => 'Aged/Sicked',
+                    'House help' => 'House help',
+                    'Others' => 'Others',
+                  ],
+                  'Economically active' => [
+                    'On-farm'=>'On-farm',
+                    'Off-farm'=> 'Off-farm'
+                  ]
+          
+                ], '', $errors->first('is_menu'), '', ''
+              ) !!}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+          </div>
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+
+
+
+
+
   {!! __html::blank_modal('show_bf_member_modal','lg') !!}
-    {!! __html::modal_loader() !!}
+  
+  {!! __html::modal_loader() !!}
+
+
+
+
 
 @endsection
 
@@ -545,6 +743,9 @@
     form = $("#add_bf_member_form");
     form.find(".nav-tabs-custom input").attr('disabled','disabled');
     form.find(".nav-tabs-custom select").attr('disabled','disabled');
+
+
+
   })
 
   function markNew($table, $tr){
@@ -553,6 +754,41 @@
     })
     $($tr).addClass('success');
   }
+
+  function on_select_typeahead(result,target_modal,type){
+    if(type == 'add'){
+      chosen_bf = result.value;
+    }if(type == 'edit'){
+      chosen_bf_edit = result.value;
+    }
+    $.ajax({
+      url: "{{ route('dashboard.bf_member.index') }}?get_block_farm_id="+result.value,
+      type: 'GET',
+      success: function(response){
+        cont = $(target_modal+" .block_farm_details_container");
+        cont.html('');
+        cont.html(response);
+        cont.slideDown();
+        $(target_modal+" #crop_year").focus();
+        $(target_modal+" .block_farm_search").parent('div').addClass('has-success');
+        $(target_modal+" .block_farm_search").attr('readonly','readonly');
+        $(target_modal+" .block_farm_search").parent('div').removeClass('has-error');
+        form = $(target_modal+' .clear_btn').parents('form');
+        form.find(".nav-tabs-custom input").removeAttr('disabled');
+        form.find(".nav-tabs-custom select").removeAttr('disabled');
+      },
+      error: function(response){
+
+      }
+    })
+  }
+
+  function dt_draw(){
+    bf_member_tbl.draw(false);
+  }
+
+
+
 </script>
 <script type="text/javascript">
 // $(".6-9-tbl").exceltable();
@@ -583,6 +819,7 @@ bf_member_tbl = $("#bf_member_table").DataTable({
   "serverSide": true,
   "ajax" : '{{ route("dashboard.bf_member.index") }}',
   "columns": [
+      { "data": "slug" },
       { "data": "fullname" },
       { "data": "block_farm_details" },
       { "data": "bday" },
@@ -596,16 +833,21 @@ bf_member_tbl = $("#bf_member_table").DataTable({
   ],
   "columnDefs":[
     {
-      "targets" : [ 0 , 1 , 2],
+      "targets" : 0,
+      "visible" : false
+    },
+
+    {
+      "targets" : [ 1 , 2 , 3],
       "visible" : true
     },
     {
-      "targets" : 6,
+      "targets" : 7,
       "orderable" : false,
       "class" : 'action'
     },
     {
-      "targets": 3, 
+      "targets": 4, 
       // "render" : $.fn.dataTable.render.moment( 'MMMM D, YYYY' )
     }
   ],
@@ -613,6 +855,14 @@ bf_member_tbl = $("#bf_member_table").DataTable({
   "initComplete": function( settings, json ) {
       $('#tbl_loader').fadeOut(function(){
         $("#bf_member_table_container").fadeIn();
+        search_for = "{{$search}}";
+        if(search_for != ''){
+          bf_member_tbl.search(search_for).draw();
+          active = search_for;
+          setTimeout(function(){
+            active = '';
+          },3000);
+        }
       });
     },
   "language": 
@@ -649,6 +899,7 @@ family_tbl = $("#family_table").DataTable({
   ]
 });
 
+//STORE FAMILY MEMBER - ADD
 $("#add_family_form").submit(function(e){
   e.preventDefault();
   form = $(this);
@@ -696,6 +947,7 @@ $("#add_family_form").submit(function(e){
   //console.log(memberNode);
 });
 
+//UPDATE FAMILY MEMBER - ADD
 $("#edit_family_form").submit(function(e) {
   e.preventDefault();
   form = $(this).serializeArray();
@@ -737,8 +989,157 @@ $("#edit_family_form").submit(function(e) {
 
   $("#edit_family_modal").modal('hide');
   markNew("#family_table", "#"+data.id);
-
 });
+
+//STORE FAMILY MEMBER - EDIT
+$("#add_family_form_edit").submit(function(e){
+  e.preventDefault();
+  form = $(this);
+  form_data = form.serializeArray();
+  data = {};
+  $.each(form_data, function(i,item){
+    data[item.name] = item.value;
+  })
+  f_member_id ='member-'+makeid(16);
+  var memberNode = family_tbl_edit
+    .row.add( [ 
+      {
+        "data": {
+          'id' : f_member_id,
+          'lastname': data.lastname,
+          'firstname': data.firstname,
+          'middlename': data.middlename,
+          'bday': data.bday,
+          'sex': data.sex,
+          'civil_status' :data.civil_status,
+          'educ_att' :data.educ_att,
+          'eco_status' : data.eco_status,
+        }
+      }, 
+      data.lastname+", "+data.firstname+" "+data.middlename.charAt(0)+".",
+      data.sex, 
+      data.bday,
+      data.educ_att, 
+      data.civil_status+" | "+data.eco_status,
+      '<div class="btn-group">'+
+          '<button type="button" data="'+f_member_id+'" class="btn btn-default btn-sm edit_family_btn_edit" data-toggle="modal" data-target="#edit_family_modal_edit" title="" data-placement="top" data-original-title="Edit">'+
+              '<i class="fa fa-edit"></i>'+
+          '</button>'+
+          '<button type="button" data="" class="btn btn-sm btn-danger remove_member_edit" data-toggle="tooltip" title="" data-placement="top" data-original-title="Delete">'+
+              '<i class="fa fa-trash"></i>'+
+          '</button>'+
+      '</div>',
+    ] )
+    .draw()
+    .node().id = f_member_id;
+
+  markNew("#family_table_edit", "#"+f_member_id);
+
+  form.get(0).reset();
+  //console.log(memberNode);
+});
+
+//UPDATE FAMILY MEMBER - EDIT
+$("#edit_family_form_edit").submit(function(e) {
+  e.preventDefault();
+  form = $(this).serializeArray();
+  data = {};
+  $.each(form, function(i,item){
+    data[item.name] = item.value;
+  })
+
+  var pTable = $('#family_table_edit').dataTable();
+  pTable.fnUpdate([
+    {
+        "data": {
+          'id' : data.id,
+          'lastname': data.lastname,
+          'firstname': data.firstname,
+          'middlename': data.middlename,
+          'bday': data.bday,
+          'sex': data.sex,
+          'civil_status' :data.civil_status,
+          'educ_att' :data.educ_att,
+          'eco_status' : data.eco_status,
+        }
+    },
+    data.lastname+", "+data.firstname+" "+data.middlename.charAt(0)+".",
+    data.sex, 
+    data.bday,
+    data.educ_att, 
+    data.civil_status+" | "+data.eco_status,
+    '<div class="btn-group">'+
+          '<button type="button" data="'+data.id+'" class="btn btn-default btn-sm edit_family_btn_edit" data-toggle="modal" data-target="#edit_family_modal_edit" title="" data-placement="top" data-original-title="Edit">'+
+              '<i class="fa fa-edit"></i>'+
+          '</button>'+
+          '<button type="button" data="" class="btn btn-sm btn-danger remove_member_edit" data-toggle="tooltip" title="" data-placement="top" data-original-title="Delete">'+
+              '<i class="fa fa-trash"></i>'+
+          '</button>'+
+      '</div>',
+
+    ], $("#"+data['id']));
+
+  $("#edit_family_modal_edit").modal('hide');
+  markNew("#family_table_edit", "#"+data.id);
+});
+
+//CLICK edit button
+$("body").on("click",".edit_family_btn", function(){
+  m_id = $(this).attr('data');
+  d = family_tbl.rows().data();
+  console.log(d);
+  $("#edit_family_form").get(0).reset();
+  edit_data = {};
+  $.each(d, function(a, b){
+    if(b[0]['data']['id'] == m_id){
+      edit_data = b[0]['data'];
+    }
+    edit_modal = $("#edit_family_modal");
+    $("#edit_family_form option").each(function(){
+      $(this).removeAttr('selected');
+    })
+    $.each(edit_data, function(c, d){
+      $("#edit_family_form").find("input[name='"+c+"']").val(d);
+      $("."+c+" option[value='"+d+"']").attr('selected','selected');
+    })
+    edit_modal.modal('show');
+  });
+  $("#edit_family_modal .modal-title").html(edit_data.lastname+", "+edit_data.firstname);
+  console.log(edit_data);
+})
+$("body").on("click",".edit_family_btn_edit", function(){
+  m_id_edit = '';
+  m_id_edit = $(this).attr('data');
+  d = family_tbl_edit.rows().data();
+  
+  edit_data_edit = {};
+  $.each(d, function(a, b){
+    if(b[0]['data']['id'] == m_id_edit){
+      edit_data_edit = b[0]['data'];
+    }
+  });
+
+
+  edit_modal_edit = $("#edit_family_modal_edit");
+  $("#edit_family_form_edit option").each(function(){
+    $(this).removeAttr('selected');
+  })
+
+  $("#edit_family_form_edit").get(0).reset();
+  $.each(edit_data_edit, function(c, d){
+    //console.log(c);
+    $("#edit_family_form_edit").find("input[name='"+c+"']").val(d);
+
+    $("#edit_family_form_edit ."+c+" option[value='"+d+"']").attr('selected','selected');
+  })
+
+  $("#edit_family_modal_edit .modal-title").html(edit_data_edit.lastname+", "+edit_data_edit.firstname);
+  // console.log(edit_data);
+})
+
+
+
+
 
 $("body").on("click",".edit_family_btn", function(){
   m_id = $(this).attr('data');
@@ -765,6 +1166,7 @@ $("body").on("click",".edit_family_btn", function(){
 
 
 
+
 $('body').on( 'click', '.remove_member', function () {
   family_tbl
     .row( $(this).parents('tr') )
@@ -772,39 +1174,27 @@ $('body').on( 'click', '.remove_member', function () {
     .draw();
 });
 
+$('body').on( 'click', '.remove_member_edit', function () {
+  family_tbl_edit
+    .row( $(this).parents('tr') )
+    .remove()
+    .draw();
+});
+
 
 chosen_bf = '';
-$('#block_farm_search').typeahead({
+$('#add_bf_member_modal .block_farm_search').typeahead({
     ajax : "{{ route('dashboard.bf_member.index') }}",
     onSelect:function (result) {
-      chosen_bf = result.value;
-      $.ajax({
-        url: "{{ route('dashboard.bf_member.index') }}?get_block_farm_id="+result.value,
-        type: 'GET',
-        success: function(response){
-          cont = $("#add_bf_member_modal .block_farm_details_container");
-          cont.html(response);
-          cont.slideDown();
-          $("#crop_year").focus();
-          $("#block_farm_search").parent('div').addClass('has-success');
-          $("#block_farm_search").attr('readonly','readonly');
-          $("#block_farm_search").parent('div').removeClass('has-error');
-          form = $('.clear_btn').parents('form');
-          form.find(".nav-tabs-custom input").removeAttr('disabled');
-          form.find(".nav-tabs-custom select").removeAttr('disabled');
-        },
-        error: function(response){
-
-        }
-      })
+      on_select_typeahead(result, '#add_bf_member_modal','add');
     },
 });
 
 
-
+//STORE BLOCK FARM MEMBER FORM
 $("#add_bf_member_form").submit(function(e) {
   e.preventDefault();
-/*  console.log(family_tbl.rows().data());*/
+  /*  console.log(family_tbl.rows().data());*/
   form_data = $(this).serializeArray();
   family_data = family_tbl.rows().data();
   family_data_array = {};
@@ -851,21 +1241,84 @@ $("#add_bf_member_form").submit(function(e) {
   })
 });
 
-$(".clear_btn").click(function(){
+
+//UDPATE BLOCK FARM MEMBER
+$("body").on("submit", "#edit_bf_member_form", function(e){
+  e.preventDefault();
+  form_data = $(this).serializeArray();
+  family_data = family_tbl_edit.rows().data();
+  family_data_array = {};
+  form_data_array = {};
+  $.each(family_data, function(a,b){
+    if($.isNumeric(a)){
+      
+      family_data_array[b[0]['data']['id']] = b[0]['data'];
+    }
+  });
+
+  $.each(form_data , function(c,d){
+    form_data_array[form_data[c]['name']] = form_data[c]['value'];
+  })
+
+  form_data_array['family_members'] = family_data_array;
+  form_data_array['chosen_bf'] = chosen_bf_edit;
+
+  uri = "{{ route('dashboard.bf_member.update','slug') }}";
+  uri = uri.replace('slug', $(this).attr('data'));
+
+  $.ajax({
+    url: uri,
+    data: form_data_array,
+    type: 'PUT',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function(response){ 
+      succeed("#edit_bf_member_form","save",true);
+      $("#edit_bf_member_modal").modal('hide');
+      notify("Blockfarm member has beed added successfully.","success");
+      bf_member_tbl.draw(false);
+      active = response.slug;
+    },
+    error: function(response){
+      errored("#edit_bf_member_form","save",response);
+      if (typeof response.responseJSON.errors.chosen_bf !== 'undefined') {
+        notify("You need to select block farm.",'warning');
+        $("#edit_bf_member_form .block_farm").addClass('has-error');
+      }else{
+        $("#edit_bf_member_form .block_farm").removeClass('has-error');
+      }
+    }
+  })
+
+
+
+  //console.log(form_data_array);
+})
+
+
+//CLEAR BUTTON
+$("body").on('click', '.clear_btn',function(){
   form = $(this).parents('form');
-  form.find("#block_farm_search").removeAttr('readonly');
-  form.find("#block_farm_search").focus();
-  form.find("#block_farm_search").parent('div').removeClass('has-success');
-  chosen_bf = '';
-  cont = $("#add_bf_member_modal .block_farm_details_container");
+  form.find(".block_farm_search").removeAttr('readonly');
+  form.find(".block_farm_search").focus();
+  form.find(".block_farm_search").parent('div').removeClass('has-success');
+
+  if($(this).attr('data') == 'add'){
+    chosen_bf = '';
+  }if($(this).attr('data') == 'edit'){
+    chosen_bf_edit = '';
+  }
+  cont = $(this).parents('.modal-body').find(".block_farm_details_container");
   cont.slideUp(function() {
    cont.html(''); 
   });
   form.find(".nav-tabs-custom input").attr('disabled','disabled');
   form.find(".nav-tabs-custom select").attr('disabled','disabled');
-  $("#block_farm_search").val('');
+  $(this).parents('.block_farm').find(".block_farm_search").val('');
 })
 
+//SHOW BLOCK FARM MEMBER
 $("body").on('click','.show_bf_member_btn', function(){
   id = $(this).attr('data');
 
@@ -883,7 +1336,73 @@ $("body").on('click','.show_bf_member_btn', function(){
     }
   })
 })
+u = '{{route('dashboard.bf_member.index')}}';
+$("a[href='"+u+"']").closest('ul').css('display','block');
+$("a[href='"+u+"']").closest('.treeview').addClass('menu-open active');
+
+//EDIT BLOCK FARM MEMBER
+$("body").on("click",".edit_bf_member_btn", function(){
+  load_modal("#edit_bf_member_modal");
+  id = $(this).attr('data');
+  uri = "{{route('dashboard.bf_member.edit','slug')}}";
+  uri = uri.replace('slug',id);
+  $.ajax({
+    url : uri,
+    type: 'GET',
+    success: function(response){
+      populate_modal("#edit_bf_member_modal",response);
+      setTimeout(function(){
+        $('#edit_bf_member_modal .block_farm_search').typeahead({
+            ajax : "{{ route('dashboard.bf_member.index') }}",
+            onSelect:function (result) {
+              on_select_typeahead(result, '#edit_bf_member_modal','edit');
+            },
+        });
+        family_tbl_edit = $("#family_table_edit").DataTable({
+          "columnDefs":[
+            {
+              "targets" : 0,
+              "visible" : false 
+            }
+          ]
+        });
+        
+        $("body").on("click", ".final", function(){
+          console.log(family_tbl_edit.rows().data());
+        });
+
+        family_tbl_edit.rows().every(function(){
+            d = this.data();
+            d[0]= {'data': JSON.parse(d[0])};
+            // console.log(d);
+            //this.invalidate();
+        });
+
+
+        $("body").on('click','.get_datas', function(){
+          
+
+        });
+
+      },500);
+
+
+
+    },
+    error: function(response){
+      console.log(response);
+      notify("Error", "danger");
+    }
+  });
+});
+
+$("body").on('click','.delete_bf_member_btn', function(e){
+  id = $(this).attr('data');
+  confirm("{{ route('dashboard.bf_member.destroy', 'slug') }}", id);
+})
+
 
 </script>
+
     
 @endsection

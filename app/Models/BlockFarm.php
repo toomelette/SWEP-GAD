@@ -82,6 +82,11 @@ class BlockFarm extends Model{
         return $this->hasOne("App\Models\MillDistrict","slug","mill_district");
     }
 
+    public function blockFarmMembers(){
+        return $this->hasMany("App\Models\BFMember","block_farm","slug");
+    }
+
+
     // public function blockFarmProblem() {
     //     return $this->hasMany('App\Models\blockFarmProblem','slug','slug');
     // }

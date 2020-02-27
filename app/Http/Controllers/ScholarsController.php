@@ -14,7 +14,6 @@ class ScholarsController extends Controller{
 
 
     protected $scholars;
-
     protected $mill_district;
 
     public function __construct(ScholarsService $scholars,MillDistrictService $mill_district){
@@ -95,20 +94,14 @@ class ScholarsController extends Controller{
             ->editColumn('birth', function($data){
                 return date("M. d, Y",strtotime($data->birth));
             })
-            ->editColumn('mill_district', function($data){
-
-                if($data->millDistrict['mill_district'] == ''){
-                    return $data->mill_district;
-                }
-                return $data->millDistrict['mill_district'];
-            })
+            
             ->escapeColumns([])
             ->setRowId('slug')
             ->make(true);
         }
 
 
-    //return $this->scholars->insert();
+        //return $this->scholars->insert();
 
        
         $mills_grp = $this->mill_district->mills_grp();
@@ -136,11 +129,17 @@ class ScholarsController extends Controller{
                 array_push($c["Other"], $course);
             }
         }
+        $search = '';
+        if(!empty(request()->get('search'))){
+            $search = request()->get('search');
+        }
+
 
         return view('dashboard.scholars.index', compact('html'))->with([
             'mill_districts' => $mills_grp,
             'mill_districts_list' => $this->mill_district->mills(),
-            'courses' => $c
+            'courses' => $c,
+            'search' => $search
         ]);
     }
 

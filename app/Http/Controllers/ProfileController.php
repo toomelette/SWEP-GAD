@@ -51,6 +51,9 @@ class ProfileController extends Controller{
                     case 'scholar':
                         return "Scholars";
                         break;
+                    case 'bf_member':
+                        return "Block Farm Member";
+                        break;
                     default:
                         return $data->module;
                         break;

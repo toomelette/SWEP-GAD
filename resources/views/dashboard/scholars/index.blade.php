@@ -465,6 +465,18 @@
     "initComplete": function( settings, json ) {
         $('#tbl_loader').fadeOut(function(){
           $("#scholars_table_container").fadeIn();
+
+  
+          search_for = "{{$search}}";
+          if(search_for != ''){
+            scholars_tbl.search(search_for).draw();
+            active = search_for;
+            setTimeout(function(){
+              active = '';
+            },3000);
+          }
+
+
         });
       },
     "language": 

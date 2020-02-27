@@ -46,9 +46,6 @@ class BFMember extends Model{
 
 
     /** RELATIONSHIPS **/
-
-    
-
     public function creator(){
         return $this->hasOne("App\Models\User","user_id","user_created");
     }
@@ -58,20 +55,22 @@ class BFMember extends Model{
     }
 
     public function blockFarm(){
-        return $this->belongsTo("App\Models\BlockFarm","slug","block_farm");
+        return $this->belongsTo("App\Models\BlockFarm","block_farm","slug");
     }
 
-    // public function millDistrict(){
-    //     return $this->hasOne("App\Models\MillDistrict","slug","mill_district");
-    // }
+    public function maleFamilyMembers(){
+        return $this->hasMany("App\Models\BFMemberFamily","bf_member","slug")->where('sex','=','MALE');
+    }
 
-    // public function blockFarmProblem() {
-    //     return $this->hasMany('App\Models\blockFarmProblem','slug','slug');
-    // }
+    public function femaleFamilyMembers(){
+        return $this->hasMany("App\Models\BFMemberFamily","bf_member","slug")->where('sex','=','FEMALE');
+    }
 
-    // public function seminarSpeaker() {
-    //     return $this->hasMany('App\Models\SeminarSpeaker','seminar_id','seminar_id');
-    // }
+    public function familyMembers(){
+        return $this->hasMany("App\Models\BFMemberFamily","bf_member","slug");
+    }
+
+    
 
     
 

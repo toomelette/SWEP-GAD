@@ -107,12 +107,16 @@ class __form{
     }
 
 
-    public static function select_static_group($class, $key, $label, $old_value, $array, $error_has, $error_first, $select2, $extra_attr){
-
+    public static function select_static_group($class, $key, $label, $old_value, $array, $id, $error_first, $select2, $extra_attr){
+      
+      if($id == ""){
+        
+      }else{
+        $id = "id='".$id."'";
+      }
       $select = '<div class="form-group col-md-'. $class .' 
-                  '. self::error_response($error_has) .'">
                   <label for="'. $key .'">'. $label .'</label>
-                  <select name="'. $key .'" id="'. $key .'" class="form-control '. $select2 .'" '. $extra_attr .' style="font-size:15px;">
+                  <select name="'. $key .'" '. $id .' class="form-control '. $select2 .'" '. $extra_attr .' style="font-size:15px;">
                   <option value="">Select</option>';
       foreach ($array as $key => $value) {
         if(is_array($value)){
@@ -127,7 +131,6 @@ class __form{
       }
       
       $select = $select.'</select>
-                  '. self::error_message($error_has, $error_first) .'
                 </div>';
        return $select;
     }
@@ -197,19 +200,24 @@ class __form{
 
 
 
-    public static function datepicker($class, $key, $label, $old_value, $error_has, $error_first){
+    public static function datepicker($class, $key, $label, $old_value, $id, $error_first){
+
+      if($id == ""){
+        $id = "";
+      }else{
+        $id = "id='".$id."'";
+      }
 
        $old_value = __dataType::date_parse($old_value, 'm/d/Y');
 
-       return '<div class="form-group col-md-'. $class .' '. self::error_response($error_has) .'" style="overflow:hidden;">
+      return '<div class="form-group col-md-'. $class .' " style="overflow:hidden;">
                 <label for="'. $key .'">'. $label .'</label>
                 <div class="input-group">
                   <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                   </div>
-                  <input id="'. $key .'" name="'. $key .'" value="'. __sanitize::html_attribute_encode($old_value) .'" type="text" class="form-control datepicker" placeholder="mm/dd/yy">
+                  <input '. $id .' name="'. $key .'" value="'. __sanitize::html_attribute_encode($old_value) .'" type="text" class="form-control datepicker" placeholder="mm/dd/yy">
                 </div>
-                '. self::error_message($error_has, $error_first) .'
               </div>';
 
     }

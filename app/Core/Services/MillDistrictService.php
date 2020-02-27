@@ -66,6 +66,10 @@ class MillDistrictService extends BaseService{
 
     }
 
+    public function show($slug){
+        return $this->mill_district_repo->findBySlug($slug);
+    }
+
 
 
 

@@ -8,6 +8,7 @@
 
   <section class="content">
     <div class="box">
+
             <div class="box-header with-border">
               <h3 class="box-title">List of Menus</h3>
               <div class="pull-right">
@@ -160,7 +161,7 @@
   </div>
 
 {!! __html::blank_modal('edit_mill_district_modal','sm') !!}
-
+{!! __html::blank_modal('show_mill_district_modal','xl') !!}
   {!! __html::modal_loader() !!}
 
 
@@ -344,6 +345,23 @@
 	$("body").on("click",".delete_mill_district_btn", function(){
     id = $(this).attr('data');
     confirm("{{ route('dashboard.mill_district.destroy', 'slug') }}", id);
+  })
+
+  $("body").on("click",".show_mill_district_btn", function(){
+    id = $(this).attr('data');
+    uri = "{{route('dashboard.mill_district.show', 'slug')}}";
+    uri = uri.replace('slug',id);
+    load_modal("#show_mill_district_modal");
+    $.ajax({
+      url : uri,
+      type : 'GET',
+      success: function(response){
+        populate_modal('#show_mill_district_modal',response);
+      },
+      error: function(response){
+
+      }
+    })
   })
 	
 </script>

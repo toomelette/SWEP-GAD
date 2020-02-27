@@ -54,16 +54,17 @@ class BlockFarmController extends Controller{
                                 </button>
                             </div>';
                 return $button;
-            })->editColumn('sex',function($data){
-                if($data->sex == "MALE"){
-                    return '<span class="label bg-green col-md-12"><i class="fa fa-male"></i> '.$data->sex.'</span>';
-                }elseif($data->sex == "FEMALE"){
-                    return '<span class="label bg-maroon col-md-12"><i class="fa fa-female"></i> '.$data->sex.'</span>';
-                }else{
-                    return $data->sex;
-                }
-                
             })
+            // ->editColumn('sex',function($data){
+            //     if($data->sex == "MALE"){
+            //         return '<span class="label bg-green col-md-12"><i class="fa fa-male"></i> '.$data->sex.'</span>';
+            //     }elseif($data->sex == "FEMALE"){
+            //         return '<span class="label bg-maroon col-md-12"><i class="fa fa-female"></i> '.$data->sex.'</span>';
+            //     }else{
+            //         return $data->sex;
+            //     }
+                
+            // })
             ->editColumn('date', function($data){
                 return date("F d, Y",strtotime($data->date));
             })
@@ -96,8 +97,15 @@ class BlockFarmController extends Controller{
 
     	$data = $problems_array;
 
+        $search = '';
+        if(!empty(request()->get('search'))){
+            $search = request()->get('search');
+        }
+
     	return view("dashboard.block_farm.index",compact('data'))->with([
-            'mill_districts_list' => $this->mill_district->mills()
+            'mill_districts' => $this->mill_district->mills_grp(),
+            'mill_districts_list' => $this->mill_district->mills(),
+            'search' => $search
         ]);
 
     }
@@ -115,7 +123,10 @@ class BlockFarmController extends Controller{
     }
 
     public function edit($slug){
-        return $this->block_farm->edit($slug);
+        return $this->block_farm->edit($slug)->with([
+            'mill_districts' => $this->mill_district->mills_grp(),
+            'mill_districts_list' => $this->mill_district->mills()
+        ]);
     }
 
     public function update(BlockFarmFormRequest $request, $slug){

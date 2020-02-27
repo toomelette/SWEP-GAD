@@ -297,4 +297,14 @@ class __html{
 				  </div>';
 	}
 
+	public static function sex($sex){
+		if($sex == "MALE"){
+            return '<span class="label bg-green col-md-12"><i class="fa fa-male"></i> '.$sex.'</span>';
+        }elseif($sex == "FEMALE"){
+            return '<span class="label bg-maroon col-md-12"><i class="fa fa-female"></i> '.$sex.'</span>';
+        }else{
+            return $sex;
+        }
+	}
+
 }

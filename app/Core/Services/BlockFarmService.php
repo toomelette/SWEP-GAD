@@ -81,5 +81,8 @@ class BlockFarmService extends BaseService{
         return $this->block_farm_repo->findBySlug($slug);
     }
 
+    public function members($slug){
+        return $slug;
+    }
     
 }

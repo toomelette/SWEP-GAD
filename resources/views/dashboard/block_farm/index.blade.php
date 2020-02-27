@@ -7,8 +7,6 @@
   </section>
 
   <section class="content">
-    
-
       {{-- Table Grid --}}        
       <div class="box">
             <div class="box-header with-border">
@@ -29,7 +27,7 @@
                       <th>Mill District</th>
                       <th>Date</th>
                       <th>Enrolee</th>
-                      <th class="th-10">Sex</th>
+                      <th class="th-10">Source of Fund</th>
                       <th class="action">Action</th>
                     </tr>
                   </thead>
@@ -384,7 +382,7 @@
           { "data": "mill_district" },
           { "data": "date" },
           { "data": "enrolee_name" },
-          { "data": "sex" },
+          { "data": "fund_source" },
           { "data": "action" }
       ],
       "buttons": [
@@ -409,6 +407,14 @@
       "initComplete": function( settings, json ) {
           $('#tbl_loader').fadeOut(function(){
             $("#block_farm_tbl_container").fadeIn();
+            search_for = "{{$search}}";
+            if(search_for != ''){
+              block_farm_tbl.search(search_for).draw();
+              active = search_for;
+              setTimeout(function(){
+                active = '';
+              },2000);
+            }
           });
         },
       "language": 

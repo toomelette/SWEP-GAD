@@ -184,7 +184,17 @@ class BlockFarmRepository extends BaseRepository implements BlockFarmInterface {
     }
 
     public function fetchTable(){
-        return $this->block_farm->latest()->get(['slug','block_farm_name', 'enrolee_name', 'mill_district', 'date', 'sex']);
+        $get = $this->block_farm;
+        $get = $get->leftJoin('mill_district','mill_district.slug', '=','block_farm.mill_district');
+        $get = $get->get([
+            'block_farm.slug',
+            'block_farm.block_farm_name',
+            'block_farm.enrolee_name', 
+            'mill_district.mill_district', 
+            'block_farm.date', 
+            'block_farm.fund_source'
+        ]);
+        return $get;
     }
 
 

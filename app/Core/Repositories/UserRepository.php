@@ -65,25 +65,25 @@ class UserRepository extends BaseRepository implements UserInterface {
 
 	public function fetch($request){
 	
-		$cache_key = str_slug($request->fullUrl(), '_');
+		// $cache_key = str_slug($request->fullUrl(), '_');
 
-        $entries = isset($request->e) ? $request->e : 20;
+  //       $entries = isset($request->e) ? $request->e : 20;
 
-        $users = $this->cache->remember('users:fetch:' . $cache_key, 240, function() use ($request, $entries){
+  //       $users = $this->cache->remember('users:fetch:' . $cache_key, 240, function() use ($request, $entries){
 
-            $user = $this->user->newQuery();
+  //           $user = $this->user->newQuery();
             
-            if(isset($request->q)){ $this->search($user, $request->q); }
+  //           if(isset($request->q)){ $this->search($user, $request->q); }
 
-            if(isset($request->ol)){ $this->isOnline($user, $this->__dataType->string_to_boolean($request->ol)); }
+  //           if(isset($request->ol)){ $this->isOnline($user, $this->__dataType->string_to_boolean($request->ol)); }
 
-            if(isset($request->a)){ $this->isActive($user, $this->__dataType->string_to_boolean($request->a)); }
+  //           if(isset($request->a)){ $this->isActive($user, $this->__dataType->string_to_boolean($request->a)); }
 
-            return $this->populate($user, $entries);
+  //           return $this->populate($user, $entries);
 
-        });
+  //       });
 
-        return $users;
+  //       return $users;
 	
 	}
 	
@@ -285,11 +285,11 @@ class UserRepository extends BaseRepository implements UserInterface {
 
     public function getByIsOnline($status){
 
-        $users = $this->cache->remember('users:getByIsOnline:'. $status .'', 240, function() use ($status){
-            return $this->user->where('is_online', $status)->get();
-        }); 
+        // $users = $this->cache->remember('users:getByIsOnline:'. $status .'', 240, function() use ($status){
+        //     return $this->user->where('is_online', $status)->get();
+        // }); 
 
-        return $users;
+        // return $users;
         
     }
 

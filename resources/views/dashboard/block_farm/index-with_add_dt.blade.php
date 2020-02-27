@@ -15,10 +15,7 @@
   <section class="content-header">
       <h1>Manage Block Farm</h1>
   </section>
-
   <section class="content">
-    
-
       {{-- Table Grid --}}        
       <div class="box">
             <div class="box-header with-border">

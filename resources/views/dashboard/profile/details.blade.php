@@ -9,13 +9,10 @@
 <section class="content">
 
   <div class="row">
-
     <div class="col-md-4">
-
-
       <div class="box box-widget widget-user">
         <!-- Add the bg color to the header using any of the bg-* classes -->
-        <div class="widget-user-header bg-aqua-active">
+        <div class="widget-user-header bg-aqua" style="background: url({{asset('images/sra.jpg')}}) center center; background-size: cover;">
           <h3 class="widget-user-username">{{ Auth::check() ? Auth::user()->fullname : '' }}</h3>
           <h5 class="widget-user-desc">{{ Auth::check() ? Auth::user()->position : '' }}</h5>
         </div>

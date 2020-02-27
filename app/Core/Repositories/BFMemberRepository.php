@@ -91,18 +91,38 @@ class BFMemberRepository extends BaseRepository implements BFMemberInterface {
 
     public function update($request,  $slug){
         
+        $bf_member = $this->findBySlug($slug);
+        $bf_member_old = $bf_member->getOriginal();
+
+        
+        $bf_member->block_farm = $request->chosen_bf;
+        $bf_member->crop_year = $request->crop_year;
+        $bf_member->lastname = $request->lastname;
+        $bf_member->firstname = $request->firstname;
+        $bf_member->middlename = $request->middlename;
+        $bf_member->bday = date("Y-m-d",strtotime($request->bday));
+        $bf_member->sex = $request->sex;
+        $bf_member->civil_status = $request->civil_status;
+        $bf_member->educ_att = $request->educ_att;
+        $bf_member->years_sugarcane_farming = $request->years_sugarcane_farming;
+        $bf_member->tenurial = $request->tenurial;
+        $bf_member->updated_at = $this->carbon->now();
+        $bf_member->ip_updated = request()->ip();
+        $bf_member->user_updated = $this->auth->user()->user_id;
+        $bf_member->save();
+
 
         //LOGGING
-        // $activity_log = collect();
-        // $activity_log->module = 'block_farm';
-        // $activity_log->event = __FUNCTION__;
-        // $activity_log->slug = $block_farm->slug;
-        // $activity_log->original = $block_farm_old;
-        // $activity_log->obj = $block_farm;
-        // $this->activity_log_repo->store($activity_log);
+        $activity_log = collect();
+        $activity_log->module = 'bf_member';
+        $activity_log->event = __FUNCTION__;
+        $activity_log->slug = $bf_member->slug;
+        $activity_log->original = $bf_member_old;
+        $activity_log->obj = $bf_member;
+        $this->activity_log_repo->store($activity_log);
 
 
-        // return $block_farm;
+        return $bf_member;
  
 
     }
@@ -113,17 +133,18 @@ class BFMemberRepository extends BaseRepository implements BFMemberInterface {
 
     public function destroy($slug){
   
-
+        $bf_member = $this->findBySlug($slug);
+        $bf_member->delete();
         //LOGGING
-        // $activity_log = collect();
-        // $activity_log->module = 'block_farm';
-        // $activity_log->event = __FUNCTION__;
-        // $activity_log->slug = $block_farm->slug;
-        // $activity_log->remarks = "DELETED: ".$block_farm->block_farm_name;
-        // $this->activity_log_repo->store($activity_log);
+        $activity_log = collect();
+        $activity_log->module = 'bf_member';
+        $activity_log->event = __FUNCTION__;
+        $activity_log->slug = $bf_member->slug;
+        $activity_log->remarks = "DELETED: ".$bf_member->lastname.", ".$bf_member->firstname;
+        $this->activity_log_repo->store($activity_log);
 
 
-        // return $block_farm;
+        return $bf_member;
 
 
     }

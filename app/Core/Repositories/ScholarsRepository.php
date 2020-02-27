@@ -36,7 +36,7 @@ class ScholarsRepository extends BaseRepository implements ScholarsInterface {
 
 
     public function fetchTable($data){
-        $get = $this->scholars;
+        $get = $this->scholars->leftJoin('mill_district', 'mill_district.slug','=','scholars.mill_district');
         
         if(!empty($data->sex)){
             switch ($data->sex) {
@@ -71,9 +71,8 @@ class ScholarsRepository extends BaseRepository implements ScholarsInterface {
                     break;
             }
         }
-
         if(!empty($data->mill_district)){
-            $get = $get->where('mill_district','=',$data->mill_district);
+            $get = $get->where('mill_district.slug','=',$data->mill_district);
         }
 
         if(!empty($data->course)){
@@ -83,7 +82,21 @@ class ScholarsRepository extends BaseRepository implements ScholarsInterface {
 
         
        
-        return $get->latest()->get(['slug','lastname', 'firstname', 'middlename', 'scholarship_applied', 'course_applied','school', 'mill_district', 'birth', 'sex', 'address_province','address_city']);
+        return $get->latest()->get([
+        	'scholars.slug',
+        	'scholars.lastname', 
+        	'scholars.firstname', 
+        	'scholars.middlename', 
+        	'scholars.scholarship_applied', 
+        	'scholars.course_applied',
+        	'scholars.school', 
+        	'mill_district.mill_district', 
+        	'scholars.birth', 
+        	'scholars.sex', 
+        	'scholars.address_province',
+        	'scholars.address_city',
+        	'scholars.created_at'
+        ]);
     }
 
 

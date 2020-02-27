@@ -57,7 +57,13 @@ class MillDistrict extends Model{
     }
 
 
+    public function blockFarms(){
+        return $this->hasMany("App\Models\BlockFarm","mill_district","slug");
+    }
 
+    public function scholars(){
+        return $this->hasMany("App\Models\Scholars","mill_district","slug");
+    }
 
 
 }

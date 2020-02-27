@@ -75,10 +75,10 @@ class BFMemberController extends Controller{
                                     <button type="button" class="btn btn-default btn-sm show_bf_member_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#show_bf_member_modal" title="View more" data-placement="left">
                                         <i class="fa fa-file-text"></i>
                                     </button>
-                                    <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_block_farm_btn" data-toggle="modal" data-target="#edit_block_farm_modal" title="Edit" data-placement="top">
+                                    <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_bf_member_btn" data-toggle="modal" data-target="#edit_bf_member_modal" title="Edit" data-placement="top">
                                         <i class="fa fa-edit"></i>
                                     </button>
-                                    <button type="button" data="'.$data->slug.'" class="btn btn-sm btn-danger delete_block_farm_btn" data-toggle="tooltip" title="Delete" data-placement="top">
+                                    <button type="button" data="'.$data->slug.'" class="btn btn-sm btn-danger delete_bf_member_btn" data-toggle="tooltip" title="Delete" data-placement="top">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </div>';
@@ -116,69 +116,12 @@ class BFMemberController extends Controller{
             }
         }
 
-        return view("dashboard.bf_member.index");
-     //    if(request()->ajax())
-     //    {   
-     //        return datatables()->of($this->block_farm->fetchTable())
-     //        ->addColumn('action', function($data){
-     //            $button = '<div class="btn-group">
-     //                            <button type="button" class="btn btn-default btn-sm show_block_farm_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#show_block_farm_modal" title="View more" data-placement="left">
-     //                                <i class="fa fa-file-text"></i>
-     //                            </button>
-     //                            <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_block_farm_btn" data-toggle="modal" data-target="#edit_block_farm_modal" title="Edit" data-placement="top">
-     //                                <i class="fa fa-edit"></i>
-     //                            </button>
-     //                            <button type="button" data="'.$data->slug.'" class="btn btn-sm btn-danger delete_block_farm_btn" data-toggle="tooltip" title="Delete" data-placement="top">
-     //                                <i class="fa fa-trash"></i>
-     //                            </button>
-     //                        </div>';
-     //            return $button;
-     //        })->editColumn('sex',function($data){
-     //            if($data->sex == "MALE"){
-     //                return '<span class="label bg-green col-md-12"><i class="fa fa-male"></i> '.$data->sex.'</span>';
-     //            }elseif($data->sex == "FEMALE"){
-     //                return '<span class="label bg-maroon col-md-12"><i class="fa fa-female"></i> '.$data->sex.'</span>';
-     //            }else{
-     //                return $data->sex;
-     //            }
-                
-     //        })
-     //        ->editColumn('date', function($data){
-     //            return date("F d, Y",strtotime($data->date));
-     //        })
-     //        ->escapeColumns([])
-     //        ->setRowId('slug')
-     //        ->make(true);
-     //    }
+        $search = '';
+        if(!empty($request->search)){
+            $search = $request->search;
+        }
 
-
-    	
-    	// $problems_array = [];
-    	// $data = $this->block_farm_problem->fetch();
-    	// foreach ($data as $key => $value) {
-    	// 	if(isset($problems_array[$value->slug])){
-    	// 		$problems_array[$value->type][$value->slug] =  [
-    	// 			'id' => $value->id,
-    	// 			'slug' => $value->slug,
-    	// 			'problem' => $value->problem,
-    	// 			'type'=> $value->type
-    	// 		];
-    	// 	}else{
-    	// 		$problems_array[$value->type][$value->slug] = [
-    	// 			'id' => $value->id,
-    	// 			'slug' => $value->slug,
-    	// 			'problem' => $value->problem,
-    	// 			'type'=> $value->type
-    	// 		];
-    	// 	}
-    	// }
-
-    	// $data = $problems_array;
-
-    	// return view("dashboard.block_farm.index",compact('data'))->with([
-     //        'mill_districts_list' => $this->mill_district->mills()
-     //    ]);
-
+        return view("dashboard.bf_member.index")->with(['search' => $search]);
     }
 
     public function store(BFMemberFormRequest $request){
@@ -188,25 +131,28 @@ class BFMemberController extends Controller{
     public function show($slug){
         // return $this->block_farm->show($slug);
         $bf_member = $this->bf_member->show($slug);
-        return view('dashboard.bf_member.show')->with(['bf_member' => $bf_member]);
+        $bf_member->age = \Carbon::parse($bf_member->bday)->age;
+        return view('dashboard.bf_member.show')->with([
+            'bf_member' => $bf_member
+        ]);
     }
 
     public function edit($slug){
-        return 1;
+         $bf_member = $this->bf_member->edit($slug);
+         return view('dashboard.bf_member.edit')->with([
+            'bf_member' => $bf_member
+         ]);
         // return $this->block_farm->edit($slug);
     }
 
-    public function update(BlockFarmFormRequest $request, $slug){
-        // return "update";
-        // $block_farm = $this->block_farm->update($request, $slug);
-        // if ($block_farm) {
-        //     return json_encode(array('result'=>1,'slug' => $slug)) ;
-        // }
+    public function update(BFMemberFormRequest $request, $slug){
+        $bf_member = $this->bf_member->update($request, $slug);
+        return $bf_member;
     }
 
     public function destroy($slug){
-        // $block_farm = $this->block_farm->destroy($slug);
-        // return $block_farm;
+        return $this->bf_member->destroy($slug);
+        //return $slug;
     }
 
     
