@@ -79,9 +79,7 @@
                     </div>
                   @endif
                 @endif
-              
               @endforeach
-              
             </div>
             <hr class="sm-margin">
 
@@ -94,12 +92,7 @@
 </div>
 <div class="modal-footer">
   <div class="row">
-    {!! __html::timestamps(
-      $user->creator['firstname'] ." ".$user->creator['lastname'],
-      $user->created_at,
-      $user->updater['firstname'] ." ". $user->updater['lastname'],
-      $user->updated_at,"4"
-    ) !!} 
+    {!! __html::timestamp($user ,"4") !!}
     <div class="col-md-4">
       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
     </div>

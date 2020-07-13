@@ -308,5 +308,7 @@ class ScholarsRepository extends BaseRepository implements ScholarsInterface {
         return $this->scholars->where('sex','=',"FEMALE")->get();
     }
 
-
+    public function getRaw(){
+        return $this->scholars;
+    }
 }

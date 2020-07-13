@@ -33,7 +33,7 @@
             </div>  
             <div class="row">
               <div class="col-md-2 pull-right">
-                <button type="submit" class="btn btn-primary col-md-12 add_participant_btn">Save <i class="fa fa-fw fa-save"></i></button>
+                <button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!} col-md-12 add_participant_btn">Save <i class="fa fa-fw fa-save"></i></button>
               </div>
             </div>
           </form>
@@ -66,7 +66,7 @@
       <table class="table table-hover table-bordered" id="participant_tbl" style="width: 100% !important">
 
         <thead>
-          <tr>
+          <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
             <th>Fullname</th>
             <th>Address</th>
             <th style="width: 10%">Sex</th>
@@ -81,7 +81,7 @@
             <tr id="{{ $data->slug }}">
               <td>{{ $data->fullname }}</td>
               <td>{{ $data->address }}</td>
-              <td>{{ $data->sex }}</td>
+              <td>{!! __html::sex($data->sex) !!}</td>
               <td>{{ $data->contact_no }}</td>
               <td>{{ $data->email }}</td>
               <td>

@@ -10,6 +10,9 @@
 	        <dt>Title:</dt>
 	        <dd>{{ $seminar->title }}</dd>
 
+	        <dt>Mill District:</dt>
+	        <dd>{{ $seminar->millDistrict->mill_district or 'N/A'}}</dd>
+
 	        <dt>Sponsor:</dt>
 	        <dd>{{ $seminar->sponsor }}</dd>
 	       
@@ -21,7 +24,7 @@
 
 	        <dt>Date to:</dt>
 	        <dd>{{ date('F d, Y', strtotime($seminar->date_covered_to)) }}</dd>
-	      </dl>
+	     </dl>
 	</div>
 	
 
@@ -96,12 +99,7 @@
 </div>
 <div class="modal-footer">
 	<div class="row">
-		{!! __html::timestamps(
-			$seminar->creator['firstname'] ." ".$seminar->creator['lastname'],
-			$seminar->created_at,
-			$seminar->updater['firstname'] ." ". $seminar->updater['lastname'],
-			$seminar->updated_at,"5"
-		) !!}		
+		{!! __html::timestamp($seminar ,"5") !!}
 
 		<div class="col-md-2">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

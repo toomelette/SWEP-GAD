@@ -70,7 +70,7 @@
               @if($bf_member->familyMembers->count() > 0)
                 <table class="table table-bordered bg-white">
                   <thead>
-                    <tr>
+                    <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
                       <th>Fullname</th>
                       <th>Sex</th>
                       <th>Birthday</th>
@@ -88,7 +88,7 @@
                           {{$familyMember->middlename}}
                         </td>
                         <td>
-                          {{$familyMember->sex}}
+                          {!! __html::sex($familyMember->sex) !!}
                         </td>
                         <td>
                           {{$familyMember->bday}}
@@ -122,16 +122,11 @@
     </div>
   <div class="modal-footer">
   	<div class="row">
-  		{!! __html::timestamps(
-  			$bf_member->creator['firstname'] ." ".$bf_member->creator['lastname'],
-  			$bf_member->created_at,
-  			$bf_member->updater['firstname'] ." ". $bf_member->updater['lastname'],
-  			$bf_member->updated_at,"4"
-  		)!!}	
-		<div class="col-md-4">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		</div>
-	</div>
+  		{!! __html::timestamp($bf_member ,"4") !!}
+  		<div class="col-md-4">
+  			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+  		</div>
+  	</div>
     
   </div>
 </div>

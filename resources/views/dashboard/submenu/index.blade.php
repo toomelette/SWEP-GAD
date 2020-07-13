@@ -32,7 +32,7 @@
 			            ) !!}
 
 			            <div class="col-md-12">
-			            	<button type="submit" class="btn btn-primary pull-right">
+			            	<button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!} pull-right">
 				            	<i class="fa fa-save"></i> Save
 				            </button>
 			            </div>
@@ -50,7 +50,7 @@
 		<div class="col-md-12">
 			<table class="table table-striped table-bordered submenu_table" style="width: 100% !important">
 				<thead>
-					<tr>
+					<tr class="{!! __static::bg_color(Auth::user()->color) !!}">
 						<th>Name</th>
 						<th>Route</th>
 						<th>Nav name</th>
@@ -90,12 +90,7 @@
 </div>
 <div class="modal-footer">
 	<div class="row">
-		{!! __html::timestamps(
-	      $menu->creator['firstname'] ." ".$menu->creator['lastname'],
-	      $menu->created_at,
-	      $menu->updater['firstname'] ." ". $menu->updater['lastname'],
-	      $menu->updated_at,"4"
-	    ) !!} 
+		{!! __html::timestamp($menu ,"4") !!}
 	    <div class="col-md-4">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		</div>

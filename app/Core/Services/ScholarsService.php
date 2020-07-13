@@ -163,7 +163,12 @@ class ScholarsService extends BaseService{
     }
 
 
+    public function getRaw(){
+        $scholars = $this->scholars_repo->getRaw();
+        return $scholars;
+    }
 
+    
 
 
 

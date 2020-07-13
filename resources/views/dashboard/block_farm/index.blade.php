@@ -12,7 +12,7 @@
             <div class="box-header with-border">
               <h3 class="box-title">List of Block Farms</h3>
               <div class="pull-right">
-                <button type="button" class="btn bg-purple" data-toggle="modal" data-target="#add_block_farm_modal"><i class="fa fa-plus"></i> Add new</button>
+                <button type="button" class="btn {!! __static::bg_color(Auth::user()->color) !!}" data-toggle="modal" data-target="#add_block_farm_modal"><i class="fa fa-plus"></i> Add new</button>
               </div>
             </div>
             <!-- /.box-header -->
@@ -22,7 +22,7 @@
               
                 <table class="table table-bordered table-striped table-hover" id="block_farm_tbl" style="width: 100% !important; font-size: 14px">
                   <thead>
-                    <tr>
+                    <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
                       <th>Block Farm</th>
                       <th>Mill District</th>
                       <th>Date</th>
@@ -40,7 +40,7 @@
             </div>
             <div id="tbl_loader">
               <center>
-                <img style="width: 100px" src="{{ asset('images/loader.gif') }}">
+                <img style="width: 100px" src="{!! __static::loader(Auth::user()->color) !!}">
               </center>
             </div>
             <!-- /.box-body -->
@@ -56,7 +56,7 @@
 <div style="display: none;" id="modal_loader"> 
   <div class="modal_loader">
     <center>
-      <img style="width: 70px; margin: 40px 0;" src="{{ asset('images/loader.gif') }}">
+      <img style="width: 70px; margin: 40px 0;" src="{!! __static::loader(Auth::user()->color) !!}">
     </center>
   </div>
 </div>
@@ -328,7 +328,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary add_block_farm_btn"><i class="fa fa-save"> </i> Save</button>
+          <button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!} add_block_farm_btn"><i class="fa fa-save"> </i> Save</button>
         </div>
       </form>
     </div>

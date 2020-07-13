@@ -9,6 +9,7 @@ use App\Http\Requests\Seminar\SeminarFormRequest;
 use App\Http\Requests\Seminar\SeminarFilterRequest;
 use App\Http\Requests\SeminarParticipant\SeminarParticipantCreateFormRequest;
 use App\Http\Requests\SeminarParticipant\SeminarParticipantEditFormRequest;
+use App\Core\Services\MillDistrictService;
 
 use Datatables;
 
@@ -18,11 +19,13 @@ class SeminarController extends Controller{
 
 	protected $seminar;
     protected $seminar_participant;
+    protected $mill_district;
 
-    public function __construct(SeminarService $seminar, SeminarParticipantService $seminar_participant){
+    public function __construct(SeminarService $seminar, SeminarParticipantService $seminar_participant, MillDistrictService $mill_district){
         
         $this->seminar = $seminar;
         $this->seminar_participant = $seminar_participant;
+        $this->mill_district = $mill_district;
     }
     
     public function index(){
@@ -74,12 +77,21 @@ class SeminarController extends Controller{
                 $button =  $button.'</div>';
                 return $button;
             })
+            ->editColumn('date_covered', function($data){
+               if($data->date_covered_from == $data->date_covered_to ){
+                return date("M. d, Y",strtotime($data->date_covered_from));
+               }else{
+                return date("M. d, Y",strtotime($data->date_covered_from)).' - '.date("M. d, Y",strtotime($data->date_covered_to));
+               }
+            })
             ->rawColumns(['action'])
             ->setRowId('slug')
             ->make();
         }
 
-        return view('dashboard.seminar.index');
+        return view('dashboard.seminar.index')->with([
+            'mill_districts_list' => $this->mill_district->mills(),
+        ]);
     }
 
     public function seminarList(){
@@ -115,7 +127,10 @@ class SeminarController extends Controller{
     public function edit($slug){
         
         $seminar = $this->seminar->edit($slug);
-        return view('dashboard.seminar.edit')->with(['seminar'=>$seminar]);
+        return view('dashboard.seminar.edit')->with([
+            'seminar'=>$seminar,
+            'mill_districts_list' => $this->mill_district->mills()
+        ]);
     }
 
 

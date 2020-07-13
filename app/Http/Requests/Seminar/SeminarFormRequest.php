@@ -23,6 +23,7 @@ class SeminarFormRequest extends FormRequest{
             'title' => 'required|string|max:255',
             'sponsor' => 'required|string|max:255',
             'venue' => 'required|string|max:255',
+            'mill_district' => 'required|string|max:255',
             'date_covered_from' => 'required|date_format:"m/d/Y"',
             'date_covered_to' => 'required|date_format:"m/d/Y"',
 

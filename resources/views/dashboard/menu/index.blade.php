@@ -15,7 +15,7 @@
                   <button class="btn btn-default change_menu_btn" data-toggle="modal" data-target="#change_menu_modal">
                     <i class="fa fa-sort-amount-asc"></i>
                   Change Menu Order</button>
-                  <button type="button" class="btn bg-purple" data-toggle="modal" data-target="#add_menu_modal"><i class="fa fa-plus"></i> Add new</button>
+                  <button type="button" class="btn {!! __static::bg_color(Auth::user()->color) !!}" data-toggle="modal" data-target="#add_menu_modal"><i class="fa fa-plus"></i> Add new</button>
                 </div>
               </div>
             </div>
@@ -56,7 +56,7 @@
               
                 <table class="table table-bordered table-striped table-hover" id="menu_table" style="width: 100% !important; font-size: 14px">
                   <thead>
-                    <tr>
+                    <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
                       <th>Order</th>
                       <th>Name</th>
                       <th>Route</th>
@@ -76,7 +76,7 @@
             </div>
             <div id="tbl_loader">
               <center>
-                <img style="width: 100px" src="{{ asset('images/loader.gif') }}">
+                <img style="width: 100px" src="{!! __static::loader(Auth::user()->color) !!}">
               </center>
             </div>
             <!-- /.box-body -->
@@ -99,7 +99,6 @@
 {!! __html::blank_modal('edit_menu_modal','sm') !!}
 {!! __html::blank_modal('list_submenus','lg') !!}
 
-{!! __html::modal_loader() !!}
 
 <div class="modal fade" id="change_menu_modal">
   <div class="modal-dialog modal-sm">
@@ -152,7 +151,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary"> <i class="fa fa-save"></i> Save</button>
+          <button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!}"> <i class="fa fa-save"></i> Save</button>
         </div>
       </form>
     </div>
@@ -293,7 +292,7 @@ function filter_dt(){
         },
       "language": 
         {          
-          "processing": "<center><img style='width: 70px' src='{{ asset('images/loader.gif') }}'></center>",
+          "processing": "<center><img style='width: 70px' src='{!! __static::loader(Auth::user()->color) !!}'></center>",
         },
       "drawCallback": function(settings){
         $('[data-toggle="tooltip"]').tooltip();

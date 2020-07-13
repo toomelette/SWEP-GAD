@@ -147,7 +147,7 @@
           	<div class="tab-pane" id="tab_33">
           		<table class="table table-bordered table-hover" id="block_farm_members_table" style="width: 100% !important; font-size: 14px; background-color: white !important">
                   <thead>
-                    <tr>
+                    <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
                       <th>Fullname</th>
                       <th>Birthday</th>
                       <th class="text-center">Age</th>
@@ -211,12 +211,7 @@
   </div>
   <div class="modal-footer">
   	<div class="row">
-		{!! __html::timestamps(
-			$block_farm->creator['firstname'] ." ".$block_farm->creator['lastname'],
-			$block_farm->created_at,
-			$block_farm->updater['firstname'] ." ". $block_farm->updater['lastname'],
-			$block_farm->updated_at,"4"
-		) !!}	
+		{!! __html::timestamp($block_farm ,"4") !!}
 		<div class="col-md-4">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		</div>

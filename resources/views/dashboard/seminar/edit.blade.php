@@ -20,8 +20,14 @@
       <div class="col-md-7">
         <div class="row">
           {!! __form::textbox(
-            '12 title', 'title', 'text', 'Title *', 'Title', old('title') ? old('title') : $seminar->title, $errors->has('title'), $errors->first('title'), ''
+            '7 title', 'title', 'text', 'Title *', 'Title', old('title') ? old('title') : $seminar->title, $errors->has('title'), $errors->first('title'), ''
           ) !!}
+
+           {!! __form::select_static(
+            '5 mill_district', 'mill_district', 'Mill District: *', $seminar->mill_district , $mill_districts_list , '', '', '', ''
+          ) !!}
+
+
         </div>
         <div class="row">
           {!! __form::textbox(
@@ -62,7 +68,7 @@
               </p>
             </div>
             <div class="col-md-6">
-              <button id="add_row_edit" type="button" class="btn btn-xs btn-success pull-right">Add Speaker &nbsp;<i class="fa fw fa-plus"></i></button>
+              <button id="add_row_edit" type="button" class="btn btn-xs {!! __static::bg_color(Auth::user()->color) !!} pull-right">Add Speaker &nbsp;<i class="fa fw fa-plus"></i></button>
             </div>
           </div>
           
@@ -104,7 +110,7 @@
 
   <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="submit" class="btn btn-primary pull-right update_seminar_btn"> <i class="fa fa-fw fa-save"></i> Save</button>
+    <button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!} pull-right update_seminar_btn"> <i class="fa fa-fw fa-save"></i> Save</button>
   </div>
 </form>     
 

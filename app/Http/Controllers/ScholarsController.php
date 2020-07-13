@@ -7,6 +7,7 @@ use App\Core\Services\ScholarsService;
 use App\Core\Services\MillDistrictService;
 use App\Http\Requests\Scholar\ScholarsFormRequest;
 use Yajra\DataTables\Html\Builder;
+use Illuminate\Http\Request;
 
 
 
@@ -106,9 +107,28 @@ class ScholarsController extends Controller{
        
         $mills_grp = $this->mill_district->mills_grp();
 
-        $courses = $this->scholars->getAllCourses();
+        
     
 
+        $c = $this->groupedCourses();
+        
+        $search = '';
+        if(!empty(request()->get('search'))){
+            $search = request()->get('search');
+        }
+
+
+        return view('dashboard.scholars.index', compact('html'))->with([
+            'mill_districts' => $mills_grp,
+            'mill_districts_list' => $this->mill_district->mills(),
+            'courses' => $c,
+            'search' => $search
+        ]);
+    }
+
+   
+    private function groupedCourses(){
+        $courses = $this->scholars->getAllCourses();
 
         $c = [ 
                 "Bachelor of Science"=>[],
@@ -129,22 +149,8 @@ class ScholarsController extends Controller{
                 array_push($c["Other"], $course);
             }
         }
-        $search = '';
-        if(!empty(request()->get('search'))){
-            $search = request()->get('search');
-        }
-
-
-        return view('dashboard.scholars.index', compact('html'))->with([
-            'mill_districts' => $mills_grp,
-            'mill_districts_list' => $this->mill_district->mills(),
-            'courses' => $c,
-            'search' => $search
-        ]);
+        return $c;
     }
-
-   
-    
 
     public function create(){
         
@@ -200,6 +206,177 @@ class ScholarsController extends Controller{
     }
 
 
+    public function reports(){
+        return view('dashboard.scholars.reports')->with([
+            'mill_districts' => $this->mill_district->mills_grp(),
+            'courses' => $this->groupedCourses(),
+            'columns' => $this->columns()
+        ]);
+    }
 
+    public function report_generate(Request $request){
+
+        $type = $request->get('type');
+        $scholars = $this->scholars->getRaw();
+
+        if($request->scholarship_type != "" AND $request->scholarship_type != "all"){
+            $scholars = $scholars->where('scholarship_applied',"=",$request->scholarship_type);
+        }
+        
+        if($request->sex != "" AND $request->sex != "all"){
+            $scholars = $scholars->where('sex',"=",$request->sex);
+        }
+
+        if($request->mill_district != "" AND $request->mill_district != "all"){
+            $scholars = $scholars->where('mill_district',"=",$request->mill_district);
+        }
+
+        if($request->course != "" AND $request->course != "all"){
+            $scholars = $scholars->where('course_applied',"=",$request->course);
+        }
+
+        $filters = [];
+        
+        foreach ($request->all() as $key => $value) {
+            if(!is_array($value)){
+                if($key != "type" and $value != null){
+                    if($key == "mill_district"){
+                        $mill_d = $this->findMillDistrict($value);
+                        array_push($filters, $mill_d->mill_district);
+                    }else{
+                        array_push($filters, $value);
+                    }
+                }
+            }          
+        }
     
+        //return $filters;
+       
+        
+        //NOT GORUPED
+        if($type == "all"){
+            
+
+            $scholars = $scholars->get();
+            return view('printables.scholars.list_all')->with([
+                'scholars' => $scholars,
+                'columns_chosen' => $request->get('columns'),
+                'columns' => $this->columns(),
+                'filters'=> $filters
+            ]);
+        }
+
+        //GROUP BY SEX
+        if($type == "sex"){
+            $scholars = $scholars->get();
+            $scholars_group = [];
+
+            foreach($scholars as $scholar){
+               $scholars_group[$scholar->sex][$scholar->slug] = $scholar;
+            }
+
+            return view("printables.scholars.by_sex")->with([
+                'scholars_group' => $scholars_group,
+                'columns_chosen' => $request->get('columns'),
+                'columns' => $this->columns(),
+                'filters'=> $filters
+            ]);
+        }
+
+        //GROUP BY SCHOLARSHIP TYPE
+        if($type == "scholarship"){
+            $scholars = $scholars->get();
+            $scholars_group = [];
+
+            foreach($scholars as $scholar){
+               $scholars_group[$scholar->scholarship_applied][$scholar->slug] = $scholar;
+            }
+            return view("printables.scholars.by_sex")->with([
+                'scholars_group' => $scholars_group,
+                'columns_chosen' => $request->get('columns'),
+                'columns' => $this->columns(),
+                'filters'=> $filters
+            ]);
+        }
+
+        //GROUP BY COURSE
+        if($type == "course"){
+            $scholars = $scholars->get();
+            $scholars_group = [];
+
+            foreach($scholars as $scholar){
+               $scholars_group[$scholar->course_applied][$scholar->slug] = $scholar;
+            }
+           
+            return view("printables.scholars.by_sex")->with([
+                'scholars_group' => $scholars_group,
+                'columns_chosen' => $request->get('columns'),
+                'columns' => $this->columns(),
+                'filters'=> $filters
+            ]);
+        }
+
+        //GROUP BY SCHOOL
+        if($type == "school"){
+            $scholars = $scholars->get();
+            $scholars_group = [];
+
+            foreach($scholars as $scholar){
+               $scholars_group[$scholar->school][$scholar->slug] = $scholar;
+            }
+           
+            return view("printables.scholars.by_sex")->with([
+                'scholars_group' => $scholars_group,
+                'columns_chosen' => $request->get('columns'),
+                'columns' => $this->columns(),
+                'filters'=> $filters
+            ]);
+        }
+
+        //GROUP BY MILL DISTRICT
+        if($type == "mill_district"){
+            $scholars = $scholars->get();
+            $scholars_group = [];
+
+            foreach($scholars as $scholar){
+                if(!empty($scholar->millDistrict->mill_district)){
+                     $scholars_group[$scholar->millDistrict->mill_district][$scholar->slug] = $scholar;
+                 }else{
+                    $scholars_group[$scholar->mill_district][$scholar->slug] = $scholar;
+                 }
+              
+            }
+            return view("printables.scholars.by_sex")->with([
+                'scholars_group' => $scholars_group,
+                'columns_chosen' => $request->get('columns'),
+                'columns' => $this->columns(),
+                'filters'=> $filters
+            ]);
+        }
+
+
+    }
+
+    public function columns(){
+        $columns = [
+            "Numbering" => "numbering",
+            "Resolution No." => "resolution_no",
+            "Mill District" => "mill_district",
+            "Scholarship" => "scholarship_applied",
+            "Course" => "course_applied",
+            "School" => "school",
+            "Birthday" => "birth",
+            "Sex" => "sex",
+            "Civil Status" => "civil_status",
+            "Address" => "address",
+            "Phone" => "phone"
+        ];
+        return $columns;
+    }
+    
+
+    public function findMillDistrict($slug){
+        $mill_district = $this->mill_district->find($slug);
+        return $mill_district;
+    }
 }

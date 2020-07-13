@@ -37,6 +37,8 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 
 	Route::patch('/profile/update_account_color', 'ProfileController@updateAccountColor')->name('profile.update_account_color');
 
+	Route::post('/profile/update_image', 'ProfileController@updateImage')->name('profile.update_image');
+
 
 	/** MENU **/
 	Route::resource('menu', 'MenuController');
@@ -75,7 +77,11 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 
 
 	/** SCHOLARS **/
+	Route::get('/scholars/report_generate', 'ScholarsController@report_generate')->name('scholars.report_generate');
+	Route::get('/scholars/reports', 'ScholarsController@reports')->name('scholars.reports');
 	Route::resource('scholars','ScholarsController');
+
+	
 
 	Route::resource('mill_district', 'MillDistrictController');
 

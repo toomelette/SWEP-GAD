@@ -136,6 +136,13 @@ class ProfileController extends Controller{
     }
 
 
+    public function updateImage(Request $request){
+        //$image = $request->file('avatar');
+        $profile = $this->profile_service->updateImage($request);
+        //$image->move(public_path('images/profile_images'), 'haru.jpg');
+
+        return $profile;
+    }
 
 
 

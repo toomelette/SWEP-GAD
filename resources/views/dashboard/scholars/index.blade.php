@@ -9,7 +9,7 @@
             <div class="box-header with-border">
               <h3 class="box-title">Scholars</h3>
               <div class="pull-right">
-                <button type="button" class="btn bg-purple" data-toggle="modal" data-target="#add_scholar_modal"><i class="fa fa-plus"></i> New Scholar</button>
+                <button type="button" class="btn {!! __static::bg_color(Auth::user()->color) !!}" data-toggle="modal" data-target="#add_scholar_modal"><i class="fa fa-plus"></i> New Scholar</button>
               </div>
             </div>
             <div class="panel">
@@ -49,13 +49,13 @@
                       <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_mill_district filters">
                         <option value="">All</option>
                         @foreach($mill_districts as $key=> $location)
-                        <optgroup label="{{$key}}">
-                          @foreach($location as $mill_district => $slug)
-                          <option value="{{$slug}}">
-                            {{$mill_district}}
-                          </option>
-                          @endforeach
-                        </optgroup>
+                          <optgroup label="{{$key}}">
+                            @foreach($location as $mill_district => $slug)
+                            <option value="{{$slug}}">
+                              {{$mill_district}}
+                            </option>
+                            @endforeach
+                          </optgroup>
                         
                         @endforeach
                       </select>
@@ -90,11 +90,11 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+              
               <div id="scholars_table_container" style="display: none">
                 <table class="table table-bordered table-striped table-hover" id="scholars_table" style="width: 100% !important">
                   <thead>
-                    <tr>
-  
+                    <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
                       <th>Name & Address</th>
                       <th>Mill District</th>
                       <th style="width: 50px">Scholarship</th>
@@ -113,7 +113,8 @@
 
               <div id="tbl_loader">
                 <center>
-                  <img style="width: 100px" src="{{ asset('images/loader.gif') }}">
+                  <img style="width: 100px" 
+                  src="{!! __static::loader(Auth::user()->color) !!}">
                 </center>
               </div>
             </div>
@@ -363,7 +364,7 @@
 
           <div class="modal-footer">
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary submit_add_seminar"><i class="fa fa-save"></i> Save</button>
+            <button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!} submit_add_seminar"><i class="fa fa-save"></i> Save</button>
           </div>
         </form>
       </div>
@@ -374,7 +375,7 @@
 
   {!! __html::blank_modal('show_scholars_modal','lg') !!}
   {!! __html::blank_modal('edit_scholars_modal','lg') !!}
-  {!! __html::modal_loader() !!}
+
 
 
 
@@ -481,7 +482,7 @@
       },
     "language": 
       {          
-        "processing": "<center><img style='width: 70px' src='{{ asset('images/loader.gif') }}'></center>",
+        "processing": "<center><img style='width: 70px' src='{!! __static::loader(Auth::user()->color) !!}'></center>",
       },
     "drawCallback": function(settings){
       $('[data-toggle="tooltip"]').tooltip();

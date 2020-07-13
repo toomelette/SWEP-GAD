@@ -100,6 +100,6 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-    <button type="submit" class="btn btn-primary update_user_btn"><i class="fa fa-save fa-fw"></i> Save</button>
+    <button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!} update_user_btn"><i class="fa fa-save fa-fw"></i> Save</button>
   </div>
 </form>

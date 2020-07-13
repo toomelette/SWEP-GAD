@@ -12,8 +12,7 @@
             <div class="box-header with-border">
               <h3 class="box-title">List of Menus</h3>
               <div class="pull-right">
-                 <button type="button" class="btn bg-purple" data-toggle="modal" data-target="#add_mill_district_modal" data-original-title="" title=""><i class="fa fa-plus"></i> Add new</button>
-
+                 <button type="button" class="btn {!! __static::bg_color(Auth::user()->color) !!}" data-toggle="modal" data-target="#add_mill_district_modal" data-original-title="" title=""><i class="fa fa-plus"></i> Add new</button>
               </div>
             </div>
             <div class="panel">
@@ -28,19 +27,38 @@
                 <div class="box-body">
                   <div class="row">
                     <div class="col-md-1 col-sm-2 col-lg-2">
-                      <label>Is menu:</label>
-                      <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_menu filters">
+                      <label>Location:</label>
+                      <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_location filters">
                         <option value="">All</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
+                        @if(count($regions_array) > 0)
+                          @foreach($regions_array as $key => $location)
+                            <option value="{{$key}}" >{{$key}}</option>
+                          @endforeach
+                        @endif
                       </select>
                     </div>
                     <div class="col-md-1 col-sm-2 col-lg-2">
-                      <label>Is dropdown:</label>
-                      <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_dropdown filters">
+                      <label>Region:</label>
+                      
+                      <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_region filters">
                         <option value="">All</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
+                        @if(count($regions_array) > 0)
+                          @foreach($regions_array as $key => $location)
+                            <optgroup label="{{$key}}">
+                              @foreach($location as $key2 => $region)
+                                <option value="{{$region}}">{{$region}}</option>
+                              @endforeach
+                            </optgroup>
+                          @endforeach
+                        @endif
+                      </select>
+                    </div>
+                    <div class="col-md-1 col-sm-2 col-lg-2">
+                      <label>Group by:</label>
+                      <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm group_by">
+                        <option value="">None</option>
+                        <option value="location">Location</option>
+                        <option value="region">Region</option>
                       </select>
                     </div>
                   </div>
@@ -53,10 +71,10 @@
 	              
 	                <table class="table table-bordered table-striped table-hover" id="mill_district_table" style="width: 100% !important; font-size: 14px">
 	                  <thead>
-	                    <tr>
+	                    <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
+                        <th>Mill District</th>
 	                      <th>Location</th>
 	                      <th>Region</th>
-	                      <th>Mill District</th>
 	                      <th>Chairman</th>
 	                      <th>Address</th>
 	                      <th>Mill District Officer</th>
@@ -73,7 +91,7 @@
 	        </div>
 	        	<div id="tbl_loader">
 	              <center>
-	                <img style="width: 100px" src="{{ asset('images/loader.gif') }}">
+	                <img style="width: 100px" src="{!! __static::loader(Auth::user()->color) !!}">
 	            </center>
 	        </div>
             <!-- /.box-body -->
@@ -102,10 +120,16 @@
 	        </div>
 	        <div class="modal-body">
 	        	<div class="row">
+              @php
+                
+                $locs = [];
+                foreach ($regions_array as $key => $value) {
+                  $locs[$key] = $key;
+                }
+            
+              @endphp
 	        		{!! __form::select_static(
-                      '12 location', 'location', 'Location *', old('is_menu'), [
-                        
-                      ], $errors->has('is_menu'), $errors->first('is_menu'), '', ''
+                      '12 location', 'location', 'Location *', old('is_menu'),$locs, $errors->has('is_menu'), $errors->first('is_menu'), '', ''
                     ) !!}
 
                     {!! __form::select_static(
@@ -139,7 +163,7 @@
 	        </div>
 	        <div class="modal-footer">
 	        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          		<button type="submit" class="btn btn-primary add_block_farm_btn"><i class="fa fa-save"> </i> Save</button>
+          		<button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!} add_block_farm_btn"><i class="fa fa-save"> </i> Save</button>
 	        </div>
         </form>
       </div>
@@ -162,7 +186,7 @@
 
 {!! __html::blank_modal('edit_mill_district_modal','sm') !!}
 {!! __html::blank_modal('show_mill_district_modal','xl') !!}
-  {!! __html::modal_loader() !!}
+
 
 
 @endsection 
@@ -173,6 +197,26 @@
 	function dt_draw(){
 		mill_district_tbl.draw(false);
 	}
+
+  function filter_dt(){
+    loc = $(".filter_location").val();
+    region = $(".filter_region").val();
+
+    mill_district_tbl.ajax.url(
+      "{{ route('dashboard.mill_district.index') }}?location="+loc+"&region="+region).load();
+
+    $(".filters").each(function(index, el) {
+      if($(this).val() != ''){
+        $(this).parent("div").addClass('has-success');
+        $(this).siblings('label').addClass('text-green');
+      }else{
+        $(this).parent("div").removeClass('has-success');
+        $(this).siblings('label').removeClass('text-green');
+      }
+    });
+  }
+
+
 </script>
 <script type="text/javascript">
 
@@ -185,94 +229,140 @@
 
   modal_loader = $("#modal_loader").parent('div').html();
   //-----DATATABLES-----//
-    //Initialize DataTable
-    mill_district_tbl = $("#mill_district_table").DataTable({
-      'dom' : 'lBfrtip',
-      "processing": true,
-      "serverSide": true,
-      "ajax" : '{{ route("dashboard.mill_district.index") }}',
-      "columns": [
-          { "data": "location" },
-          { "data": "region" },
-          { "data": "mill_district" },
-          { "data": "chairman" },
-          { "data": "address" },
-          { "data": "mdo" },
-          { "data": "phone" },
-          { "data": "action" }
-      ],
-      "buttons": [
-          {!! __js::dt_buttons() !!}
-      ],
-      "columnDefs":[
-        {
-          "targets" : [ 0 , 1 , 2],
-          "visible" : true
-        },
-        {
-          "targets" : 1,
-          "class" : 'sex-th'
-        },
-        {
-          "targets" : 5,
-          "orderable" : false,
-          "class" : 'action'
-        },
+  //Initialize DataTable
+  mill_district_tbl = $("#mill_district_table").DataTable({
+    'dom' : 'lBfrtip',
+    "processing": true,
+    "serverSide": true,
+    "ajax" : '{{ route("dashboard.mill_district.index") }}',
+    "columns": [
+        { "data": "mill_district" },
+        { "data": "location" },
+        { "data": "region" },
+        { "data": "chairman" },
+        { "data": "address" },
+        { "data": "mdo" },
+        { "data": "phone" },
+        { "data": "action" }
+    ],
+    "buttons": [
+        {!! __js::dt_buttons() !!}
+    ],
+    "columnDefs":[
+      {
+        "targets" : 1,
+        "visible" : false
+      },
+      {
+        "targets" : 1,
+        "class" : 'sex-th'
+      },
+      {
+        "targets" : 5,
+        "orderable" : false,
+        "class" : 'action'
+      },
 
-        {
-          "targets": 3, 
-          // "render" : $.fn.dataTable.render.moment( 'MMMM D, YYYY' )
-        }
-      ],
-      "responsive": false,
-      "initComplete": function( settings, json ) {
-          $('#tbl_loader').fadeOut(function(){
-            $("#mill_district_table_container").fadeIn();
-          });
-        },
-      "language": 
-        {          
-          "processing": "<center><img style='width: 70px' src='{{ asset('images/loader.gif') }}'></center>",
-        },
-      "drawCallback": function(settings){
-        $('[data-toggle="tooltip"]').tooltip();
-        $('[data-toggle="modal"]').tooltip();
-        if(active != ''){
-           $("#mill_district_table #"+active).addClass('success');
-        }
+      {
+        "targets": 3, 
+        // "render" : $.fn.dataTable.render.moment( 'MMMM D, YYYY' )
       }
-    })
+    ],
+    "responsive": false,
+    "initComplete": function( settings, json ) {
+        $('#tbl_loader').fadeOut(function(){
+          $("#mill_district_table_container").fadeIn();
+        });
+      },
+    "language": 
+      {          
+        "processing": "<center><img style='width: 70px' src='{!! __static::loader(Auth::user()->color) !!}'></center>",
+      },
+    "drawCallback": function(settings){
+      $('[data-toggle="tooltip"]').tooltip();
+      $('[data-toggle="modal"]').tooltip();
+      if(active != ''){
+         $("#mill_district_table #"+active).addClass('success');
+      }
+    },
+    'rowGroup': {
+        'dataSrc': 'location'
+    },
+    'order':[1,'asc']
 
-    //Search Bar Styling
-    style_datatable('#mill_district_table');
+  })
 
-    //Need to press enter to search
-    $('#mill_district_table_filter input').unbind();
-    $('#mill_district_table_filter input').bind('keyup', function (e) {
-        if (e.keyCode == 13) {
-            mill_district_tbl.search(this.value).draw();
-        }
-    });
+  $(".group_by").change(function(){
+    c = $(this).val();
+    p = $(this).parent('div');
+    s = $(this).siblings('label');
+    mill_district_tbl.rowGroup().dataSrc(c);
+
+    if(c == 'region'){
+      mill_district_tbl.column(2).visible(false);
+      mill_district_tbl.column(1).visible(true);
+      mill_district_tbl.order([2,'asc']).draw();
+      p.addClass('has-success');
+      s.addClass('text-green');
+    }
+
+    if(c == 'location'){
+      mill_district_tbl.column(1).visible(false);
+      mill_district_tbl.column(2).visible(true);
+      mill_district_tbl.order([1,'asc']).draw();
+      p.addClass('has-success');
+      s.addClass('text-green');
+    }
+
+    if(c == ''){
+      mill_district_tbl.rowGroup().dataSrc('');
+      mill_district_tbl.column(1).visible(true);
+      mill_district_tbl.column(2).visible(true);
+      mill_district_tbl.order([0,'asc']).draw();
+      p.removeClass('has-success');
+      s.removeClass('text-green');
+    }
+  });
+
+
+  //Search Bar Styling
+  style_datatable('#mill_district_table');
+
+  //Need to press enter to search
+  $('#mill_district_table_filter input').unbind();
+  $('#mill_district_table_filter input').bind('keyup', function (e) {
+      if (e.keyCode == 13) {
+          mill_district_tbl.search(this.value).draw();
+      }
+  });
 
 
 
 
-   regions = @php echo $regions; @endphp;
+  regions = @php echo json_encode($regions_array); @endphp;
 
+  $(".filters").change(function(){
+    filter_dt();
+  });
 
 	$.each(regions, function (a, item) {
 		$("#add_mill_district_form #location").append('<option value="'+a+'">'+a+'</option>');
 	});
 
-	$("body").on('change', 'select#location', function(){
-		val = $(this).val();
-		r = $(this).parent('div').siblings('.region').find('#region');
-		r.html('<option value="">Select</option>');
 
-		$.each(regions[val], function (i, t) {
-			r.append('<option value="'+t+'">'+t+'</option>');
-		})
-	})
+  $("body").on("change","select[name='location']", function(){
+    
+
+    mod = $(this).parents('.modal-content');
+    reg = $(mod).find("select[name='region']");
+    reg.html('<option value="">Select</option>');
+    chosen = $(this).val();
+    
+    $.each(regions[chosen], function(i , item){
+      reg.append('<option value="'+item+'">'+item+'</option>');
+    })
+
+  })
 
 	$("body").on('submit','#edit_mill_district_form', function(e){
 		e.preventDefault();
@@ -280,7 +370,7 @@
 	    wait_button("#edit_scholars_form");
 	    uri = "{{ route('dashboard.mill_district.update','slug') }}";
 	    uri = uri.replace('slug',id);
-
+      t = $(this);
 	    $.ajax({
 	      url: uri,
 	      data: $(this).serialize(),
@@ -292,6 +382,7 @@
 	        notify("Mill District successfully updated",'success');
 	        active = response.slug
 	        mill_district_tbl.draw(false);
+          
 	      },
 	      error: function(response){
 	        console.log(response);
@@ -300,7 +391,7 @@
 	      }
 
 	    })
-	})
+	});
 
 
 
@@ -315,14 +406,15 @@
 				succeed('#add_mill_district_form','save',true);
 				notify("Mill District successfully added",'success');
 				active = response.slug
-	        	mill_district_tbl.draw(false);
+	       mill_district_tbl.draw(false);
+        $("#add_mill_district_form select[name='region']").html('<option value="">Select</option>');
 			},
 			error: function(response){
 				notify("Error: Check console.", 'danger');
 				errored('#add_mill_district_form','save',response)				
 			}
-		})
-	})
+		});
+	});
 
 	$("body").on("click",".edit_mill_district_btn", function(){
 
@@ -339,7 +431,7 @@
 				notify("Error: Check console.", 'danger');
 				console.log(response)
 			}
-		})
+		});
 	});
 
 	$("body").on("click",".delete_mill_district_btn", function(){
@@ -359,11 +451,11 @@
         populate_modal('#show_mill_district_modal',response);
       },
       error: function(response){
-
+        notify("Error: check console.",'danger');
+        console.log(response);
       }
-    })
-  })
-	
+    });
+  });
 </script>
 
 @endsection

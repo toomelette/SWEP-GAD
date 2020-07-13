@@ -84,7 +84,9 @@ class ProfileRepository extends BaseRepository implements ProfileInterface {
     }
 
 
+    public function updateImage($request){
 
+    }
 
 
 }

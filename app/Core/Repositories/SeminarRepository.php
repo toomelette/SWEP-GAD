@@ -59,6 +59,7 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
         $seminar->title = $request->title;
         $seminar->sponsor = $request->sponsor;
         $seminar->venue = $request->venue;
+        $seminar->mill_district = $request->mill_district;
         $seminar->date_covered_from = $this->__dataType->date_parse($request->date_covered_from);
         $seminar->date_covered_to = $this->__dataType->date_parse($request->date_covered_to);
         $seminar->attendance_sheet_filename = $filename;
@@ -94,6 +95,7 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
         
         $seminar->sponsor = $request->sponsor;
         $seminar->venue = $request->venue;
+        $seminar->mill_district = $request->mill_district;
         $seminar->date_covered_from = $this->__dataType->date_parse($request->date_covered_from);
         $seminar->date_covered_to = $this->__dataType->date_parse($request->date_covered_to);
         $seminar->attendance_sheet_filename = $filename;
@@ -144,8 +146,20 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
 
 
     public function fetchTable(){
+        $get = $this->seminar;
+        $get = $get->leftJoin('mill_district', 'mill_district.slug', '=', 'seminars.mill_district');
 
-       return $this->seminar->latest()->get(['id', 'slug', 'seminar_id', 'title', 'sponsor', 'venue', 'date_covered_from', 'date_covered_to']);
+        $get = $get->get([
+            'seminars.slug', 
+            'seminars.seminar_id', 
+            'seminars.title', 
+            'mill_district.mill_district' , 
+            'seminars.sponsor', 
+            'seminars.venue', 
+            'seminars.date_covered_from', 
+            'seminars.date_covered_to'
+        ]);
+        return $get;
     }
 
 

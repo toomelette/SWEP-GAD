@@ -117,6 +117,11 @@ class MillDistrictService extends BaseService{
     }
 
 
+    public function raw(){
+        return $this->mill_district_repo->raw();
+    }
 
-
+    public function find($slug){
+        return $this->mill_district_repo->findBySlug($slug);
+    }
 }

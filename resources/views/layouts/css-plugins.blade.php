@@ -49,8 +49,11 @@
 {{-- PACE --}}
 <link rel="stylesheet" href="{{asset('template/plugins/pace/pace.min.css')}}">
 
+{{-- Cropper --}}
+<link rel="stylesheet" href="{{asset('template/plugins/cropperjs/dist/cropper.css')}}">
+
 {{-- EXCEL EDITABLE --}}
-<link rel="stylesheet" href="{{asset('template/plugins/excel-editable/dist/css/excel-table.css')}}">
+{{-- <link rel="stylesheet" href="{{asset('template/plugins/excel-editable/dist/css/excel-table.css')}}"> --}}
 
 
 

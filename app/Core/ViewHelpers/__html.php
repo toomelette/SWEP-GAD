@@ -4,6 +4,8 @@ namespace App\Core\ViewHelpers;
 
 use URL;
 use Input;
+use Auth;
+use __static;
 
 
 class __html{
@@ -230,6 +232,47 @@ class __html{
 
     }
 
+    public static function timestamp($obj, $class){
+
+    	return '<div class="col-md-'.$class.'">
+			<div class="stamps">
+				<small class="no-margin">
+					Encoded by: 
+					<b>
+						'.$obj->creator['firstname'].' '.$obj->creator['lastname'].'
+					</b> 
+				</small>
+				<br>
+				<small class="no-margin">
+					Timestamp: 
+					<b>
+						'.date("F d, Y | h:i A",strtotime($obj->created_at)).'
+					</b> 
+				</small>
+			</div>
+		</div>
+		<div class="col-md-'.$class.'">
+
+			<div class="stamps">
+				<small class="no-margin">
+					Last updated by: 
+					<b>
+						'.$obj->updater['firstname'].' '.$obj->updater['lastname'].'
+					</b> 
+				</small>
+				<br>
+				<small class="no-margin">
+					Timestamp: 
+					<b>
+						'.date("F d, Y | h:i A",strtotime($obj->updated_at)).'
+					</b> 
+				</small>
+			</div>
+		</div>';
+    }
+
+
+
 
     public static function timestamps($creator, $creator_timestamp, $editor, $editor_timestamp, $class){
 
@@ -251,7 +294,6 @@ class __html{
 			</div>
 		</div>
 		<div class="col-md-'.$class.'">
-
 			<div class="stamps">
 				<small class="no-margin">
 					Last updated by: 
@@ -291,7 +333,7 @@ class __html{
 		return '<div style="display: none;">
 				    <div id="modal_loader">
 				      <center>
-				        <img style="width: 70px; margin: 40px 0;" src="'.asset("images/loader.gif").'">
+				        <img style="width: 70px; margin: 40px 0;" src="'.__static::loader(Auth::user()->color).'">
 				      </center>
 				    </div>
 				  </div>';
@@ -307,4 +349,22 @@ class __html{
         }
 	}
 
+	public static function label_int($int){
+		if($int > 0){
+			return '<span class="label label-success">'.$int.'</span>';
+		}
+		else{
+			return '<span class="label label-warning">'.$int.'</span>';
+		}
+	}
+
+	public static function check_img($filename){
+
+		if($filename != ''){
+			if(file_exists('images/profile_images/'.$filename)){
+				return asset('images/profile_images/'.$filename);			
+			}
+		}
+		return asset('images/avatar.jpeg');
+	}
 }

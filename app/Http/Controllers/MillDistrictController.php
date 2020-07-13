@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-//use Illuminate\Http\Request;
+
 use App\Core\Services\MillDistrictService;
 use App\Core\Services\BlockFarmService;
-// use App\Core\Services\BlockFarmProblemService;
-// use App\Core\Services\BFEncounteredProblemService;
 use App\Http\Requests\MillDistrict\MillDistrictFormRequest;
 use Datatables;
-
+use Yajra\DataTables\Html\Builder;
 
 
 
@@ -32,7 +30,14 @@ class MillDistrictController extends Controller{
         return 'Create';
     }
 
-    public function index(){
+    public function index(Builder $builder){
+        $html = $builder->parameters([
+            'rowGroup'=> [
+                'dataSrc' => ['location']
+            ]
+        ]);
+
+
 
         if(request()->ajax())
         {      
@@ -59,9 +64,11 @@ class MillDistrictController extends Controller{
 
 
 
-        $regions = json_encode($this->regions());
-        return view('dashboard.mill_district.index')->with([
-            'regions'=>$regions
+        $regions = json_encode($this->regions());      
+
+        return view('dashboard.mill_district.index', compact('html'))->with([
+            'regions'=>$regions,
+            'regions_array'=>$this->regions(),
         ]);
     }
 
@@ -71,8 +78,9 @@ class MillDistrictController extends Controller{
 
     }
 
+
     public function show($slug){
-        $bf_members = 1;
+  
         $mill_district = $this->mill_district->show($slug);
 
         $block_farms = $mill_district->blockFarms;
@@ -88,9 +96,23 @@ class MillDistrictController extends Controller{
             // $members[$block_farm->slug] = $m;
         }
 
+        $participants = [];
+
+        $seminars = $mill_district->seminars;
+
+        foreach($seminars as $seminar){
+            
+            foreach($seminar->seminarParticipant as $seminar_participants){
+                $participants[$seminar_participants->slug] = $seminar_participants;
+            }
+
+            // $members[$block_farm->slug] = $m;
+        }
+
         return view('dashboard.mill_district.show')->with([
             'mill_district' => $mill_district,
-            'bf_members' => $members
+            'bf_members' => $members,
+            'seminar_participants' => $participants
         ]) ;
     }
 

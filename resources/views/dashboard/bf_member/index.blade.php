@@ -12,7 +12,7 @@
       <div class="box-header with-border">
         <h3 class="box-title">List of Block Farm Members</h3>
         <div class="pull-right">
-          <button type="button" class="btn bg-purple" data-toggle="modal" data-target="#add_bf_member_modal"><i class="fa fa-plus"></i> Add new</button>
+          <button type="button" class="btn {!! __static::bg_color(Auth::user()->color) !!}" data-toggle="modal" data-target="#add_bf_member_modal"><i class="fa fa-plus"></i> Add new</button>
         </div>
       </div>
       <div class="box-body">
@@ -21,7 +21,7 @@
         
           <table class="table table-bordered table-striped table-hover" id="bf_member_table" style="width: 100% !important; font-size: 14px">
             <thead>
-              <tr>
+              <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
                 <th>Slug</th>
                 <th>Fullname</th>
                 <th>Block Farm</th>
@@ -41,7 +41,7 @@
       </div>
       <div id="tbl_loader">
         <center>
-          <img style="width: 100px" src="{{ asset('images/loader.gif') }}">
+          <img style="width: 100px" src="{!! __static::loader(Auth::user()->color) !!}">
         </center>
       </div>
 
@@ -344,7 +344,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+            <button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!}"><i class="fa fa-save"></i> Save</button>
           </div>
         </form>
       </div><!-- /.modal-content -->
@@ -728,7 +728,6 @@
 
   {!! __html::blank_modal('show_bf_member_modal','lg') !!}
   
-  {!! __html::modal_loader() !!}
 
 
 
@@ -867,7 +866,7 @@ bf_member_tbl = $("#bf_member_table").DataTable({
     },
   "language": 
     {          
-      "processing": "<center><img style='width: 70px' src='{{ asset('images/loader.gif') }}'></center>",
+      "processing": "<center><img style='width: 70px' src='{!! __static::loader(Auth::user()->color) !!}'></center>",
     },
   "drawCallback": function(settings){
     $('[data-toggle="tooltip"]').tooltip();

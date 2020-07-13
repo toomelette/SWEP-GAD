@@ -18,7 +18,7 @@
       <div class="box-header with-border">
         <h3 class="box-title">Users</h3>
         <div class="pull-right">
-          <button type="button" class="btn bg-purple" data-toggle="modal" data-target="#add_user_modal"><i class="fa fa-plus"></i> New User</button>
+          <button type="button" class="btn {!! __static::bg_color(Auth::user()->color) !!}" data-toggle="modal" data-target="#add_user_modal"><i class="fa fa-plus"></i> New User</button>
         </div>
       </div>
 
@@ -60,7 +60,7 @@
         <div id="users_table_container" style="display: none">
           <table class="table table-bordered table-striped table-hover" id="users_table" style="width: 100% !important">
             <thead>
-              <tr>
+              <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
                 <th class="th-20">Username</th>
                 <th >Full Name</th>
                 <th class="th-10">Status</th>
@@ -74,7 +74,7 @@
         </div>
           <div id="tbl_loader">
             <center>
-              <img style="width: 100px" src="{{ asset('images/loader.gif') }}">
+              <img style="width: 100px" src="{!! __static::loader(Auth::user()->color) !!}">
             </center>
           </div>
         
@@ -216,7 +216,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary add_user_btn"><i class="fa fa-save fa-fw"></i> Save</button>
+          <button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!} add_user_btn"><i class="fa fa-save fa-fw"></i> Save</button>
         </div>
       </form>
     </div>
@@ -231,13 +231,6 @@
 {!! __html::blank_modal('reset_password_modal','sm') !!}
 
 
-<div style="display: none;">
-  <div id="modal_loader">
-    <center>
-      <img style="width: 70px; margin: 40px 0;" src="{{ asset('images/loader.gif') }}">
-    </center>
-  </div>
-</div>
 
 @endsection 
 
@@ -312,7 +305,7 @@
           },
         "language": 
           {          
-            "processing": "<center><img style='width: 70px' src='{{ asset('images/loader.gif') }}'></center>",
+            "processing": "<center><img style='width: 70px' src='{!! __static::loader(Auth::user()->color) !!}'></center>",
           },
         "drawCallback": function(settings){
           $('[data-toggle="tooltip"]').tooltip();

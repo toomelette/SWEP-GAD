@@ -65,5 +65,28 @@ class MillDistrict extends Model{
         return $this->hasMany("App\Models\Scholars","mill_district","slug");
     }
 
+    public function scholars_male(){
+        return $this->hasMany("App\Models\Scholars","mill_district","slug")->where('sex','=','MALE');
+    }
+
+    public function scholars_female(){
+        return $this->hasMany("App\Models\Scholars","mill_district","slug")->where('sex','=','FEMALE');
+    }
+
+    public function seminars(){
+        return $this->hasMany("App\Models\Seminar","mill_district","slug");
+    }
+
+    public function its_block_farm_members(){
+        return $this->hasManyThrough(
+            "App\Models\BFMember",
+            "App\Models\BlockFarm",
+            "mill_district",
+            "block_farm",
+            "slug",
+            "slug"
+        );
+    }
+
 
 }

@@ -12,6 +12,18 @@
 
     @yield('css')
 
+
+    <style type="text/css">
+      .pagination>.active>a, 
+      .pagination>.active>a:focus, 
+      .pagination>.active>a:hover, 
+      .pagination>.active>span, 
+      .pagination>.active>span:focus, 
+      .pagination>.active>span:hover{
+        background-color: {{ __static::pagination_color(Auth::user()->color) }} ;
+        border-color: {{ __static::pagination_color(Auth::user()->color) }} 
+      }
+    </style>
   </head>
   <body class="hold-transition  {!! Auth::check() ? __sanitize::html_encode(Auth::user()->color) : '' !!}">
 
@@ -40,6 +52,8 @@
     @include('layouts.js-plugins')
     
     @yield('modals')
+
+    {!! __html::modal_loader() !!}
 
     @yield('scripts')
 

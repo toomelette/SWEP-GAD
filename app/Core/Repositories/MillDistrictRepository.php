@@ -15,10 +15,8 @@ class MillDistrictRepository extends BaseRepository implements MillDistrictInter
 
 
 	public function __construct(MillDistrict $mill_district){
-
         $this->mill_district = $mill_district;
         parent::__construct();
-
     }
 
 
@@ -30,9 +28,16 @@ class MillDistrictRepository extends BaseRepository implements MillDistrictInter
 
     }
 
-
     public function fetchTable($data){
         $get = $this->mill_district;
+
+        if(!empty($data->location)){
+            $get = $get->where('location','=',$data->location);
+        }
+
+        if(!empty($data->region)){
+            $get = $get->where('region','=',$data->region);
+        }
 
         $get = $get->latest()->get();
         return $get;
@@ -118,6 +123,10 @@ class MillDistrictRepository extends BaseRepository implements MillDistrictInter
 
 
 
+    }
+
+    public function raw(){
+        return $this->mill_district;
     }
 
 }

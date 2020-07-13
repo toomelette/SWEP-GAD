@@ -222,6 +222,9 @@ function unwait_button(target_form , type){
       case 'save' :
         text = "<i class='fa fa-save'> </i> Save";
         break;
+      default:
+        text = type;
+        break;
     }
     button = $(target_form+" button[type='submit']");
     button.html(text);

@@ -250,12 +250,12 @@ ol.example li.placeholder:before {
     background-color: #cccccc !important;
 }
 
-.dataTable thead tr{
+/*.dataTable thead tr{
     background-color: #605ca8 !important;
     color: white
 }
 
-
+*/
 
 
 
@@ -286,3 +286,4 @@ ol.example li.placeholder:before {
 .modal-xl{
     width: 70% !important;
 }
+

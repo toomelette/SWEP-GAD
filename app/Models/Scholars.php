@@ -87,6 +87,8 @@ class Scholars extends Model{
         return $this->hasOne('App\Models\MillDistrict', 'slug', 'mill_district');
     }
 
+    
+
 
 
 }

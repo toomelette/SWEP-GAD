@@ -1,4 +1,58 @@
 @extends('layouts.admin-master')
+<style type="text/css">
+  img {
+  max-width: 100%; /* This rule is very important, please do not ignore this! */
+}
+
+.image_o {
+    position:relative;
+    width:200px;
+    height:200px;
+}
+
+.image_o img {
+    width:100%;
+    vertical-align:top;
+}
+.image_o:after, .image_o:before {
+    position:absolute;
+    opacity:0;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+}
+.image_o:after {
+    content:'\A';
+    width:90px; height:90px;
+    top:0; left:0;
+    background:rgba(0,0,0,0.6);
+    border-radius: 50%
+}
+.image_o:before {
+    content: attr(data-content);
+    width:88px;
+    color:#fff;
+    z-index:1;
+    margin-top:30px;
+    padding:4px 10px;
+    text-align:center;
+    background:red;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    border-radius: 10%
+}
+.image_o:hover{
+  cursor: pointer;
+}
+.image_o:hover:after, .image_o:hover:before {
+    opacity:1;
+}
+
+.input-group-btn button{
+  height: 34px;
+}
+</style>
+
+
 
 @section('content')
 
@@ -16,8 +70,10 @@
           <h3 class="widget-user-username">{{ Auth::check() ? Auth::user()->fullname : '' }}</h3>
           <h5 class="widget-user-desc">{{ Auth::check() ? Auth::user()->position : '' }}</h5>
         </div>
-        <div class="widget-user-image">
-          <img class="img-circle" src="{{asset('images/avatar.jpeg')}}" alt="User Avatar">
+        <div class="widget-user-image image_o" data-content="CHANGE" id="img-circ">
+    
+            <img class="img-circle"  src="{!! __html::check_img(Auth::user()->image) !!}" alt="User Avatar">
+          
         </div>
         <div class="box-footer">
           <div class="row">
@@ -141,26 +197,18 @@
       <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
           <li class="active">
-            <a href="#activity_logs" data-toggle="tab" aria-expanded="true">
-              <i class="fa fa-clock-o"></i> Activity
-            </a>
-            </li>
-          <li class="">
             <a id="a_s" href="#settings" data-toggle="tab" aria-expanded="false">
              <i class="fa fa-gears"></i> Account Settings
+           </a>
+          </li>
+          <li class="">
+            <a href="#activity_logs" data-toggle="tab" aria-expanded="true">
+              <i class="fa fa-clock-o"></i> Activity
             </a>
           </li>
         </ul>
         <div class="tab-content">
-          <div class="tab-pane active" id="activity_logs">
-            {{-- <div class="callout bg-gray">
-                <h4>On going update!</h4>
-
-                <p>
-                  All your activity will appear here soon. Try 
-                  <a href="#" style="color: blue;" onclick="$('#a_s').click()">Account Settings</a> instead.
-                </p>
-            </div> --}}
+          <div class="tab-pane " id="activity_logs">
             <h4>Your activities</h4>
             <div class="panel">
               <div class="box-header with-border">
@@ -215,12 +263,10 @@
                 </div>
               </div>
             </div>
-
-
             <div id="activity_logs_container" style="display: none">
-              <table class="table table-bordered table-striped" id="activity_logs_table" style="width: 100% !important">
+              <table class="table table-bordered table-striped" id="activity_logs_table" style="width: 100% !important; font-size: inherit;">
                 <thead>
-                  <tr>
+                  <tr class="{{ __static::bg_color(Auth::user()->color) }}">
                     <th>Module</th>
                     <th>Event</th>
                     <th>Action</th>
@@ -233,18 +279,14 @@
                 </tbody>
               </table>
             </div>
-            
-
             <div id="tbl_loader">
               <center>
-                <img style="width: 100px" src="{{ asset('images/loader.gif') }}">
+                <img style="width: 100px" src="{!! __static::loader(Auth::user()->color) !!}">
               </center>
             </div>
-
-
           </div>
-          <!-- /.tab-pane -->
-          <div class="tab-pane" id="settings">
+      
+          <div class="tab-pane active" id="settings">
             <div class="row">
 
               {{-- USERNAME SETTINGS --}}
@@ -268,8 +310,8 @@
                       </div>
 
                       <div class="form-group">
-                        <button type="submit" class="btn btn-primary pull-right">
-                          <i class="fa fa-save"></i> Save 
+                        <button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!} pull-right">
+                          <i class="fa fa-save "></i> Save 
                         </button>
                       </div>
 
@@ -301,7 +343,7 @@
                         ) !!}
                       </div>
                       <div class="form-group">
-                        <button type="submit" class="btn btn-primary pull-right">
+                        <button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!} pull-right">
                           <i class="fa fa-save"></i> Save 
                         </button>
                       </div>
@@ -310,13 +352,6 @@
                 </div>
               </div>
             </div>
-
-
-          
-
-
-
-          {{-- COLOR SETTINGS --}}
             <div class="panel panel-default">
               <div class="panel-heading">
                 Color Scheme
@@ -364,16 +399,9 @@
               </div>
             </div>
           </div>
-          <!-- /.tab-pane -->
-
         </div>
-        <!-- /.tab-content -->
       </div>
-
-
-
-
-  </div>
+    </div>
 
 </section>
 </div>
@@ -381,7 +409,47 @@
 
 
 
+@section('modals')
+<div id="change_pp" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Change picture</h4>
+          </div>
+          <div class="modal-body">
+            <p>
+    <!-- Below are a series of inputs which allow file selection and interaction with the cropper api -->
+        <input type="file" id="fileInput" accept="image/*" hidden="" style="display: none" />
+        
+       
+    </p>
+    <div style="width: 100%" id="img_container" >
+      <img id="image">
+    </div>   
 
+    <div id="img_loader" style="display: none">
+      <center>
+        <img style="width: 100px" src="{{ asset('images/loader.gif') }}">
+      </center>
+    </div>
+    <br>
+    
+
+
+      </div>
+      <div class="modal-footer">
+        <div class="progress" style="display: none;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+        </div> 
+
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="btnCrop" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@endsection
 
 
 @section('scripts')
@@ -575,6 +643,197 @@
 
     {!! __js::show_hide_password() !!}
 
+
+    // var canvas  = $("#canvas"),
+    // context = canvas.get(0).getContext("2d"),
+    // $result = $('#result');
+
+    // $('#fileInput').on( 'change', function(){
+
+    //     if (this.files && this.files[0]) {
+    //       if ( this.files[0].type.match(/^image\//) ) {
+    //         var reader = new FileReader();
+    //         reader.onload = function(evt) {
+    //           $("#change_pp").modal({backdrop: 'static', keyboard: false});
+    //           $("#change_pp").modal('show');
+    //            var img = new Image();
+    //            img.onload = function() {
+    //              context.canvas.height = img.height;
+    //              context.canvas.width  = img.width;
+    //              context.drawImage(img, 0, 0);
+    //              image = document.getElementById('canvas');
+
+    //              var cropper = new Cropper(image,{aspectRatio: 1 / 1,});
+    //              $('#btnCrop').click(function() {
+    //                 // Get a string base 64 data url
+    //                 var imgurl =  cropper.getCroppedCanvas().toDataURL();
+    //                 console.log(imgurl);
+    //                 //var img = document.createElement("img");
+    //                 // $result.append( $('<img>').attr('src', imgurl) );
+    //              });
+
+
+    //              $("#change_pp").on('hidden.bs.modal', function () {
+    //                 cropper.destroy();
+    //                 cropper = null;
+    //               });
+
+    //            };
+
+    //            img.src = evt.target.result;
+    //         };
+    //         reader.readAsDataURL(this.files[0]);
+    //       }
+    //       else {
+    //         alert("Invalid file type! Please select an image file.");
+    //       }
+    //     }
+    //     else {
+    //       alert('No file(s) selected.');
+    //     }
+    // });
+
+    
+
+    $("#img-circ").click(function() {
+      $("#fileInput").click();
+    })
   </script>
+
+
+    <script>
+
+      var avatar = document.getElementById('img-circ');
+      var image = document.getElementById('image');
+      var canvas = document.getElementById('canvas');
+      var input = $('#fileInput');
+      var $progress = $('.progress');
+      var $progressBar = $('.progress-bar');
+      var $alert = $('.alert');
+      var $modal = $('#change_pp');
+      var cropper;
+
+
+      $('[data-toggle="tooltip"]').tooltip();
+
+      input.on('change', function (e) {
+        var files = e.target.files;
+        var done = function (url) {
+          input.value = '';
+          image.src = url;
+          $alert.hide();
+          $modal.modal({backdrop: 'static'});
+          $modal.modal('show');
+        };
+        var reader;
+        var file;
+        var url;
+
+        if (files && files.length > 0) {
+          file = files[0];
+
+          if (URL) {
+            done(URL.createObjectURL(file));
+          } else if (FileReader) {
+            reader = new FileReader();
+            reader.onload = function (e) {
+              done(reader.result);
+            };
+            reader.readAsDataURL(file);
+          }
+        }
+      });
+
+      $modal.on('shown.bs.modal', function () {
+        cropper = new Cropper(image, {
+          aspectRatio: 1,
+          viewMode: 3,
+        });
+      }).on('hidden.bs.modal', function () {
+        cropper.destroy();
+        cropper = null;
+      });
+
+      $('#btnCrop').on('click', function () {
+        var initialAvatarURL;
+        var canvas;
+
+        if (cropper) {
+          canvas = cropper.getCroppedCanvas({
+            width: 84,
+            height: 84,
+          });
+
+          //initialAvatarURL = avatar.src;
+          
+          //avatar.src = canvas.toDataURL();
+          //console.log(canvas.toDataURL());
+          $progress.fadeIn();
+          
+          canvas.toBlob(function (blob) {
+            var formData = new FormData();
+
+            formData.append('avatar', blob, 'avatar.jpg');
+            $.ajaxSetup({
+                headers:
+                { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+            });
+
+
+            $.ajax({
+              url : '{{route('dashboard.profile.update_image')}}',
+              method: 'POST',
+              data: formData,
+              processData: false,
+              contentType: false,
+
+              xhr: function () {
+                var xhr = new XMLHttpRequest();
+                $("#img_loader").slideDown();
+                $("#img_container").slideUp();
+                $("#change_pp .modal-footer button").fadeOut();
+                xhr.upload.onprogress = function (e) {
+                  var percent = '0';
+                  var percentage = '0%';
+
+                  if (e.lengthComputable) {
+                    percent = Math.round((e.loaded / e.total) * 100);
+                    percentage = percent + '%';
+                    $progressBar.width(percentage).attr('aria-valuenow', percent).text(percentage);
+                  }
+                };
+
+                return xhr;
+              },
+
+              success: function () {
+                notify("Profile picture successfully updated. This page will reload. Please wait","success");
+                setTimeout(function(){location.reload();},2000);
+              },
+
+              error: function (jqXHR, status, errorThrown) {
+
+                
+                switch(jqXHR.status){
+                  case(404):
+                    notify("You don't have permission to change your profile picture.","warning");
+                    break;
+                }
+
+                setTimeout(function(){location.reload();},2000);
+              },
+
+              complete: function () {
+                
+              },
+            });
+
+          });
+        }
+      });
+
+  </script>
+
+
   
 @endsection

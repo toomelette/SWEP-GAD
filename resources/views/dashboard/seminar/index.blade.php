@@ -7,14 +7,14 @@
   </section>
 
   <section class="content">
-    
+     
 
       {{-- Table Grid --}}        
       <div class="box">
             <div class="box-header with-border">
               <h3 class="box-title">Seminars</h3>
               <div class="pull-right">
-                <button type="button" class="btn bg-purple" data-toggle="modal" data-target="#add_seminar_modal"><i class="fa fa-plus"></i> New Seminar</button>
+                <button type="button" class="btn {!! __static::bg_color(Auth::user()->color) !!}" data-toggle="modal" data-target="#add_seminar_modal"><i class="fa fa-plus"></i> New Seminar</button>
               </div>
             </div>
             <!-- /.box-header -->
@@ -22,15 +22,14 @@
               <div id="seminars_table_container" style="display: none">
                 <table class="table table-bordered table-striped table-hover" id="seminars_table" style="width: 100% !important">
                   <thead>
-                    <tr>
-                      <th>ID</th>
+                    <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
                       <th>SLUG</th>
                       <th>SEMINAR ID</th>
                       <th>Title</th>
+                      <th>Mill District</th>
                       <th>Sponsor</th>
                       <th>Venue</th>
-                      <th>Date From</th>
-                      <th>Date To</th>
+                      <th>Date Covered</th>
                       <th class="action">Action</th>
                     </tr>
                   </thead>
@@ -43,7 +42,7 @@
 
               <div id="tbl_loader">
                 <center>
-                  <img style="width: 100px" src="{{ asset('images/loader.gif') }}">
+                  <img style="width: 100px" src="{!! __static::loader(Auth::user()->color) !!}">
                 </center>
               </div>
             </div>
@@ -84,8 +83,13 @@
                           <div class="col-md-7">
                             <div class="row">
                               {!! __form::textbox(
-                                '12 title', 'title', 'text', 'Title *', 'Title', old('title'), $errors->has('title'), $errors->first('title'), ''
+                                '7 title', 'title', 'text', 'Title *', 'Title', old('title'), $errors->has('title'), $errors->first('title'), ''
                               ) !!}
+
+                              {!! __form::select_static(
+                                '5 mill_district', 'mill_district', 'Mill District: *', '' , $mill_districts_list , '', '', '', ''
+                              ) !!}
+
                             </div>
                             <div class="row">
                               {!! __form::textbox(
@@ -155,7 +159,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary submit_add_seminar"><i class="fa fa-save"></i> Save</button>
+            <button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!} submit_add_seminar"><i class="fa fa-save"></i> Save</button>
           </div>
 
         </form>
@@ -170,7 +174,7 @@
         
           <div id="edit_seminar_modal_loader">
             <center>
-              <img style="width: 70px; margin: 40px 0;" src="{{ asset('images/loader.gif') }}">
+              <img style="width: 70px; margin: 40px 0;" src="{!! __static::loader(Auth::user()->color) !!}">
             </center>
           </div>
         </div>
@@ -297,14 +301,13 @@ function dt_draw(){
         "serverSide": true,
         "ajax" : '{{ route("dashboard.seminar.index") }}',
         "columns": [
-            { "data": "id" },
             { "data": "slug" },
             { "data": "seminar_id" },
             { "data": "title" },
+            { "data": "mill_district" },
             { "data": "sponsor" },
             { "data": "venue" },
-            { "data": "date_covered_from" },
-            { "data": "date_covered_to" },
+            { "data": "date_covered" },
             { "data": "action" }
         ],
         buttons: [
@@ -312,17 +315,17 @@ function dt_draw(){
         ],
         "columnDefs":[
           {
-            "targets" : [ 0 , 1 , 2],
+            "targets" : [ 0 , 1 ],
             "visible" : false
           },
           {
-            "targets" : 8,
+            "targets" : 7,
             "orderable" : false,
             "class" : 'action'
           },
           {
-            "targets": [6,7], 
-            "render" : $.fn.dataTable.render.moment( 'MMMM D, YYYY' )
+            "targets": 6, 
+           // "render" : $.fn.dataTable.render.moment( 'MMMM D, YYYY' )
           }
         ],
         "responsive": false,
@@ -333,7 +336,7 @@ function dt_draw(){
           },
         "language": 
           {          
-            "processing": "<center><img style='width: 70px' src='{{ asset('images/loader.gif') }}'></center>",
+            "processing": "<center><img style='width: 70px' src='{!! __static::loader(Auth::user()->color) !!}'></center>",
           },
         "drawCallback": function(settings){
           $('[data-toggle="tooltip"]').tooltip();

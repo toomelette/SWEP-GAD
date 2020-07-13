@@ -3,9 +3,11 @@
 namespace App\Core\Services;
 
 use Hash;
+use File;
 use App\Core\BaseClasses\BaseService;
 use App\Core\Interfaces\ProfileInterface;
 use App\Core\Interfaces\ActivityLogInterface;
+use App\Core\Interfaces\UserInterface;
 
 class ProfileService extends BaseService{
 
@@ -13,12 +15,13 @@ class ProfileService extends BaseService{
 
     protected $profile_repo;
     protected $activity_log_repo;
+    protected $user_repo;
 
-
-    public function __construct(ProfileInterface $profile_repo,ActivityLogInterface $activity_log_repo){
+    public function __construct(ProfileInterface $profile_repo,ActivityLogInterface $activity_log_repo, UserInterface $user_repo){
 
         $this->profile_repo = $profile_repo;
         $this->activity_log_repo = $activity_log_repo;
+        $this->user_repo = $user_repo;
         parent::__construct();
 
     }
@@ -67,7 +70,33 @@ class ProfileService extends BaseService{
     }
 
 
+    public function updateImage($request){
+        $image = $request->file('avatar');
+        $user_id = $this->auth->user()->slug;
+        
 
+        $user = $this->user_repo->findBySlug($user_id);
+
+        $old_image = $user->image;
+        
+        
+        if(!is_null($image)){
+            //CHECK IF IMAGE ALREADY EXIST TO REPLACE
+            if(file_exists('images/profile_images/'.$old_image)){
+                File::delete('images/profile_images/'.$old_image);
+            }
+
+            $ext = $image->getClientOriginalExtension();
+            $new_file_name = $this->str->random(8).'.'.$ext;
+
+            $image->move(public_path('images/profile_images/'), $new_file_name);
+            
+            $user->image = $new_file_name;
+            $user->save();
+
+            return $user;
+        }
+    }
 
 
 

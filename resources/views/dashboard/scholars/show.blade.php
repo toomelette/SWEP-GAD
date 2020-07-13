@@ -182,13 +182,7 @@
 
 <div class="modal-footer">
 	<div class="row">
-
-		{!! __html::timestamps(
-			$scholars->creator['firstname'] ." ".$scholars->creator['lastname'],
-			$scholars->created_at,
-			$scholars->updater['firstname'] ." ". $scholars->updater['lastname'],
-			$scholars->updated_at,"4"
-		) !!}		
+		{!! __html::timestamp($scholars ,"4") !!} 
 
 		<div class="col-md-4">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

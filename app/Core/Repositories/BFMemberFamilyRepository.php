@@ -131,7 +131,7 @@ class BFMemberFamilyRepository extends BaseRepository implements BFMemberFamilyI
     public function destroy($slug){
   
 
-        //LOGGING
+        // LOGGING
         // $activity_log = collect();
         // $activity_log->module = 'block_farm';
         // $activity_log->event = __FUNCTION__;
