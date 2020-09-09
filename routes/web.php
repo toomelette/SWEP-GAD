@@ -72,6 +72,10 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 
 
 	/** BLOCK FARM **/
+
+	Route::get('/block_farm/reports', 'BlockFarmController@reports')->name('block_farm.reports');
+	Route::get('/block_farm/report_generate', 'BlockFarmController@report_generate')->name('block_farm.report_generate');
+
 	Route::resource('block_farm','BlockFarmController');
 	Route::resource('bf_member','BFMemberController');
 

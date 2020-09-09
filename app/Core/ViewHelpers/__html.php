@@ -321,13 +321,23 @@ class __html{
 		}
 	}
 
-	public static function blank_modal($id, $size){
-		return '<div class="modal fade" id="'.$id.'">
-				    <div class="modal-dialog modal-'.$size.'">
+	public static function blank_modal($id, $size, $padding = null){
+		if(is_numeric($size)){
+			return '<div class="modal fade" id="'.$id.'">
+				    <div class="modal-dialog" style="width:'.$size.'%; padding-top:'.$padding.'">
 				      <div class="modal-content">
 				        </div>
 				    </div>
 				  </div>';
+		}else{
+			return '<div class="modal fade" id="'.$id.'">
+				    <div class="modal-dialog modal-'.$size.'" style="padding-top:'.$padding.'">
+				      <div class="modal-content">
+				        </div>
+				    </div>
+				  </div>';
+		}
+		
 	}
 	public static function modal_loader(){
 		return '<div style="display: none;">

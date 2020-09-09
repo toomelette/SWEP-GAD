@@ -10,7 +10,7 @@ use App\Http\Requests\Seminar\SeminarFilterRequest;
 use App\Http\Requests\SeminarParticipant\SeminarParticipantCreateFormRequest;
 use App\Http\Requests\SeminarParticipant\SeminarParticipantEditFormRequest;
 use App\Core\Services\MillDistrictService;
-
+use Illuminate\Http\Request;
 use Datatables;
 
 
@@ -176,26 +176,33 @@ class SeminarController extends Controller{
 
     }
 
-    public function participantEdit($slug){
- 
-        return $this->seminar_participant->edit($slug);
-
+    public function participantEdit(Request $request){
+        $slug = $request->slug;
+        $participant = $this->seminar_participant->edit($slug);
+        return view("dashboard.seminar.edit_participant")->with([
+            'participant' => $participant
+        ]);
     }
 
 
     public function participantStore(SeminarParticipantCreateFormRequest $request, $slug){
 
-        return $this->seminar_participant->store($request, $slug);
+        $participant = $this->seminar_participant->store($request, $slug);
+        $participant->sex = $this->sex($participant->sex);
+
+        return $participant;
 
     }
 
 
 
 
-    public function participantUpdate(SeminarParticipantEditFormRequest $request, $sem_slug){
-        
-        return $this->seminar_participant->update($request, $sem_slug); 
+    public function participantUpdate(SeminarParticipantCreateFormRequest $request, $sem_slug){
 
+        $participant = $this->seminar_participant->update($request, $sem_slug); 
+        $participant->sex = $this->sex($participant->sex);
+
+        return $participant;
     } 
 
 
@@ -220,6 +227,12 @@ class SeminarController extends Controller{
     }
 
     
-
+    public function sex($sex){
+        if($sex == "MALE"){
+            return '<span class="label bg-green col-md-12"><i class="fa fa-male"></i> MALE</span>';
+        }if($sex == "FEMALE"){
+            return '<span class="label bg-maroon col-md-12"><i class="fa fa-female"></i> FEMALE</span>';
+        }
+    }
     
 }

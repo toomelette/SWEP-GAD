@@ -9,7 +9,8 @@ use App\Core\Services\BFEncounteredProblemService;
 use App\Http\Requests\BlockFarm\BlockFarmFormRequest;
 use App\Core\Services\MillDistrictService;
 use Datatables;
-
+use Yajra\DataTables\Html\Builder;
+use Illuminate\Http\Request;
 
 
 
@@ -35,12 +36,17 @@ class BlockFarmController extends Controller{
     	return 'Create';
     }
 
-    public function index(){
-
+    public function index(Builder $builder){
+        $html = $builder->parameters([
+            'rowGroup'=> [
+                'dataSrc' => ['mill_district']
+            ]
+        ]);
 
         if(request()->ajax())
         {   
-            return datatables()->of($this->block_farm->fetchTable())
+            $data = request();
+            return datatables()->of($this->block_farm->fetchTable($data))
             ->addColumn('action', function($data){
                 $button = '<div class="btn-group">
                                 <button type="button" class="btn btn-default btn-sm show_block_farm_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#show_block_farm_modal" title="View more" data-placement="left">
@@ -55,16 +61,7 @@ class BlockFarmController extends Controller{
                             </div>';
                 return $button;
             })
-            // ->editColumn('sex',function($data){
-            //     if($data->sex == "MALE"){
-            //         return '<span class="label bg-green col-md-12"><i class="fa fa-male"></i> '.$data->sex.'</span>';
-            //     }elseif($data->sex == "FEMALE"){
-            //         return '<span class="label bg-maroon col-md-12"><i class="fa fa-female"></i> '.$data->sex.'</span>';
-            //     }else{
-            //         return $data->sex;
-            //     }
-                
-            // })
+
             ->editColumn('date', function($data){
                 return date("F d, Y",strtotime($data->date));
             })
@@ -102,10 +99,11 @@ class BlockFarmController extends Controller{
             $search = request()->get('search');
         }
 
-    	return view("dashboard.block_farm.index",compact('data'))->with([
+    	return view("dashboard.block_farm.index",compact('html'))->with([
             'mill_districts' => $this->mill_district->mills_grp(),
             'mill_districts_list' => $this->mill_district->mills(),
-            'search' => $search
+            'search' => $search,
+            'data' => $data
         ]);
 
     }
@@ -142,6 +140,93 @@ class BlockFarmController extends Controller{
         return $block_farm;
     }
 
-  
+    public function reports(){
+        return view('dashboard.block_farm.reports')->with([
+            'mill_districts_list' => $this->mill_district->mills(),
+            'columns' => $this->columns()
+        ]);
+    }
     
+    public function report_generate(Request $request){
+       
+       $filters = [];
+        
+        foreach ($request->all() as $key => $value) {
+            if(!is_array($value)){
+                if($key != "layout" and $value != null){
+                    if($key == "mill_district"){
+                        $mill_d = $this->findMillDistrict($value);
+                        array_push($filters, $mill_d->mill_district);
+                    }else{
+                        array_push($filters, $value);
+                    }
+                }
+            }          
+        }
+
+
+        $block_farms = $this->block_farm->getRaw();
+        
+        if(!empty($request->date_range)){
+            $date_range = "";
+            $date_range = explode('-', $request->date_range);
+            foreach ($date_range as $key => $value) {
+                $date_range[$key] = date("Ymd",strtotime($value));
+            }
+            $df = $date_range[0];
+            $dt = $date_range[1];
+
+            $block_farms = $block_farms->whereBetween('date',[$df,$dt]);
+
+        }
+
+        if(!empty($request->mill_district)){
+            $block_farms = $block_farms->where('mill_district','=',$request->mill_district);
+        }
+        if($request->layout == "all"){
+            return view('printables.block_farm.list_all')->with([
+                'block_farms' => $block_farms->get(),
+                'columns_chosen' => $request->get('columns'),
+                'columns' => $this->columns(),
+                'filters'=> $filters
+            ]);
+        }
+
+        if($request->layout == "mill_district"){
+            $block_farms = $block_farms->get();
+            $block_farms_group = [];
+
+            foreach($block_farms as $block_farm){
+               $block_farms_group[$block_farm->millDistrict->mill_district][$block_farm->slug] = $block_farm;
+             
+            }
+
+            //return $block_farms_group;
+            return view('printables.block_farm.grouped_list')->with([
+                'block_farms_group' => $block_farms_group,
+                'columns_chosen' => $request->get('columns'),
+                'columns' => $this->columns(),
+                'filters'=> $filters
+            ]);
+        }
+       
+    }
+
+    private function columns(){
+        $columns = [
+            "Numbering" => "numbering",
+            "Date" => "date",
+            "Enrolee" => "enrolee_name",
+            "Mill District" => "mill_district",
+            "Male Members" => "male_members",
+            "Female Members" => "female_members",
+            "Members" => "members"
+        ];
+        return $columns;
+    }
+
+     public function findMillDistrict($slug){
+        $mill_district = $this->mill_district->find($slug);
+        return $mill_district;
+    }
 }

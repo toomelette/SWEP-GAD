@@ -66,6 +66,7 @@
                   @endif
                 </tr>
               </thead>
+              
               <tbody>
                 @if(!empty($scholars))
                     @php

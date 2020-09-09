@@ -147,15 +147,15 @@
 									 </center>
             					</div>
             					<div class="row" id="report_frame_container" style="height: 100%; display: none">
+
+
             						<div class="col-md-12" style="height: 100%">
             							<div class="embed-responsive embed-responsive-16by9">
 									      <iframe id="report_frame" style="width: 100%; height: 100%" class="embed-responsive" src=""></iframe>
 									    </div>
-
-
-            							
             						</div>
             					</div>
+
             				</div>
             			</div>
             		</div>

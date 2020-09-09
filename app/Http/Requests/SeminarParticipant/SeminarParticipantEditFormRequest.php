@@ -22,11 +22,12 @@ class SeminarParticipantEditFormRequest extends FormRequest{
 
         return [
 
-        	'e_fullname' => 'required|string|max:255',
-        	'e_address' => 'nullable|string|max:255',
-        	'e_sex' => 'required|string|max:11',
-        	'e_contact_no' => 'nullable|string|max:45',
-        	'e_email' => 'nullable|string|max:90',
+        	'fullname' => 'required|string|max:255',
+            'age' => 'required|int|max:130',
+            'sex' => 'required|string|max:11',
+            'civil_status' => 'nullable|string|max:45',
+            'occupation' => 'nullable|string|max:45',
+            'educ_att' => 'nullable|string|max:45',
             
         ];
     

@@ -22,10 +22,11 @@ class SeminarParticipantCreateFormRequest extends FormRequest{
         return [
 
         	'fullname' => 'required|string|max:255',
-        	'address' => 'nullable|string|max:255',
+        	'age' => 'required|int|max:130',
         	'sex' => 'required|string|max:11',
-        	'contact_no' => 'nullable|string|max:45',
-        	'email' => 'nullable|string|max:90',
+        	'civil_status' => 'nullable|string|max:45',
+        	'occupation' => 'nullable|string|max:45',
+            'educ_att' => 'nullable|string|max:45',
         ];
     
     }

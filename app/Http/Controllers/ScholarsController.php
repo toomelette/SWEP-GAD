@@ -357,6 +357,9 @@ class ScholarsController extends Controller{
 
     }
 
+
+    //DECLARE COLUMNS FOR SELECT COLUMNS ON REPORT
+    //"NAME" => "tbl_column"
     public function columns(){
         $columns = [
             "Numbering" => "numbering",

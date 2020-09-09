@@ -50,11 +50,16 @@ class SeminarParticipantRepository extends BaseRepository implements SeminarPart
         $seminar_participant->slug = $this->str->random(32);
         $seminar_participant->seminar_id = $seminar->seminar_id;
         $seminar_participant->seminar_participant_id = $this->getSeminarParticipantIdInc();
+
         $seminar_participant->fullname = $request->fullname;
-        $seminar_participant->address = $request->address;
+        $seminar_participant->occupation = $request->occupation;
+        $seminar_participant->age = $request->age;
         $seminar_participant->sex = $request->sex;
+        $seminar_participant->civil_status = $request->civil_status;
+        $seminar_participant->educ_att = $request->educ_att;
         $seminar_participant->contact_no = $request->contact_no;
-        $seminar_participant->email = $request->email;
+        $seminar_participant->no_children = $request->no_children;
+        
         $seminar_participant->created_at = $this->carbon->now();
         $seminar_participant->updated_at = $this->carbon->now();
         $seminar_participant->ip_created = request()->ip();
@@ -74,11 +79,16 @@ class SeminarParticipantRepository extends BaseRepository implements SeminarPart
     public function update($request, $sem_ptcpt_slug){
         
         $seminar_participant = $this->findBySlug($sem_ptcpt_slug);
-        $seminar_participant->fullname = $request->e_fullname;
-        $seminar_participant->address = $request->e_address;
-        $seminar_participant->sex = $request->e_sex;
-        $seminar_participant->contact_no = $request->e_contact_no;
-        $seminar_participant->email = $request->e_email;
+
+        $seminar_participant->fullname = $request->fullname;
+        $seminar_participant->occupation = $request->occupation;
+        $seminar_participant->age = $request->age;
+        $seminar_participant->sex = $request->sex;
+        $seminar_participant->civil_status = $request->civil_status;
+        $seminar_participant->educ_att = $request->educ_att;
+        $seminar_participant->contact_no = $request->contact_no;
+        $seminar_participant->no_children = $request->no_children;
+
         $seminar_participant->updated_at = $this->carbon->now();
         $seminar_participant->ip_updated = request()->ip();
         $seminar_participant->user_updated = $this->auth->user()->user_id;
