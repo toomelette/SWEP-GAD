@@ -1,3 +1,4 @@
+
 @extends('layouts.admin-master')
 
 @section('content')
@@ -7,8 +8,8 @@
 </section>
 
 <section class="content">
-	
-	<div class="row">
+  
+  <div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-aqua">
@@ -101,17 +102,17 @@
       </div>
     </div>
     <div class="row">
-     	<div class="col-md-8">
-     		<div class="panel">
-     			<div class="panel-body">
+      <div class="col-md-8">
+        <div class="panel">
+          <div class="panel-body">
             <center>
               <label>Sample Data</label>  
             </center>
             <hr class="no-margin">
-     				<canvas id="scholars" width="400" height="118"></canvas>
-     			</div>
-     		</div>
-     	</div>
+            <canvas id="scholars" width="400" height="118"></canvas>
+          </div>
+        </div>
+      </div>
      </div>
 </div>
 </section>
@@ -122,7 +123,7 @@
 @section('scripts')
 
 <script type="text/javascript">
-	$(document).ready(function(){
+  $(document).ready(function(){
     var ctx = $('#scholars');
     var scholars = new Chart(ctx, {
       type: 'bar',
