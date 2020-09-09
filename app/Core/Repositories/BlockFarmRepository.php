@@ -183,9 +183,15 @@ class BlockFarmRepository extends BaseRepository implements BlockFarmInterface {
 
     }
 
-    public function fetchTable(){
+    public function fetchTable($data){
+
         $get = $this->block_farm;
         $get = $get->leftJoin('mill_district','mill_district.slug', '=','block_farm.mill_district');
+
+        if(!empty($data->mill_district)){
+            $get = $get->where('block_farm.mill_district','=',$data->mill_district);
+        }
+
         $get = $get->get([
             'block_farm.slug',
             'block_farm.block_farm_name',
@@ -259,6 +265,9 @@ class BlockFarmRepository extends BaseRepository implements BlockFarmInterface {
 
     }
 
+    public function getRaw(){
+        return $this->block_farm;
+    }
 
 
 

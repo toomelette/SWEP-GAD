@@ -31,7 +31,7 @@
         </div>
         <div class="row">
           {!! __form::textbox(
-            '6 sponsor', 'sponsor', 'text', 'Sponsor *', 'Sponsor', old('sponsor') ? old('sponsor') : $seminar->sponsor, $errors->has('sponsor'), $errors->first('sponsor'), ''
+            '6 sponsor', 'sponsor', 'text', 'Sponsor', 'Sponsor', old('sponsor') ? old('sponsor') : $seminar->sponsor, $errors->has('sponsor'), $errors->first('sponsor'), ''
           ) !!}
 
           {!! __form::textbox(

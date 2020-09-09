@@ -15,11 +15,43 @@
                 <button type="button" class="btn {!! __static::bg_color(Auth::user()->color) !!}" data-toggle="modal" data-target="#add_block_farm_modal"><i class="fa fa-plus"></i> Add new</button>
               </div>
             </div>
+
+            <div class="panel">
+              <div class="box-header with-border">
+                <h4 class="box-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#advanced_filters" aria-expanded="true" class="">
+                    <i class="fa fa-filter"></i>  Advanced Filters <i class=" fa  fa-angle-down"></i>
+                  </a>
+                </h4>
+              </div>
+              <div id="advanced_filters" class="panel-collapse collapse" aria-expanded="true" style="">
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-md-1 col-sm-2 col-lg-2">
+                      <label>Mill District:</label>
+                      <select aria-controls="scholars_table" class="form-control input-sm filter_mill filters">
+                        <option value="">All</option>
+                        @if(!empty($mill_districts_list))
+                          @foreach($mill_districts_list as $key => $mill_district)
+                            <option value="{{$mill_district}}">{{$key}}</option>
+                          @endforeach
+                        @endif
+                      </select>
+                    </div>
+                    <div class="col-md-1 col-sm-2 col-lg-2">
+                      <label>Group by:</label>
+                      <select name="" class="form-control input-sm group_by">
+                        <option value="">None</option>
+                        <option value="mill_district">Mill District</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <!-- /.box-header -->
             <div class="box-body">
               <div id="block_farm_tbl_container" style="display: none">
-                
-              
                 <table class="table table-bordered table-striped table-hover" id="block_farm_tbl" style="width: 100% !important; font-size: 14px">
                   <thead>
                     <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
@@ -32,7 +64,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    
+ 
                   </tbody>
                 </table>
 
@@ -350,6 +382,25 @@
   function dt_draw(){
     block_farm_tbl.draw(false);
   }
+
+
+
+  function filter_dt(){
+    mill = $(".filter_mill").val();
+    block_farm_tbl.ajax.url('{{ route("dashboard.block_farm.index") }}?mill_district='+mill).load();
+
+    $(".filters").each(function(index, el) {
+      if($(this).val() != ''){
+        $(this).parent("div").addClass('has-success');
+        $(this).siblings('label').addClass('text-green');
+      }else{
+        $(this).parent("div").removeClass('has-success');
+        $(this).siblings('label').removeClass('text-green');
+      }
+    });
+
+
+  }
 </script>
 <script type="text/javascript">
   // autonumeric
@@ -427,9 +478,26 @@
         if(active != ''){
            $("#block_farm_tbl #"+active).addClass('success');
         }
-      }
+      },
+      'rowGroup': {
+          'dataSrc': 'mill_district'
+      },
+      'order':[1,'asc']
     })
 
+    $(".group_by").change(function(){
+      c = $(this).val();
+      p = $(this).parent('div');
+      s = $(this).siblings('label');
+ 
+      block_farm_tbl.rowGroup().dataSrc(c);
+
+      block_farm_tbl.draw();
+    })
+
+    $(".filters").change(function(){
+      filter_dt();
+    })
 
     //Search Bar Styling
     style_datatable('#block_farm_tbl');
@@ -626,10 +694,6 @@
       $("#edit_block_farm_modal .all[data='"+type+"']").prop('checked',false);
     }
   })
-
-
-
-
 </script>
     
 @endsection

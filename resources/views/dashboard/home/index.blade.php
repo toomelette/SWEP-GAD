@@ -88,6 +88,19 @@
    {{--  </div>
 
      <div class="row"> --}}
+      <div class="col-md-8">
+        <div class="panel">
+          <div class="panel-body">
+            <center>
+              <label>Seminars Conducted (Example data)</label>  
+            </center>
+            <hr class="no-margin">
+            <canvas id="seminars_line" width="400" height="118"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
      	<div class="col-md-8">
      		<div class="panel">
      			<div class="panel-body">
@@ -170,6 +183,23 @@
           borderColor: '#ddffee'
          }
     });
+
+    var seminars_line = new Chart($("#seminars_line"), {
+        "type": "line",
+        "data": {
+            "labels": ["January 2019", "March 2019", "April 2019", "September 2019", "December 2019", "February 2020"],
+            "datasets": [{
+                "label": "My First Dataset",
+                "data": [65, 80, 81, 56, 55, 40],
+                "fill": false,
+                "borderColor": "rgb(75, 192, 192)",
+                "lineTension": 0.1
+            }]
+        },
+        "options": {}
+    });
+
+
   })
 </script>
 @endsection

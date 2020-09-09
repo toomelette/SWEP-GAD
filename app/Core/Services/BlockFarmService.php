@@ -65,8 +65,8 @@ class BlockFarmService extends BaseService{
         return $this->block_farm_repo->destroy($slug);
     }
     
-    public function fetchTable(){
-        return $this->block_farm_repo->fetchTable();
+    public function fetchTable($data){
+        return $this->block_farm_repo->fetchTable($data);
     }
 
     public function list($query){
@@ -83,6 +83,12 @@ class BlockFarmService extends BaseService{
 
     public function members($slug){
         return $slug;
+    }
+
+
+    public function getRaw(){
+        return $this->block_farm_repo->getRaw();
+
     }
     
 }

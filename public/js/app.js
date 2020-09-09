@@ -200,6 +200,7 @@ function unmark_required(target_form){
 }
 
 function mark_required(target_form, response){
+
     $.each(response.responseJSON.errors, function(i, item){
       $(target_form+" ."+i).addClass('has-error');
 

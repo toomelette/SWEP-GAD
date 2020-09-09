@@ -3,7 +3,7 @@
 @section('content')
                                                                                                                                                                                                                             
   <section class="content-header">
-      <h1>Manage Seminars</h1>
+      <h1>Manage GSTs</h1>
   </section>
 
   <section class="content">
@@ -12,9 +12,9 @@
       {{-- Table Grid --}}        
       <div class="box">
             <div class="box-header with-border">
-              <h3 class="box-title">Seminars</h3>
+              <h3 class="box-title">GSTs</h3>
               <div class="pull-right">
-                <button type="button" class="btn {!! __static::bg_color(Auth::user()->color) !!}" data-toggle="modal" data-target="#add_seminar_modal"><i class="fa fa-plus"></i> New Seminar</button>
+                <button type="button" class="btn {!! __static::bg_color(Auth::user()->color) !!}" data-toggle="modal" data-target="#add_seminar_modal"><i class="fa fa-plus"></i> New GST</button>
               </div>
             </div>
             <!-- /.box-header -->
@@ -93,7 +93,7 @@
                             </div>
                             <div class="row">
                               {!! __form::textbox(
-                                '6 sponsor', 'sponsor', 'text', 'Sponsor *', 'Sponsor', old('sponsor'), $errors->has('sponsor'), $errors->first('sponsor'), ''
+                                '6 sponsor', 'sponsor', 'text', 'Sponsor', 'Sponsor', old('sponsor'), $errors->has('sponsor'), $errors->first('sponsor'), ''
                               ) !!}
 
                               {!! __form::textbox(
@@ -181,8 +181,92 @@
     </div>
   </div>
 
+{!! __html::blank_modal('participant_modal','80') !!}
+
+{!! __html::blank_modal('edit_participant_modal','','100px') !!}
+
+
+<!-- Modal -->
+<form id="add_participant_form">
+  <div class="modal fade" id="add_participant_modal" tabindex="-1" role="dialog" aria-labelledby="">
+    <div class="modal-dialog" role="document" style="padding-top: 100px">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Add Participant</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            {!! __form::textbox(
+             '5 fullname', 'fullname', 'text', 'Fullname *', 'Fullname', '', $errors->has('fullname'), $errors->first('fullname'), ''
+             ) !!}
+
+            {!! __form::textbox(
+             '4 occupation', 'occupation', 'text', 'Occupation', 'Occupation', '', $errors->has('occupation'), $errors->first('occupation'), ''
+             ) !!}
+
+            {!! __form::textbox(
+             '3 age', 'age', 'number', 'Age *', 'Age', '', $errors->has('age'), $errors->first('age'), ''
+             ) !!}
+
+
+            {!! __form::select_static(
+              '4 civil_status', 'civil_status', 'Civil Status ', '', [
+                'Single' => 'Single',
+                'Married' => 'Married',
+                'Divorced' => 'Divorced',
+                'Separated' => 'Separated',
+                'Widowed' => 'Widowed'               
+              ], $errors->has('is_menu'), $errors->first('is_menu'), '', ''
+              ) !!}
+
+
+            {!! __form::select_static(
+              '5 educ_att', 'educ_att', 'Educational Attainment', '', [
+                'Elementary' => 'Elementary', 
+                'High School' => 'High School', 
+                'College' => 'College',
+                'None' => 'None'
+
+              ], $errors->has('is_menu'), $errors->first('is_menu'), '', ''
+              ) !!}
+
+
+
+            {!! __form::textbox(
+             '3 no_children', 'no_children', 'number', 'No. of Children', 'No. of Children', '', $errors->has('no_children'), $errors->first('no_children'), ''
+             ) !!} 
+
+
+
+            {!! __form::textbox(
+             '4 contact_no', 'contact_no', 'text', 'Contact No.', 'Contact No.', '', $errors->has('contact_no'), $errors->first('contact_no'), ''
+             ) !!}
+
+
+            {!! __form::select_static(
+              '3 sex', 'sex', 'Sex *', '', ['MALE' => 'MALE', 'FEMALE' => 'FEMALE'], $errors->has('sex'), $errors->first('sex'), '', ''
+              ) !!}
+
+
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" tabindex="-1">Close</button>
+          <button type="submit" class="btn {!! __static::bg_color(Auth::user()->color) !!}">
+            <i class="fa fa-save"> Save</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</form>
+
+
 {!! __html::blank_modal('view_seminar_modal','') !!}
-{!! __html::blank_modal('participant_modal','lg') !!}
+
 
 
 @endsection 
@@ -191,7 +275,7 @@
 @section('scripts')
 
 <script type="text/javascript">
-
+{!! __js::modal_loader() !!}
 
   
 function delete_participant(slug){
@@ -618,7 +702,6 @@ function dt_draw(){
             success: function(response){
 
               console.log(response);
-              if(response.result == 1){
                 $("#add_participant_form").get(0).reset();
                 notify("Participant successfully added.","success");
                 $("#add_participant_form .has-error").each(function(){
@@ -627,10 +710,13 @@ function dt_draw(){
                 });
                 participant_tbl.row.add([
                   response.fullname,
-                  response.address,
-                  response.sex,
+                  response.occupation,
+                  response.age,
+                  response.civil_status,
+                  response.educ_att,
                   response.contact_no,
-                  response.email,
+                  response.no_children,
+                  response.sex,
                   '<div class="btn-group">'+
                   '<button  data="'+response.inserted_participant+'" class="btn btn-sm btn-default edit_participant_btn">'+
                     '<i class="fa fa-pencil-square-o"></i>'+
@@ -651,9 +737,6 @@ function dt_draw(){
                 add_participant_btn.removeAttr("disabled");
 
                 $("#add_participant_form input[name='fullname']").focus();
-              }else{
-                console.log(response);
-              }
             },
             error: function(response){
               console.log(response);
@@ -667,6 +750,7 @@ function dt_draw(){
                 $("#add_participant_form ."+i).append('<span class="help-block">'+item+'</span>');
               });
               add_participant_btn.html(default_add_participant_btn);
+              notify("Please fill out the required fields","warning");
               add_participant_btn.removeAttr("disabled");
             }
           })
@@ -677,141 +761,128 @@ function dt_draw(){
         id = $(this).attr('data');
         delete_participant(id);
       })
-      //Edit Participants
+
       $("body").on("click",".edit_participant_btn", function(){
-        t = $(this);
-        default_edit_btn = t.html();
-        t.html("<i class='fa fa-spinner fa-spin'> </i>");
-        t.attr("disabled","disabled");
-        slug = $(this).attr("data");
-        uri = "{{ route('dashboard.seminar.participant_edit', 'slug') }}";
-        uri = uri.replace('slug',slug);
-        Pace.restart();
+
+        load_modal('#edit_participant_modal');
+        participant_slug = $(this).attr('data');
+
         $.ajax({
-          url : uri,
+          url : "{{ route('dashboard.seminar.participant_edit', 'slug') }}?slug="+participant_slug,
           type: 'GET',
           success: function(response){
-            t.html(default_edit_btn);
-            t.removeAttr("disabled");
+            populate_modal("#edit_participant_modal",response);
+          },
+          error: function(response){
+            console.log(response);
+          }
+        })
+
+      })
+
+
+      $("body").on("submit","#edit_participant_form", function(e){
+        e.preventDefault();
+        slug = $(this).attr('data');
+        uri = "{{ route('dashboard.seminar.participant_update' , 'slug') }}";
+        uri = uri.replace('slug',slug);
+        wait_button('#edit_participant_form');
+
+        $.ajax({
+          url : uri,
+          data: $(this).serialize(),
+          type: 'PUT',
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          success: function(response){
+            console.log(response);
+            notify("Participant has been updated successfully","success");
+            $("#edit_participant_modal").modal('hide');
             r = response;
-
-            if(r.contact_no == null){
-              r.contact_no = "";
-            }
-
-            if(r.email == null){
-              r.email = "";
-            }
-            if(r.address == null){
-              r.address = "";
-            }
-
-            if(r.sex == 'FEMALE'){
-              options = '<option value="">Select</option>'+
-                        '<option value="MALE">MALE</option>'+
-                        '<option value="FEMALE" selected>FEMALE</option>';
-            }else{
-              options = '<option value="">Select</option>'+
-                        '<option value="MALE" selected>MALE</option>'+
-                        '<option value="FEMALE" >FEMALE</option>';
-            }
-            participant_slug = r.slug;
-
-            edit_dialog = $.dialog({
-              title: 'Edit',
-              content: '' +
-              '<form id="edit_participant_form" autocomplete="off">' +
-                '<div class="form-group e_fullname">' +
-                  '<label>Fullname *</label>' +
-                    '<input type="text" placeholder="Fullname" name="e_fullname" class="form-control" value= "'+r.fullname+'"/>' +
-                '</div>' +
-                '<div class="form-group e_address">' +
-                  '<label>Address</label>' +
-                    '<input type="text" placeholder="Address" name="e_address" class="form-control" value= "'+r.address+'"/>' +
-                '</div>' +
-                '<div class="form-group e_sex">' +
-                  '<label>Sex *</label>' +
-                    '<select id="e_sex" name="e_sex" class="form-control " style="font-size:15px;">'+
-                        options+
-                      '</select>'+
-                '</div>' +
-                '<div class="form-group e_contact_no">' +
-                  '<label>Contact number</label>' +
-                    '<input type="text" placeholder="Contact number" name="e_contact_no" class="form-control" value= "'+r.contact_no+'"/>' +
-                '</div>' +
-                '<div class="form-group e_email">' +
-                  '<label>Email address</label>' +
-                    '<input type="text" placeholder="Email address" name="e_email" class="form-control" value= "'+r.email+'"/>' +
-                '</div>' +
-                '<div class="jconfirm-buttons">'+
-                '<button type="submit" class="btn btn-blue update_participant_btn"><i class="fa fa-save"> </i> Save</button></div>'+
-              '</form>'
+            tbl = $("#participant_tbl").dataTable();
+            tbl.fnUpdate(r.fullname,'#'+r.slug, 0,false);
+            tbl.fnUpdate(r.occupation,'#'+r.slug, 1, false);
+            tbl.fnUpdate(r.age,'#'+r.slug, 2, false);
+            tbl.fnUpdate(r.civil_status,'#'+r.slug, 3, false);
+            tbl.fnUpdate(r.educ_att,'#'+r.slug, 4, false);
+            tbl.fnUpdate(r.contact_no,'#'+r.slug, 5, false);
+            tbl.fnUpdate(r.no_children,'#'+r.slug, 6, false);
+            tbl.fnUpdate(r.sex,'#'+r.slug, 7, false);
+            $("#participant_tbl .success").each(function(){
+              $(this).removeClass('success');
             });
+            $("#participant_tbl #"+r.slug).addClass('success');
+
+            ptcpt_btn.html(default_edit_ptcpt_btn);
+            ptcpt_btn.removeAttr("disabled");
+
 
           },
           error: function(response){
-
+            console.log(response);
+            errored("#edit_participant_form","save",response);
           }
         })
       })
 
       //Update Participant
       participant_slug = '';
-      $("body").on("submit","#edit_participant_form", function(e){
-        e.preventDefault();
-        ptcpt_btn = $("#edit_participant_form .update_participant_btn");
-        default_edit_ptcpt_btn = $("#edit_participant_form .update_participant_btn").html();
+      // $("body").on("submit","#edit_participant_form", function(e){
+      //   e.preventDefault();
+      //   ptcpt_btn = $("#edit_participant_form .update_participant_btn");
+      //   default_edit_ptcpt_btn = $("#edit_participant_form .update_participant_btn").html();
 
-        ptcpt_btn.html("<i class='fa fa-spinner fa-spin'> </i> Please wait");
-        ptcpt_btn.attr("disabled","disabled");
-        uri = "{{ route('dashboard.seminar.participant_update' , 'slug') }}";
-        uri = uri.replace('slug',participant_slug);
-        Pace.restart();
-        $.ajax({
-          url: uri,
-          data: $(this).serialize(),
-          type: 'PUT',
-          dataType: 'json',
-          headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          },
-          success: function(response){
-            r = response;
-            if(r.result == 1){
-              notify("Participant successfully updated.",'success');
-              edit_dialog.close();
-              tbl = $("#participant_tbl").dataTable();
-              tbl.fnUpdate(r.e_fullname,'#'+r.slug, 0,false);
-              tbl.fnUpdate(r.e_address,'#'+r.slug, 1, false);
-              tbl.fnUpdate(r.e_sex,'#'+r.slug, 2, false);
-              tbl.fnUpdate(r.e_contact_no,'#'+r.slug, 3, false);
-              tbl.fnUpdate(r.e_email,'#'+r.slug, 4, false);
-              $("#participant_tbl .success").each(function(){
-                $(this).removeClass('success');
-              });
-              $("#participant_tbl #"+r.slug).addClass('success');
+      //   ptcpt_btn.html("<i class='fa fa-spinner fa-spin'> </i> Please wait");
+      //   ptcpt_btn.attr("disabled","disabled");
+      //   uri = "{{ route('dashboard.seminar.participant_update' , 'slug') }}";
+      //   uri = uri.replace('slug',participant_slug);
+      //   Pace.restart();
+      //   $.ajax({
+      //     url: uri,
+      //     data: $(this).serialize(),
+      //     type: 'PUT',
+      //     dataType: 'json',
+      //     headers: {
+      //           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      //     },
+      //     success: function(response){
+      //       r = response;
+      //       if(r.result == 1){
+      //         notify("Participant successfully updated.",'success');
+      //         edit_dialog.close();
+      //         tbl = $("#participant_tbl").dataTable();
+      //         tbl.fnUpdate(r.e_fullname,'#'+r.slug, 0,false);
+      //         tbl.fnUpdate(r.e_address,'#'+r.slug, 1, false);
+      //         tbl.fnUpdate(r.e_sex,'#'+r.slug, 2, false);
+      //         tbl.fnUpdate(r.e_contact_no,'#'+r.slug, 3, false);
+      //         tbl.fnUpdate(r.e_email,'#'+r.slug, 4, false);
+      //         $("#participant_tbl .success").each(function(){
+      //           $(this).removeClass('success');
+      //         });
+      //         $("#participant_tbl #"+r.slug).addClass('success');
 
-              ptcpt_btn.html(default_edit_ptcpt_btn);
-              ptcpt_btn.removeAttr("disabled");
-            }
-          },
-          error: function(response){
-            console.log(response);
-            ptcpt_btn.html(default_edit_ptcpt_btn);
-            ptcpt_btn.removeAttr("disabled");
+      //         ptcpt_btn.html(default_edit_ptcpt_btn);
+      //         ptcpt_btn.removeAttr("disabled");
+      //       }
+      //     },
+      //     error: function(response){
+      //       console.log(response);
+      //       ptcpt_btn.html(default_edit_ptcpt_btn);
+      //       ptcpt_btn.removeAttr("disabled");
 
-            $("#edit_participant_form .has-error").each(function(){
-              $(this).removeClass("has-error");
-              $(this).children("span").remove();
-            })
+      //       $("#edit_participant_form .has-error").each(function(){
+      //         $(this).removeClass("has-error");
+      //         $(this).children("span").remove();
+      //       })
 
-            $.each(response.responseJSON.errors, function(i, item){
-              $("#edit_participant_form ."+i).addClass('has-error');
-              $("#edit_participant_form ."+i).append('<span class="help-block">'+item+'</span>')
-            })
-          }
-        })
-      })
+      //       $.each(response.responseJSON.errors, function(i, item){
+      //         $("#edit_participant_form ."+i).addClass('has-error');
+      //         $("#edit_participant_form ."+i).append('<span class="help-block">'+item+'</span>')
+      //       })
+      //     }
+      //   })
+      // })
 
 
     })

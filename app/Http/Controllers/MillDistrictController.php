@@ -86,11 +86,14 @@ class MillDistrictController extends Controller{
         $block_farms = $mill_district->blockFarms;
 
         $members = [];
+        $bf_members_by_civil = [];
+        // $bf_members_by_civil['hahaha'] = "haruuu";
         foreach($block_farms as $block_farm){
             
             $m = [];
             foreach($block_farm->blockFarmMembers as $bf_members){
                 $members[$bf_members->slug] = $bf_members;
+                $bf_members_by_civil[$bf_members->civil_status][$bf_members->slug] = $bf_members->slug;
             }
 
             // $members[$block_farm->slug] = $m;
@@ -112,7 +115,8 @@ class MillDistrictController extends Controller{
         return view('dashboard.mill_district.show')->with([
             'mill_district' => $mill_district,
             'bf_members' => $members,
-            'seminar_participants' => $participants
+            'seminar_participants' => $participants,
+            'bf_members_by_civil' => $bf_members_by_civil
         ]) ;
     }
 

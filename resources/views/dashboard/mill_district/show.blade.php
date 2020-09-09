@@ -6,6 +6,7 @@
 
 
 @section('body')
+
   <div class="nav-tabs-custom">
     <ul class="nav nav-tabs">
       <li class="active"><a href="#show_md" data-toggle="tab">Mill District Info</a></li>
@@ -81,13 +82,13 @@
           <div class="row">
             <div class="col-md-3">
               <div class="panel panel-info">
-                <div class="panel-heading">
+                <div class="panel-heading" style="padding-top: 2px; padding-bottom: 0">
                   <center>
                     <label>Scholars</label>  
                   </center>
                 </div>
                 <div class="panel-body">
-                  <canvas id="scholars_m_f" width="400" height="520"></canvas>
+                  <canvas id="scholars_m_f" width="400" height="350"></canvas>
                   <center>
                     <p>Total # of Scholars: <b>{{$mill_district->scholars->count() }} </b></p>
                   </center>
@@ -97,13 +98,13 @@
 
             <div class="col-md-9">
               <div class="panel panel-info ">
-                <div class="panel-heading">
+                <div class="panel-heading" style="padding-top: 2px; padding-bottom: 0">
                   <center>
                     <label>Block Farm Members</label>  
                   </center>
                 </div>
                 <div class="panel-body">
-                  <canvas id="per_block_farm" width="400" height="150"></canvas>
+                  <canvas id="per_block_farm" width="400" height="100"></canvas>
                   <center>
                     <p>Total # of Block Farms: <b>{{$mill_district->blockFarms->count() }} </b>
                      |
@@ -115,8 +116,22 @@
                 </div>
               </div>
             </div>
-
-
+          </div>
+          <div class="row">
+            <div class="col-md-5">
+              <div class="panel panel-info">
+                <div class="panel-heading" style="padding-top: 2px; padding-bottom: 0">
+                  <center>
+                    <label>Block Farm Members by Civil Status</label>  
+                  </center>
+                </div>
+                <div class="panel-body">
+                  <canvas id="civil_status_chart" width="400" height="200"></canvas>
+                  <center>
+                  </center>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -466,7 +481,7 @@
                       ->where("sex","=","FEMALE")
                       ->count() 
                     }}',
-                  @endforeach
+                  @endforeach,
                 ],
                 label: 'FEMALE',
                 backgroundColor: 'rgb(255,105,180)',
@@ -517,6 +532,48 @@
           borderColor: '#ddffee'
          }
     });
+
+
+      var civil_status_chart = new Chart($("#civil_status_chart"), {
+          type: 'bar',
+          data: {
+            "labels": [
+              @if(count($bf_members_by_civil) > 0)
+                @foreach($bf_members_by_civil as $key => $members)
+                  '{{$key}} ({{ count($members)/count($bf_members)*100 }}%)  ',
+                @endforeach
+              @endif
+            ],
+
+            datasets: [
+              {
+                data: [
+                  @foreach($bf_members_by_civil as $key => $members)
+                    '{{count($bf_members_by_civil[$key])}}',
+                  @endforeach
+                ],
+                label: '',
+                backgroundColor: 'rgb(138, 65, 158)',
+              },
+            ]
+          },
+          options: {
+              "scales": {
+                  "yAxes": [{
+                      "ticks": {
+                          "beginAtZero": true,
+                          userCallback: function(label, index, labels) {
+                             // when the floored value is the same as the value we have a whole number
+                             if (Math.floor(label) === label) {
+                                 return label;
+                             }
+
+                         },
+                      }
+                  }]
+              }
+          }
+      });
 
 
     })
