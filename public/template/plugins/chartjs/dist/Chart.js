@@ -21,6 +21,9 @@ function getCjsExportFromNamespace (n) {
 }
 
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9974ef39905f8f43845116538a999ec904056a6b
 var colorName = {
 	"aliceblue": [240, 248, 255],
 	"antiquewhite": [250, 235, 215],
@@ -170,6 +173,8 @@ var colorName = {
 	"whitesmoke": [245, 245, 245],
 	"yellow": [255, 255, 0],
 	"yellowgreen": [154, 205, 50]
+<<<<<<< HEAD
+=======
 =======
 var colorName = {
 	"aliceblue": [240, 248, 255],
@@ -321,6 +326,7 @@ var colorName = {
 	"yellow": [255, 255, 0],
 	"yellowgreen": [154, 205, 50]
 >>>>>>> 1a94251bb4325a87b474c1077c74f1fa956242a6
+>>>>>>> 9974ef39905f8f43845116538a999ec904056a6b
 };
 
 var conversions = createCommonjsModule(function (module) {
@@ -1381,6 +1387,9 @@ models.forEach(function (fromModel) {
 var colorConvert = convert;
 
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9974ef39905f8f43845116538a999ec904056a6b
 var colorName$1 = {
 	"aliceblue": [240, 248, 255],
 	"antiquewhite": [250, 235, 215],
@@ -1530,6 +1539,8 @@ var colorName$1 = {
 	"whitesmoke": [245, 245, 245],
 	"yellow": [255, 255, 0],
 	"yellowgreen": [154, 205, 50]
+<<<<<<< HEAD
+=======
 =======
 var colorName$1 = {
 	"aliceblue": [240, 248, 255],
@@ -1681,6 +1692,7 @@ var colorName$1 = {
 	"yellow": [255, 255, 0],
 	"yellowgreen": [154, 205, 50]
 >>>>>>> 1a94251bb4325a87b474c1077c74f1fa956242a6
+>>>>>>> 9974ef39905f8f43845116538a999ec904056a6b
 };
 
 /* MIT license */
