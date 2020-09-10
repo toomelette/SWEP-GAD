@@ -250,6 +250,12 @@
              ); ?> 
 
 
+             <?php echo __form::select_static(
+              '3 sex', 'sex', 'Sex *', '', ['MALE' => 'MALE', 'FEMALE' => 'FEMALE'], $errors->has('sex'), $errors->first('sex'), '', ''
+              ); ?>
+
+
+
 
             <?php echo __form::textbox(
              '4 contact_no', 'contact_no', 'text', 'Contact No.', 'Contact No.', '', $errors->has('contact_no'), $errors->first('contact_no'), ''
@@ -257,11 +263,7 @@
 
 
 
-            <?php echo __form::select_static(
-              '3 sex', 'sex', 'Sex *', '', ['MALE' => 'MALE', 'FEMALE' => 'FEMALE'], $errors->has('sex'), $errors->first('sex'), '', ''
-              ); ?>
-
-
+            
 
 
           </div>
@@ -269,7 +271,7 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal" tabindex="-1">Close</button>
           <button type="submit" class="btn <?php echo __static::bg_color(Auth::user()->color); ?>">
-            <i class="fa fa-save"> Save</i>
+            <i class="fa fa-save"> </i> Save
           </button>
         </div>
       </div>
@@ -676,7 +678,7 @@ function dt_draw(){
                   {
                     'extend': 'excel',
                     'exportOptions':{
-                      'columns' : [0,1,2,3,4]
+                      'columns' : [0,1,2,3,4,5,6,7]
                     },
                     'text': '<i class="fa fa-file-excel-o fa-fw"></i> Export as Excel'
                   }
@@ -735,20 +737,20 @@ function dt_draw(){
                   response.no_children,
                   response.sex,
                   '<div class="btn-group">'+
-                  '<button  data="'+response.inserted_participant+'" class="btn btn-sm btn-default edit_participant_btn">'+
+                  '<button data-toggle="modal" data-target="#edit_participant_modal"  data="'+response.slug+'" class="btn btn-sm btn-default edit_participant_btn">'+
                     '<i class="fa fa-pencil-square-o"></i>'+
                   '</button>'+
-                  '<button data="'+response.inserted_participant+'" class="btn btn-sm btn-danger delete_participant_btn">'+
+                  '<button data="'+response.slug+'" class="btn btn-sm btn-danger delete_participant_btn">'+
                     '<i class="fa  fa-trash-o"></i>'+
                   '</button>'+
                 '</div>'
-                ]).node().id= response.inserted_participant;
+                ]).node().id= response.slug;
                 participant_tbl.draw();
 
                 $("#participant_tbl .success").each(function(){
                   $(this).removeClass('success');
                 })
-                $("#"+response.inserted_participant).addClass('success');
+                $("#"+response.slug).addClass('success');
 
                 add_participant_btn.html(default_add_participant_btn);
                 add_participant_btn.removeAttr("disabled");
@@ -831,8 +833,8 @@ function dt_draw(){
             });
             $("#participant_tbl #"+r.slug).addClass('success');
 
-            ptcpt_btn.html(default_edit_ptcpt_btn);
-            ptcpt_btn.removeAttr("disabled");
+            //ptcpt_btn.html(default_edit_ptcpt_btn);
+            //ptcpt_btn.removeAttr("disabled");
 
 
           },
