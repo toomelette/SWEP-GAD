@@ -119,7 +119,10 @@ class SeminarController extends Controller{
         $seminar = $this->seminar->show($slug);
         $file_details = $this->seminar->getFileDetails($slug);
 
-        return view('dashboard.seminar.show')->with(['seminar'=>$seminar, 'file_details'=> $file_details]);
+        return view('dashboard.seminar.show')->with([
+            'seminar'=>$seminar, 
+            'file_details'=> $file_details
+        ]);
     }
 
 

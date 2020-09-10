@@ -34,7 +34,6 @@ class __static{
     public static function bg_color($color){
 
         $colors = [
-
 	      'sidebar-mini skin-blue'=> 'bg-blue',
 	      'sidebar-mini skin-black'=> 'bg-black',
 	      'sidebar-mini skin-purple'=> 'bg-purple',
@@ -47,7 +46,6 @@ class __static{
 	      'sidebar-mini skin-green-light'=> 'bg-green',
 	      'sidebar-mini skin-red-light'=> 'bg-red',
 	      'sidebar-mini skin-yellow-light'=> 'bg-yellow',
-
 	    ];
 
     	return $colors[$color];

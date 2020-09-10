@@ -267,7 +267,7 @@
 </form>
 
 
-{!! __html::blank_modal('view_seminar_modal','') !!}
+{!! __html::blank_modal('view_seminar_modal','80') !!}
 
 
 

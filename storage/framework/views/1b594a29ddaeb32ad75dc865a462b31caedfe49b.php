@@ -281,7 +281,7 @@
 </form>
 
 
-<?php echo __html::blank_modal('view_seminar_modal',''); ?>
+<?php echo __html::blank_modal('view_seminar_modal','80'); ?>
 
 
 
