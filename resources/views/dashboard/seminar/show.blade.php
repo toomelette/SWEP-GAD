@@ -104,43 +104,43 @@
 		</div>
 		<div class="col-md-6">
 			<div class="panel panel-default">
-				<div class="panel-heading">
-					<p class="text-center text-strong">Charts</p>
+				<div class="panel-heading text-center">
+					<span class="text-strong">Pie Charts</span>
 				</div>
 				<div class="panel-body">
-						<div class="row">
-							<div class="col-md-6">
-								<div class="well well-sm">
-									<p class="text-strong text-center">Participants by Sex</p>
-									<canvas id="sex_pie" width="400" height="250"></canvas>
-									<p class="text-center">Total: {{count($seminar->seminarParticipant)}}</p>
-								</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="well well-sm">
+								<p class="text-strong text-center">Participants by Sex</p>
+								<canvas id="sex_pie" height="200"></canvas>
+								<p class="text-center">Total: {{count($seminar->seminarParticipant)}}</p>
 							</div>
+						</div>
 
-							<div class="col-md-6">
-								<div class="well well-sm">
-									<p class="text-strong text-center">Participants by Status</p>
-									<canvas id="status_pie" width="400" height="250"></canvas>
-									<p class="text-center">Total: {{count($seminar->seminarParticipant)}}</p>
-								</div>
+						<div class="col-md-6">
+							<div class="well well-sm">
+								<p class="text-strong text-center">Participants by Status</p>
+								<canvas id="status_pie"  height="200"></canvas>
+								<p class="text-center">Total: {{count($seminar->seminarParticipant)}}</p>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-md-6">
-								<div class="well well-sm">
-									<p class="text-strong text-center">Participants by Age</p>
-									<canvas id="age_pie" width="400" height="250"></canvas>
-									<p class="text-center">Total: {{count($seminar->seminarParticipant)}}</p>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="well well-sm">
-									<p class="text-strong text-center">Participants by Education</p>
-									<canvas id="educ_pie" width="400" height="250"></canvas>
-									<p class="text-center">Total: {{count($seminar->seminarParticipant)}}</p>
-								</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="well well-sm">
+								<p class="text-strong text-center">Participants by Age</p>
+								<canvas id="age_pie" height="200"></canvas>
+								<p class="text-center">Total: {{count($seminar->seminarParticipant)}}</p>
 							</div>
 						</div>
+						<div class="col-md-6">
+							<div class="well well-sm">
+								<p class="text-strong text-center">Participants by Education</p>
+								<canvas id="educ_pie" height="200"></canvas>
+								<p class="text-center">Total: {{count($seminar->seminarParticipant)}}</p>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -166,6 +166,9 @@
 
 
 <script type="text/javascript">
+
+
+
 	var sex_pie_chart = new Chart($("#sex_pie"), {
         type: 'pie',
         data: {
@@ -221,6 +224,9 @@
          }
     });
 
+
+
+
     var age_pie_chart = new Chart($("#age_pie"), {
         type: 'pie',
         data: {
@@ -247,34 +253,34 @@
          }
     });
 
-    var educ_pie_chart = new Chart($("#educ_pie"), {
-        type: 'pie',
-        data: {
-          datasets: [
-            {
-              data: [
-              {{count($seminar->seminarParticipant->where("educ_att","=",'Elementary'))}},
-              {{count($seminar->seminarParticipant->where("educ_att","=",'High School'))}},
-              {{count($seminar->seminarParticipant->where("educ_att","=",'College'))}},
-              {{count($seminar->seminarParticipant->where("educ_att","=",""))}},
-              ],
-              backgroundColor: [
-              	'rgb(252, 255, 161)',
-                'rgb(161, 255, 203)',
-                'rgb(161, 180, 255)',
-                'rgb(221,75,57)'
-              ]
-            }
-          ],
-          labels: [
-              'Elementary',
-              'High School',
-              'College',
-              'Prefer not to say'
-          ],
-          borderColor: '#ddffee'
-         }
-    });
+	var educ_pie_chart = new Chart($("#educ_pie"), {
+		        type: 'pie',
+		        data: {
+		          datasets: [
+		            {
+		              data: [
+		              {{count($seminar->seminarParticipant->where("educ_att","=",'Elementary'))}},
+		              {{count($seminar->seminarParticipant->where("educ_att","=",'High School'))}},
+		              {{count($seminar->seminarParticipant->where("educ_att","=",'College'))}},
+		              {{count($seminar->seminarParticipant->where("educ_att","=",""))}},
+		              ],
+		              backgroundColor: [
+		              	'rgb(252, 255, 161)',
+		                'rgb(161, 255, 203)',
+		                'rgb(161, 180, 255)',
+		                'rgb(221,75,57)'
+		              ]
+		            }
+		          ],
+		          labels: [
+		              'Elementary',
+		              'High School',
+		              'College',
+		              'Prefer not to say'
+		          ],
+		          borderColor: '#ddffee'
+		         }
+		    });
 
 
 
