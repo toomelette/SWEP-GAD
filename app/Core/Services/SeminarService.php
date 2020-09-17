@@ -24,8 +24,10 @@ class SeminarService extends BaseService{
 
     }
 
+    public function test(){
+        return $this->seminar_repo->test();
+    }
     public function fetch($request){
-
         $seminars = $this->seminar_repo->fetch($request);
         $request->flash();
         return view('dashboard.seminar.index')->with('seminars', $seminars);
@@ -62,6 +64,7 @@ class SeminarService extends BaseService{
 
 
     public function fetchTable(){
+
         return $this->seminar_repo->fetchTable();
     }
 

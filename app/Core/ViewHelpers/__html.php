@@ -246,7 +246,7 @@ class __html{
 				<small class="no-margin">
 					Timestamp: 
 					<b>
-						'.date("F d, Y | h:i A",strtotime($obj->created_at)).'
+						'.date("M. d, Y | h:i A",strtotime($obj->created_at)).'
 					</b> 
 				</small>
 			</div>
@@ -264,7 +264,7 @@ class __html{
 				<small class="no-margin">
 					Timestamp: 
 					<b>
-						'.date("F d, Y | h:i A",strtotime($obj->updated_at)).'
+						'.date("M. d, Y | h:i A",strtotime($obj->updated_at)).'
 					</b> 
 				</small>
 			</div>

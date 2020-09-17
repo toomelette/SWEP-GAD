@@ -45,6 +45,8 @@ class RepositoryServiceProvider extends ServiceProvider {
 
 		$this->app->bind('App\Core\Interfaces\BFMemberFamilyInterface', 'App\Core\Repositories\BFMemberFamilyRepository');
 
+		$this->app->bind('App\Core\Interfaces\CommitteeMembersInterface', 'App\Core\Repositories\CommitteeMembersRepository');
+
 	}
 
 

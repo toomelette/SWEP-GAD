@@ -12,6 +12,7 @@ class Seminar extends Model{
 
     use Sortable;
 
+
     protected $table = 'seminars';
 
     protected $dates = ['created_at', 'updated_at'];
@@ -20,7 +21,7 @@ class Seminar extends Model{
     
     public $sortable = ['title', 'sponsor', 'venue', 'date_covered_from', 'date_covered_to'];
 
-
+    
 
 
     protected $attributes = [

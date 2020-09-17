@@ -24,7 +24,12 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
 
 
 
-
+    public function test(){
+        
+        $other_db = $this->seminar->setConnection('mysql_external')->setTable('hr_employees');
+        // $other_db = \DB::connection('mysql_external')->table('hr_employees');
+        return $other_db->get();
+    }
 
     public function fetch($request){
 

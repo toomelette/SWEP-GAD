@@ -84,10 +84,13 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 	Route::get('/scholars/report_generate', 'ScholarsController@report_generate')->name('scholars.report_generate');
 	Route::get('/scholars/reports', 'ScholarsController@reports')->name('scholars.reports');
 	Route::resource('scholars','ScholarsController');
-
-	
-
 	Route::resource('mill_district', 'MillDistrictController');
+
+	//Committee Members
+	Route::resource('committee_members', 'CommitteeMembersController');
+
+
+
 
 });
 

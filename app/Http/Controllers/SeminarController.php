@@ -29,7 +29,8 @@ class SeminarController extends Controller{
     }
     
     public function index(){
-        
+            
+        //return $this->seminar->test();
 
         if(request()->ajax())
         {   
