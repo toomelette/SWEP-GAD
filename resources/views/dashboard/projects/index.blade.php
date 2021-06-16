@@ -104,7 +104,7 @@
                             ) !!}
 
                             {!! __form::textbox(
-                              '5 budget', 'budget', 'text', 'GAD Budget *', 'GAD Budget', '', '', '', ''
+                              '5 budget', 'budget', 'text', 'GAD Budget *', 'GAD Budget', '', '', '', '','autonum'
                             ) !!}
 
                             {!! __form::select_year('3','Year','year','','','') !!}
@@ -167,6 +167,18 @@
 
 @section('scripts')
     <script type="text/javascript">
+
+        autonum_settings = {
+            currencySymbol : ' ₱',
+            decimalCharacter : '.',
+            digitGroupSeparator : ',',
+        };
+
+        $(".autonum").each(function(){
+            new AutoNumeric(this, autonum_settings);
+        })
+
+
         function dt_draw(){
             scholars_tbl.draw();
         }

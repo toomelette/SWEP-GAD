@@ -82,9 +82,9 @@ class LoginController extends Controller{
 
                 $user = $this->user_repo->login($this->auth->user()->slug);
 
-                $this->__cache->deletePattern(''. config('app.name') .'_cache:users:fetch:*');
-                $this->__cache->deletePattern(''. config('app.name') .'_cache:users:findBySlug:'. $user->slug .'');
-                $this->__cache->deletePattern(''. config('app.name') .'_cache:users:getByIsOnline:'. $user->is_online .'');
+                //$this->__cache->deletePattern(''. config('app.name') .'_cache:users:fetch:*');
+                //$this->__cache->deletePattern(''. config('app.name') .'_cache:users:findBySlug:'. $user->slug .'');
+                //$this->__cache->deletePattern(''. config('app.name') .'_cache:users:getByIsOnline:'. $user->is_online .'');
 
                 $this->clearLoginAttempts($request);
                 return redirect()->intended('dashboard/home');

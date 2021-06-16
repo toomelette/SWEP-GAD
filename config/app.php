@@ -237,7 +237,7 @@ return [
         '__print' => App\Core\Helpers\__print::class, 
         '__static' => App\Core\Helpers\__static::class,
         '__dynamic' => App\Core\Helpers\__dynamic::class,
-
+        'GlobalHelpers' => App\Core\Helpers\GlobalHelpers::class,
     ],
 
 ];

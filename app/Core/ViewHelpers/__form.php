@@ -12,7 +12,7 @@ class __form{
 
 
     /** Default **/
-    public static function textbox($class, $key, $type, $label, $placeholder, $old_value, $id, $error_first, $extra_attr){
+    public static function textbox($class, $key, $type, $label, $placeholder, $old_value, $id, $error_first, $extra_attr , $input_class = null){
 
         if($id == ""){
           $id = "";
@@ -21,7 +21,7 @@ class __form{
         }
        return '<div class="form-group col-md-'. $class .'">
                 <label for="'. $key .'">'. $label .'</label>
-                <input class="form-control" '. $id .' name="'. $key .'" type="'. $type .'" value="'. self::string_value($old_value) .'" placeholder="'. $placeholder .'" '. $extra_attr .'>
+                <input class="form-control '.$input_class.'" '. $id .' name="'. $key .'" type="'. $type .'" value="'. self::string_value($old_value) .'" placeholder="'. $placeholder .'" '. $extra_attr .'>
               </div>';
 
     }
