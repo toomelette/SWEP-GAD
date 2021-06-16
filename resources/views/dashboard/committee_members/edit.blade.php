@@ -2,7 +2,7 @@
 	@csrf
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<h4 class="modal-title" id="myModalLabel">Add Member</h4>
+		<h4 class="modal-title" id="myModalLabel">{{$committee_member->lname}}, {{$committee_member->fname}} - Edit</h4>
 	</div>
 	<div class="modal-body">
 		<div class="row">
@@ -21,25 +21,25 @@
 		</div>
 		<div class="row">
 			{!! __form::select_static(
-				'4 sex', 'sex', 'Sex: *', $committee_member->sex , [
-					'Male' => 'MALE', 
-					'Female' => 'FEMALE', 
-				], '', '', '', ''
-				) !!}
+			'4 sex', 'sex', 'Sex: *', $committee_member->sex , [
+				'Male' => 'MALE', 
+				'Female' => 'FEMALE', 
+			], '', '', '', ''
+			) !!}
 
-				{!! __form::select_static(
-					'3 based_on', 'based_on', 'Base*', $committee_member->based_on, [
-						'Visayas' => 'Visayas',
-						'Quezon' => 'Quezon',           
-					], $errors->has('is_menu'), $errors->first('is_menu'), '', ''
-					) !!}
-
-				{!! __form::select_static(
-				'3 is_active', 'is_active', 'Status as member*', $committee_member->is_active, [
-					'Active' => '1',
-					'Inactive' => '0',           
+			{!! __form::select_static(
+				'3 based_on', 'based_on', 'Base*', $committee_member->based_on, [
+					'Visayas' => 'Visayas',
+					'Quezon' => 'Quezon',           
 				], $errors->has('is_menu'), $errors->first('is_menu'), '', ''
 				) !!}
+
+			{!! __form::select_static(
+			'3 is_active', 'is_active', 'Status as member*', $committee_member->is_active, [
+				'Active' => '1',
+				'Inactive' => '0',           
+			], $errors->has('is_menu'), $errors->first('is_menu'), '', ''
+			) !!}
 		</div>
 	</div>
 	<div class="modal-footer">

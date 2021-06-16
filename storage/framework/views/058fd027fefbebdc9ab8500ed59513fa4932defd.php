@@ -381,6 +381,12 @@
           }
           $(this).siblings('.help-block').html( selected + ' out of ' + all +' '+module_s+' '+was_were+' selected.');
         }
+
+        percentage = selected/all*100;
+        console.log(percentage);
+        panel_body = $(this).parents('.panel-body');
+
+        panel_body.find('.progress-bar').css('width',percentage+'%');
       })
 
       //Clearing selection of modules

@@ -91,6 +91,12 @@
                   @endif
                 </div>
               </div>
+              @if($sub->submenu->isNotEmpty())
+                <div class="progress xs" >
+                  <div class="progress-bar {{__static::bg_color(Auth::user()->color)}}" style="width: 0%;" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                  </div>
+                </div>
+              @endif
             </div>
           </div>
         </div>

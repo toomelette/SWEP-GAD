@@ -178,7 +178,12 @@ class MenuRepository extends BaseRepository implements MenuInterface {
 
 
 
+    public function getRaw(){
 
+        $menus =  $this->menu;
+        return $menus;
+
+    }
 
 
     private function getMenuIdInc(){

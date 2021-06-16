@@ -124,11 +124,6 @@ class CommitteeMembersController extends Controller{
 
     }
 
-   
-
-
- 
-
 
 
     public function show($slug){

@@ -503,8 +503,8 @@
     style_datatable('#block_farm_tbl');
 
     //Need to press enter to search
-    $('#block_farm_tbl_filter input').unbind();
-    $('#block_farm_tbl_filter input').bind('keyup', function (e) {
+    $('#my_payments_table_filter input[type="search"]').unbind();
+    $('#my_payments_table_filter input[type="search"]').bind('keyup', function (e) {
         if (e.keyCode == 13) {
             block_farm_tbl.search(this.value).draw();
         }

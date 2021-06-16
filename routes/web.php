@@ -89,7 +89,11 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 	//Committee Members
 	Route::resource('committee_members', 'CommitteeMembersController');
 
+    /** Plan and Budget **/
+    Route::resource('projects','ProjectsController');
 
+	//Office Activities Members
+	Route::resource('office_activities', 'OfficeActivitiesController');
 
 
 });

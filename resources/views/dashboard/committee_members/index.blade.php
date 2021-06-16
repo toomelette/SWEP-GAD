@@ -8,73 +8,70 @@
 
   <section class="content">
     <div class="box">
-            <div class="box-header with-border">
-              <h3 class="box-title">List of Members</h3>
-              <div class="pull-right">
-
-                  <button type="button" class="btn {!! __static::bg_color(Auth::user()->color) !!}" data-toggle="modal" data-target="#add_member_modal"><i class="fa fa-plus"></i> Add new</button>
-            
+      <div class="box-header with-border">
+        <h3 class="box-title">List of Members</h3>
+        <div class="pull-right">
+            <button type="button" class="btn {!! __static::bg_color(Auth::user()->color) !!}" data-toggle="modal" data-target="#add_member_modal"><i class="fa fa-plus"></i> Add new</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="box-header with-border">
+          <h4 class="box-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#advanced_filters" aria-expanded="true" class="">
+              <i class="fa fa-filter"></i>  Advanced Filters <i class=" fa  fa-angle-down"></i>
+            </a>
+          </h4>
+        </div>
+        <div id="advanced_filters" class="panel-collapse collapse" aria-expanded="true" style="">
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-1 col-sm-2 col-lg-2">
+                <label>Is menu:</label>
+                <select name="committee_members_length" aria-controls="committee_members" class="form-control input-sm filter_menu filters">
+                  <option value="">All</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+              <div class="col-md-1 col-sm-2 col-lg-2">
+                <label>Is dropdown:</label>
+                <select name="committee_members_length" aria-controls="committee_members" class="form-control input-sm filter_dropdown filters">
+                  <option value="">All</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
               </div>
             </div>
-            <div class="panel">
-              <div class="box-header with-border">
-                <h4 class="box-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#advanced_filters" aria-expanded="true" class="">
-                    <i class="fa fa-filter"></i>  Advanced Filters <i class=" fa  fa-angle-down"></i>
-                  </a>
-                </h4>
-              </div>
-              <div id="advanced_filters" class="panel-collapse collapse" aria-expanded="true" style="">
-                <div class="box-body">
-                  <div class="row">
-                    <div class="col-md-1 col-sm-2 col-lg-2">
-                      <label>Is menu:</label>
-                      <select name="committee_members_length" aria-controls="committee_members" class="form-control input-sm filter_menu filters">
-                        <option value="">All</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                      </select>
-                    </div>
-                    <div class="col-md-1 col-sm-2 col-lg-2">
-                      <label>Is dropdown:</label>
-                      <select name="committee_members_length" aria-controls="committee_members" class="form-control input-sm filter_dropdown filters">
-                        <option value="">All</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="box-body">
-              <div id="committee_members_table_container" style="display: none">
-                <table class="table table-bordered table-striped table-hover" id="committee_members_table" style="width: 100% !important">
-                  <thead>
-                    <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
-                      <th>Fullname</th>
-                      <th>Base</th>
-                      <th>Sex</th>
-                      <th class="action">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div id="tbl_loader">
-              <center>
-                <img style="width: 100px" src="{!! __static::loader(Auth::user()->color) !!}">
-              </center>
-            </div>
-            <!-- /.box-body -->
           </div>
-
-
-
+        </div>
+      </div>
+      <div class="box-body">
+        <div id="committee_members_table_container" style="display: none">
+          <table class="table table-bordered table-striped table-hover" id="committee_members_table" style="width: 100% !important">
+            <thead>
+              <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
+                <th>Fullname</th>
+                <th>Base</th>
+                <th>Sex</th>
+                <th class="action">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="tbl_loader">
+        <center>
+          <img style="width: 100px" src="{!! __static::loader(Auth::user()->color) !!}">
+        </center>
+      </div>
     </div>
+
+ 
+
+  </div>
   </section>
 
 @endsection
@@ -178,57 +175,51 @@
   }
 
   function delete_submenu(slug){
-  $.confirm({
-    title: 'Confirm!',
-    content: 'Are you sure you want to remove this submenu?',
-    type: 'red',
-    typeAnimated: true,
-    buttons: {
+    $.confirm({
+      title: 'Confirm!',
+      content: 'Are you sure you want to remove this submenu?',
+      type: 'red',
+      typeAnimated: true,
+      buttons: {
         confirm:{
-            btnClass: 'btn-danger',
-           action: function(){
+          btnClass: 'btn-danger',
+          action: function(){
             $.ajaxSetup({
               headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
               }
             })
-
             uri = "{{ route('dashboard.submenu.destroy', 'slug') }}";
             uri = uri.replace('slug', slug);
             Pace.restart();
             $.ajax({
-                url : uri,
-                type: 'DELETE',
-                success: function(response){
-
-                  notify("Item successfully deleted.", "success");
-                  submenu_tbl.row("#"+slug).remove().draw();
-                  active = response.menu_id;
-                  menu_tbl.draw(false);
-                },
-                error: function(response){
-                  notify("An error occured while deteling the item.", "danger");
-                  console.log(response)
-                }
-
+              url : uri,
+              type: 'DELETE',
+              success: function(response){
+                notify("Item successfully deleted.", "success");
+                submenu_tbl.row("#"+slug).remove().draw();
+                active = response.menu_id;
+                menu_tbl.draw(false);
+              },
+              error: function(response){
+                notify("An error occured while deteling the item.", "danger");
+                console.log(response)
+              }
             })
-             
-           }
-
+          }
         },
         cancel: function () {
-            
-        }
-    }
-}); 
-}
 
-function filter_dt(){
+        }
+      }
+    }); 
+  }
+
+  function filter_dt(){
     is_menu = $(".filter_menu").val();
     is_dropdown = $(".filter_dropdown").val();
     menu_tbl.ajax.url(
       "{{ route('dashboard.menu.index') }}?is_menu="+is_menu+"&is_dropdown="+is_dropdown).load();
-
     $(".filters").each(function(index, el) {
       if($(this).val() != ''){
         $(this).parent("div").addClass('has-success');
@@ -245,7 +236,6 @@ function filter_dt(){
 <script type="text/javascript">
   {!! __js::modal_loader() !!}
   active = '';
-
   //-----DATATABLES-----//
   //Initialize DataTable
   committee_members_tbl = $("#committee_members_table").DataTable({
@@ -272,12 +262,11 @@ function filter_dt(){
         "class" : "scholars_name"
       },
       {
-        "targets" : 3,
-        "orderable" : false,
+        "targets" : 2,
         "class" : 'sex-th'
       },
       {
-        "targets" : 2,
+        "targets" : 3,
         "orderable" : false,
         "class" : 'action'
       },
@@ -297,8 +286,6 @@ function filter_dt(){
               active = '';
             },3000);
           }
-
-
         });
       },
     "language": 
@@ -317,7 +304,6 @@ function filter_dt(){
     },
     "order": [[ 1, "asc" ], [0, 'asc']]
   })
-
 
   style_datatable("#committee_members_table");
 
@@ -342,7 +328,6 @@ function filter_dt(){
   $('#search_employee_input').typeahead({
     ajax : "{{ route('dashboard.committee_members.index') }}",
     onSelect:function (result) {
-
       $.ajax({
         url : '{{route("dashboard.committee_members.index")}}?find_employee='+result.value,
         type: 'GET',
@@ -359,15 +344,10 @@ function filter_dt(){
           }else{
             $("#add_member_form select[name='based_on']").focus();
           }
-
-
         }
-
       });
-
-
-      
     },
+    items : 15
   });
 
   $("#add_member_form").submit(function(e){
@@ -447,14 +427,12 @@ function filter_dt(){
         errored('#edit_member_form', 'save',response);
       }
     })
-
   })
 
 
   $("body").on("click",".delete_committee_member_btn", function(){
     id = $(this).attr('data');
     confirm("{{ route('dashboard.committee_members.destroy', 'slug') }}", id);
-
   })
 
 

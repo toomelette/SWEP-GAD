@@ -152,8 +152,7 @@ class BlockFarmRepository extends BaseRepository implements BlockFarmInterface {
         $activity_log->original = $block_farm_old;
         $activity_log->obj = $block_farm;
         $this->activity_log_repo->store($activity_log);
-
-
+        
         return $block_farm;
  
 

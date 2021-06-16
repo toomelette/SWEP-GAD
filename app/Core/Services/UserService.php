@@ -89,7 +89,10 @@ class UserService extends BaseService{
     public function show($slug){
         
         $user = $this->user_repo->findBySlug($slug);  
-        return view('dashboard.user.show')->with('user', $user);
+        $menus = $this->userMenus();
+      
+        //return $submenus;
+        return view('dashboard.user.show')->with(['user' => $user, 'menus' => $menus]);
 
     }
 
