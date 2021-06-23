@@ -2,10 +2,12 @@
  
 namespace App\Core\Services;
 
+use App\Core\Helpers\GlobalHelpers;
 use File;
 use App\Core\Interfaces\SeminarInterface;
 use App\Core\Interfaces\SeminarSpeakerInterface;
 use App\Core\BaseClasses\BaseService;
+use Symfony\Component\Finder\Glob;
 
 
 class SeminarService extends BaseService{
@@ -167,6 +169,9 @@ class SeminarService extends BaseService{
 
 
     public function update($request, $slug){
+        $request->merge([
+            'utilized_fund' => GlobalHelpers::sanitize_autonum($request->utilized_fund)
+        ]);
 
         $seminar = $this->seminar_repo->findBySlug($slug);    
         $filename = $this->filename($request, $seminar);

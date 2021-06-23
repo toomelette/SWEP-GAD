@@ -104,6 +104,8 @@ class SeminarRepository extends BaseRepository implements SeminarInterface {
         $seminar->date_covered_from = $this->__dataType->date_parse($request->date_covered_from);
         $seminar->date_covered_to = $this->__dataType->date_parse($request->date_covered_to);
         $seminar->attendance_sheet_filename = $filename;
+        $seminar->project_code = $request->project_code;
+        $seminar->utilized_fund = $request->utilized_fund;
         $seminar->updated_at = $this->carbon->now();
         $seminar->ip_updated = request()->ip();
         $seminar->user_updated = $this->auth->user()->user_id;

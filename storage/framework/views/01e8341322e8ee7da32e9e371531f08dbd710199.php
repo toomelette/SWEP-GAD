@@ -52,7 +52,33 @@
             '6 date_covered_to', 'date_covered_to',  'Date To *', old('date_covered_to') ? old('date_covered_to') : __dataType::date_parse($seminar->date_covered_to), $errors->has('date_covered_to'), $errors->first('date_covered_to')
             ); ?> 
         </div>
+        <div class="row">
+          <div class="col-md-12">
+            <p class="page-header-sm text-info">
+              Utilization
+            </p>
+          </div>
+          <?php echo __form::textbox(
+            '6 project_code', 'project_code', 'text', 'Project Code*', 'Project Code', $seminar->project_code, '', '', 'list="project_list"'); ?>
 
+
+          <datalist id="project_list">
+            <?php
+              $projects = \App\Models\Projects::get(['project_code']);
+
+            ?>
+            <?php if($projects->count()>0): ?>
+              <?php $__currentLoopData = $projects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <option><?php echo e($project->project_code); ?></option>
+              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endif; ?>
+          </datalist>
+
+          <?php echo __form::textbox(
+            '6 utilized_fund', 'utilized_fund', 'text', 'Utilized Fund *', 'Utilized Fund', $seminar->utilized_fund, '', '', '','autonum'
+          ); ?>
+
+        </div>
       </div> 
       <div class="col-md-5">
         <?php echo __form::file(
@@ -129,4 +155,14 @@
     'e_doc_file', 'fa', route('dashboard.seminar.view_attendance_sheet', $seminar->slug)
   ); ?>
 
+
+          autonum_settings = {
+            currencySymbol : ' ₱',
+            decimalCharacter : '.',
+            digitGroupSeparator : ',',
+          };
+
+          $(".autonum").each(function(){
+            new AutoNumeric(this, autonum_settings);
+          })
 </script>

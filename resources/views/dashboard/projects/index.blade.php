@@ -54,12 +54,12 @@
                     <table class="table table-bordered table-striped table-hover" id="scholars_table" style="width: 100% !important">
                         <thead>
                         <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
-                            <th>Name & Address</th>
-                            <th>Mill District</th>
-                            <th style="width: 50px">Scholarship</th>
-                            <th>Course & School</th>
-                            <th>Date of Birth</th>
-                            <th>Sex</th>
+                            <th>Project Code</th>
+                            <th>Year</th>
+                            <th>Activity</th>
+                            <th>Budget Allocated</th>
+                            <th>Balance</th>
+                            <th>%</th>
                             <th class="action">Action</th>
                         </tr>
                         </thead>
@@ -212,81 +212,67 @@
 
         //-----DATATABLES-----//
         //Initialize DataTable
-        {{--scholars_tbl = $("#scholars_table").DataTable({--}}
-        {{--    'dom' : 'lBfrtip',--}}
-        {{--    "processing": true,--}}
-        {{--    "serverSide": true,--}}
-        {{--    "ajax" : {--}}
-        {{--        url : '{{ route("dashboard.scholars.index") }}',--}}
-        {{--        type: 'GET',--}}
-        {{--    },--}}
-        {{--    "columns": [--}}
-        {{--        { "data": "fullname" },--}}
-        {{--        { "data": "mill_district" },--}}
-        {{--        { "data": "scholarship_applied" },--}}
-        {{--        { "data": "course_school" },--}}
-        {{--        { "data": "birth" },--}}
-        {{--        { "data": "sex" },--}}
-        {{--        { "data": "action" }--}}
-        {{--    ],--}}
-        {{--    "buttons": [--}}
-        {{--        {!! __js::dt_buttons() !!}--}}
-        {{--    ],--}}
-        {{--    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],--}}
-        {{--    "columnDefs":[--}}
-        {{--        {--}}
-        {{--            "targets" : 0,--}}
-        {{--            "class" : "scholars_name"--}}
-        {{--        },--}}
-        {{--        {--}}
-        {{--            "targets" : 5,--}}
-        {{--            "orderable" : false,--}}
-        {{--            "class" : 'sex-th'--}}
-        {{--        },--}}
-        {{--        {--}}
-        {{--            "targets" : 6,--}}
-        {{--            "orderable" : false,--}}
-        {{--            "class" : 'action'--}}
-        {{--        },--}}
-        {{--        {--}}
-        {{--            "targets": 1,--}}
-        {{--            "visible": false--}}
-        {{--        }--}}
-        {{--    ],--}}
-        {{--    "responsive": false,--}}
-        {{--    "initComplete": function( settings, json ) {--}}
-        {{--        $('#tbl_loader').fadeOut(function(){--}}
-        {{--            $("#scholars_table_container").fadeIn();--}}
+        scholars_tbl = $("#scholars_table").DataTable({
+            'dom' : 'lBfrtip',
+            "processing": true,
+            "serverSide": true,
+            "ajax" : {
+                url : '{{ route("dashboard.projects.index") }}',
+                type: 'GET',
+            },
+            "columns": [
+                { "data": "project_code" },
+                { "data": "year" },
+                { "data": "activity" },
+                { "data": "budget" },
+                { "data": "balance" },
+                { "data": "percentage" },
+                { "data": "action" }
+            ],
+            "buttons": [
+                {!! __js::dt_buttons() !!}
+            ],
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "columnDefs":[
 
+                {
+                    "targets" : 4,
+                    "orderable" : false,
+                },
+                {
+                    "targets" : 6,
+                    "orderable" : false,
+                    "class" : 'action'
+                },
 
-
-
-        {{--            scholars_tbl.search(search_for).draw();--}}
-        {{--            active = search_for;--}}
-        {{--            setTimeout(function(){--}}
-        {{--                active = '';--}}
-        {{--            },3000);--}}
-
-
-
-        {{--        });--}}
-        {{--    },--}}
-        {{--    "language":--}}
-        {{--        {--}}
-        {{--            "processing": "<center><img style='width: 70px' src='{!! __static::loader(Auth::user()->color) !!}'></center>",--}}
-        {{--        },--}}
-        {{--    "drawCallback": function(settings){--}}
-        {{--        $('[data-toggle="tooltip"]').tooltip();--}}
-        {{--        $('[data-toggle="modal"]').tooltip();--}}
-        {{--        if(active != ''){--}}
-        {{--            $("#scholars_table #"+active).addClass('success');--}}
-        {{--        }--}}
-        {{--    },--}}
-        {{--    'rowGroup': {--}}
-        {{--        'dataSrc': 'mill_district'--}}
-        {{--    },--}}
-        {{--    "order": [[ 1, "asc" ], [0, 'asc']]--}}
-        {{--})--}}
+            ],
+            "responsive": false,
+            "initComplete": function( settings, json ) {
+                $('#tbl_loader').fadeOut(function(){
+                    $("#scholars_table_container").fadeIn();
+                    // scholars_tbl.search(search_for).draw();
+                    // active = search_for;
+                    // setTimeout(function(){
+                    //     active = '';
+                    // },3000);
+                });
+            },
+            "language":
+                {
+                    "processing": "<center><img style='width: 70px' src='{!! __static::loader(Auth::user()->color) !!}'></center>",
+                },
+            "drawCallback": function(settings){
+                $('[data-toggle="tooltip"]').tooltip();
+                $('[data-toggle="modal"]').tooltip();
+                if(active != ''){
+                    $("#scholars_table #"+active).addClass('success');
+                }
+            },
+            'rowGroup': {
+                'dataSrc': 'year'
+            },
+            "order": [[ 1, "asc" ], [0, 'asc']]
+        })
 
 
 
@@ -313,45 +299,49 @@
 
         $("#add_project_form").submit(function (e) {
             e.preventDefault();
-
+            wait_button("#add_project_form");
             $.ajax({
-                url : '',
+                url : "{{ route('dashboard.projects.store') }}",
                 data : $(this).serialize(),
                 type: 'POST',
                 success: function (response) {
-                    console.log(response);
-                },
-                error: function (response) {
-                    console.log(response);
-                }
-            })
-        })
-
-
-        $("#add_scholar_form").submit(function (e) {
-            e.preventDefault();
-
-            wait_button("#add_scholar_form");
-
-            $.ajax({
-                url : "{{ route('dashboard.scholars.store') }}",
-                data : $(this).serialize(),
-                type: 'POST',
-                dataType: 'json',
-                success: function(response){
-                    $("#add_scholar_form").get(0).reset();
                     notify("Scholar has been added successfully","success");
                     active = response.slug;
                     scholars_tbl.draw(false);
-                    succeed("#add_scholar_form", "save" ,true);
+                    succeed("#add_project_form", "save" ,true);
                 },
-                error: function(response){
+                error: function (response) {
                     console.log(response);
-                    errored("#add_scholar_form","save",response);
-
+                    errored("#add_project_form","save",response);
                 }
             })
         })
+
+
+        {{--$("#add_scholar_form").submit(function (e) {--}}
+        {{--    e.preventDefault();--}}
+
+        {{--    wait_button("#add_scholar_form");--}}
+
+        {{--    $.ajax({--}}
+        {{--        url : "{{ route('dashboard.scholars.store') }}",--}}
+        {{--        data : $(this).serialize(),--}}
+        {{--        type: 'POST',--}}
+        {{--        dataType: 'json',--}}
+        {{--        success: function(response){--}}
+        {{--            $("#add_scholar_form").get(0).reset();--}}
+        {{--            notify("Scholar has been added successfully","success");--}}
+        {{--            active = response.slug;--}}
+        {{--            scholars_tbl.draw(false);--}}
+        {{--            succeed("#add_scholar_form", "save" ,true);--}}
+        {{--        },--}}
+        {{--        error: function(response){--}}
+        {{--            console.log(response);--}}
+        {{--            errored("#add_scholar_form","save",response);--}}
+
+        {{--        }--}}
+        {{--    })--}}
+        {{--})--}}
 
         $("body").on("click",".show_scholars_btn",function(){
             id = $(this).attr("data");
