@@ -111,7 +111,6 @@ class SeminarController extends Controller{
    
 
     public function store(SeminarFormRequest $request){
-        $validated = $request->validated();
         return $this->seminar->store($request);
     }
     

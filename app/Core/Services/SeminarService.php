@@ -38,6 +38,9 @@ class SeminarService extends BaseService{
 
 
     public function store($request){
+        $request->merge([
+            'utilized_fund' => GlobalHelpers::sanitize_autonum($request->utilized_fund)
+        ]);
 
         $filename = $request->title .'-'. $this->str->random(8);
 

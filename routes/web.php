@@ -86,13 +86,16 @@ Route::group(['prefix'=>'dashboard', 'as' => 'dashboard.', 'middleware' => ['che
 	Route::resource('scholars','ScholarsController');
 	Route::resource('mill_district', 'MillDistrictController');
 
-	//Committee Members
+    /** COMMITTEE MEMBERS **/
 	Route::resource('committee_members', 'CommitteeMembersController');
 
-    /** Plan and Budget **/
+    /** PLAN AND BUDGET **/
     Route::resource('projects','ProjectsController');
 
-	//Office Activities Members
+    /** OTHER ACTIVITIES **/
+    Route::resource('other_activities','OtherActivitiesController');
+
+    /** OFFICE ACTIVITIES **/
 	Route::resource('office_activities', 'OfficeActivitiesController');
 
 

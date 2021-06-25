@@ -199,6 +199,13 @@ class __form{
 
     }
 
+    public static function native_textarea($length,$name,$label,$value,$row,$extra_attr){
+        return '<div class="form-group col-md-'.$length.'">
+                    <label>'.$label.'</label>
+                    <textarea class="form-control" name="'.$name.'" rows="'.$row.'" placeholder="" '.$extra_attr.'>'.$value.'</textarea>
+                </div>';
+    }
+
 
 
     public static function datepicker($class, $key, $label, $old_value, $id, $error_first){

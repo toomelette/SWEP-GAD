@@ -109,12 +109,39 @@
                                 '6 date_to', 'date_covered_to',  'Date To *', old('date_covered_to') ? old('date_covered_to') : Carbon::now()->format('m/d/Y'), $errors->has('date_covered_to'), $errors->first('date_covered_to')
                               ) !!}
                             </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <p class="page-header-sm text-info">
+                                  Utilization
+                                </p>
+                              </div>
+                              {!! __form::textbox(
+                                '6 project_code', 'project_code', 'text', 'Project Code*', 'Project Code','' , '', '', 'list="project_list"')
+                              !!}
+
+                              <datalist id="project_list">
+                                @php
+                                  $projects = \App\Models\Projects::get(['project_code']);
+
+                                @endphp
+                                @if($projects->count()>0)
+                                  @foreach($projects as $project)
+                                    <option>{{$project->project_code}}</option>
+                                  @endforeach
+                                @endif
+                              </datalist>
+
+                              {!! __form::textbox(
+                                '6 utilized_fund', 'utilized_fund', 'text', 'Utilized Fund *', 'Utilized Fund', '', '', '', '','autonum'
+                              ) !!}
+                            </div>
                           </div>
                           <div class="col-md-5">
                             {!! __form::file(
                              '12', 'doc_file','doc_file', 'Attendance Sheet', $errors->has('doc_file'), $errors->first('doc_file'), ''
                             ) !!}   
                           </div>
+
                         </div>
                       </div>
 
@@ -372,6 +399,16 @@ function dt_draw(){
     $(document).ready(function(){
       active = '';
       edit_loader = $("#edit_seminar_modal .modal-content").html();
+
+      autonum_settings = {
+        currencySymbol : ' ₱',
+        decimalCharacter : '.',
+        digitGroupSeparator : ',',
+      };
+
+      $(".autonum").each(function(){
+        new AutoNumeric(this, autonum_settings);
+      })
 
       $('#seminars_table')
         .on('preXhr.dt', function ( e, settings, data ) {
