@@ -114,12 +114,34 @@
                               ); ?>
 
                             </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <p class="page-header-sm text-info">
+                                  Utilization
+                                </p>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <?php
+                                $project_code = \App\Models\Projects::select(['project_code','activity'])->get();
+                              ?>
+                              <?php echo __form::select_object_project_code(
+                                '6 project_code', 'project_code', 'Project Code', '', $project_code, '' ,''
+                              ); ?>
+
+
+                              <?php echo __form::textbox(
+                                '6 utilized_fund', 'utilized_fund', 'text', 'Utilized Fund *', 'Utilized Fund', '', '', '', '','autonum'
+                              ); ?>
+
+                            </div>
                           </div>
                           <div class="col-md-5">
                             <?php echo __form::file(
                              '12', 'doc_file','doc_file', 'Attendance Sheet', $errors->has('doc_file'), $errors->first('doc_file'), ''
                             ); ?>   
                           </div>
+
                         </div>
                       </div>
 
@@ -388,6 +410,16 @@ function dt_draw(){
     $(document).ready(function(){
       active = '';
       edit_loader = $("#edit_seminar_modal .modal-content").html();
+
+      autonum_settings = {
+        currencySymbol : ' ₱',
+        decimalCharacter : '.',
+        digitGroupSeparator : ',',
+      };
+
+      $(".autonum").each(function(){
+        new AutoNumeric(this, autonum_settings);
+      })
 
       $('#seminars_table')
         .on('preXhr.dt', function ( e, settings, data ) {

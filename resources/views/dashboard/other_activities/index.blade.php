@@ -25,7 +25,7 @@
                         <div class="row">
                             <div class="col-md-1 col-sm-2 col-lg-2">
                                 <label>Sex:</label>
-                                <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_sex filters">
+                                <select name="other_activities_table_length" aria-controls="other_activities_table" class="form-control input-sm filter_sex filters">
                                     <option value="">All</option>
                                     <option value="MALE">Male</option>
                                     <option value="FEMALE">Female</option>
@@ -33,7 +33,7 @@
                             </div>
                             <div class="col-md-1 col-sm-2 col-lg-2">
                                 <label>Scholarship:</label>
-                                <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_scholarship filters">
+                                <select name="other_activities_table_length" aria-controls="other_activities_table" class="form-control input-sm filter_scholarship filters">
                                     <option value="">All</option>
                                     <option value="TESDA">TESDA</option>
                                     <option value="CHED">CHED</option>
@@ -43,12 +43,6 @@
                             {{-- @php
                             print('<pre>'.print_r($mill_districts,true).'</pre>')
                             @endphp --}}
-
-
-
-
-
-
                         </div>
                     </div>
                 </div>
@@ -56,18 +50,18 @@
             <!-- /.box-header -->
             <div class="box-body">
 
-                <div id="scholars_table_container" style="display: none">
-                    <table class="table table-bordered table-striped table-hover" id="scholars_table" style="width: 100% !important">
+                <div id="other_activities_table_container" style="display: none">
+                    <table class="table table-bordered table-striped table-hover" id="other_activities_table" style="width: 100% !important">
                         <thead>
-                        <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
-                            <th>Name & Address</th>
-                            <th>Mill District</th>
-                            <th style="width: 50px">Scholarship</th>
-                            <th>Course & School</th>
-                            <th>Date of Birth</th>
-                            <th>Sex</th>
-                            <th class="action">Action</th>
-                        </tr>
+                            <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
+                                <th>Activity</th>
+                                <th>Date</th>
+                                <th>Venue</th>
+                                <th>Project Code</th>
+                                <th>Utilized Fund</th>
+                                <th>Details</th>
+                                <th class="action">Action</th>
+                            </tr>
                         </thead>
                         <tbody>
 
@@ -119,12 +113,15 @@
                             ) !!}
                         </div>
                         <div class="row">
-                            {!! __form::textbox(
-                              '4 project_code', 'project_code', 'text', 'Project Code *', 'Project Code', '', '', '', ''
+                            @php
+                                $project_code = \App\Models\Projects::select(['project_code','activity'])->get();
+                            @endphp
+                            {!! __form::select_object_project_code(
+                              '4 project_code', 'project_code', 'Project Code', '', $project_code, '' ,''
                             ) !!}
 
                             {!! __form::textbox(
-                              '4 utilized_fund', 'utilized_fund', 'text', 'Utilized Fund *', 'Utilized Fund', '', '', '', ''
+                              '4 utilized_fund', 'utilized_fund', 'text', 'Utilized Fund *', 'Utilized Fund', '', '', '', '','autonum'
                             ) !!}
 
                             {!! __form::textbox(
@@ -167,7 +164,7 @@
 @section('scripts')
     <script type="text/javascript">
         function dt_draw(){
-            scholars_tbl.draw();
+            other_activities_tbl.draw();
         }
 
         function filter_dt(){
@@ -175,7 +172,7 @@
             scholarship_type = $(".filter_scholarship").val();
             mill_district = $(".filter_mill_district").val();
             course = $(".filter_course").val();
-            scholars_tbl.ajax.url(
+            other_activities_tbl.ajax.url(
                 "{{ route('dashboard.scholars.index') }}?sex="+sex+"&scholarship_type="+scholarship_type+"&mill_district="+mill_district+"&course="+course).load();
 
             $(".filters").each(function(index, el) {
@@ -199,21 +196,21 @@
 
         //-----DATATABLES-----//
         //Initialize DataTable
-        scholars_tbl = $("#scholars_table").DataTable({
+        other_activities_tbl = $("#other_activities_table").DataTable({
             'dom' : 'lBfrtip',
             "processing": true,
             "serverSide": true,
             "ajax" : {
-                url : '{{ route("dashboard.scholars.index") }}',
+                url : '{{ route("dashboard.other_activities.index") }}',
                 type: 'GET',
             },
             "columns": [
-                { "data": "fullname" },
-                { "data": "mill_district" },
-                { "data": "scholarship_applied" },
-                { "data": "course_school" },
-                { "data": "birth" },
-                { "data": "sex" },
+                { "data": "activity" },
+                { "data": "date" },
+                { "data": "venue" },
+                { "data": "project_code" },
+                { "data": "utilized_fund" },
+                { "data": "details" },
                 { "data": "action" }
             ],
             "buttons": [
@@ -226,24 +223,15 @@
                     "class" : "scholars_name"
                 },
                 {
-                    "targets" : 5,
-                    "orderable" : false,
-                    "class" : 'sex-th'
-                },
-                {
                     "targets" : 6,
                     "orderable" : false,
                     "class" : 'action'
                 },
-                {
-                    "targets": 1,
-                    "visible": false
-                }
             ],
             "responsive": false,
             "initComplete": function( settings, json ) {
                 $('#tbl_loader').fadeOut(function(){
-                    $("#scholars_table_container").fadeIn();
+                    $("#other_activities_table_container").fadeIn();
                 });
             },
             "language":
@@ -254,7 +242,7 @@
                 $('[data-toggle="tooltip"]').tooltip();
                 $('[data-toggle="modal"]').tooltip();
                 if(active != ''){
-                    $("#scholars_table #"+active).addClass('success');
+                    $("#other_activities_table #"+active).addClass('success');
                 }
             },
             'rowGroup': {
@@ -266,18 +254,18 @@
 
 
 
-        style_datatable("#scholars_table");
+        style_datatable("#other_activities_table");
 
 
         //Search Bar Styling
-        $('#scholars_table_filter input').css("width","300px");
-        $("#scholars_table_filter input").attr("placeholder","Press enter to search");
+        $('#other_activities_table_filter input').css("width","300px");
+        $("#other_activities_table_filter input").attr("placeholder","Press enter to search");
 
         //Need to press enter to search
-        $('#scholars_table_filter input').unbind();
-        $('#scholars_table_filter input').bind('keyup', function (e) {
+        $('#other_activities_table_filter input').unbind();
+        $('#other_activities_table_filter input').bind('keyup', function (e) {
             if (e.keyCode == 13) {
-                scholars_tbl.search(this.value).draw();
+                other_activities_tbl.search(this.value).draw();
             }
         });
 
@@ -286,27 +274,26 @@
             filter_dt();
         })
 
-
+        //STORE
         $("#add_activity_form").submit(function (e) {
             e.preventDefault();
+            form = $(this);
 
             //wait_button("#add_activity_form");
-
+            loading_btn(form);
             $.ajax({
                 url : "{{ route('dashboard.other_activities.store') }}",
                 data : $(this).serialize(),
                 type: 'POST',
                 dataType: 'json',
                 success: function(response){
-                    $("#add_scholar_form").get(0).reset();
                     notify("Scholar has been added successfully","success");
-                    // active = response.slug;
-                    // scholars_tbl.draw(false);
-                    succeed("#add_activity_form", "save" ,true);
+                    active = response.slug;
+                    other_activities_tbl.draw(false);
+                    succeed(form, true ,false);
                 },
                 error: function(response){
-                    console.log(response);
-                    errored("#add_activity_form","save",response);
+                    errored(form,response);
 
                 }
             })
@@ -370,7 +357,7 @@
                     $("#edit_scholars_modal").modal('hide');
                     notify("Scholar successfully updated",'success');
                     active = response.slug
-                    scholars_tbl.draw(false);
+                    other_activities_tbl.draw(false);
                 },
                 error: function(response){
                     console.log(response);

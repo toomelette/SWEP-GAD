@@ -115,21 +115,14 @@
                                   Utilization
                                 </p>
                               </div>
-                              {!! __form::textbox(
-                                '6 project_code', 'project_code', 'text', 'Project Code*', 'Project Code','' , '', '', 'list="project_list"')
-                              !!}
-
-                              <datalist id="project_list">
-                                @php
-                                  $projects = \App\Models\Projects::get(['project_code']);
-
-                                @endphp
-                                @if($projects->count()>0)
-                                  @foreach($projects as $project)
-                                    <option>{{$project->project_code}}</option>
-                                  @endforeach
-                                @endif
-                              </datalist>
+                            </div>
+                            <div class="row">
+                              @php
+                                $project_code = \App\Models\Projects::select(['project_code','activity'])->get();
+                              @endphp
+                              {!! __form::select_object_project_code(
+                                '6 project_code', 'project_code', 'Project Code', '', $project_code, '' ,''
+                              ) !!}
 
                               {!! __form::textbox(
                                 '6 utilized_fund', 'utilized_fund', 'text', 'Utilized Fund *', 'Utilized Fund', '', '', '', '','autonum'
@@ -400,15 +393,7 @@ function dt_draw(){
       active = '';
       edit_loader = $("#edit_seminar_modal .modal-content").html();
 
-      autonum_settings = {
-        currencySymbol : ' ₱',
-        decimalCharacter : '.',
-        digitGroupSeparator : ',',
-      };
 
-      $(".autonum").each(function(){
-        new AutoNumeric(this, autonum_settings);
-      })
 
       $('#seminars_table')
         .on('preXhr.dt', function ( e, settings, data ) {

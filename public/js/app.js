@@ -193,18 +193,18 @@ function notify(message, type){
 
 
 function unmark_required(target_form){
-    $(target_form + " .has-error:not(.except)").each(function(){
+    form_id = $(target_form[0]).attr('id');
+    $("#"+form_id+" .has-error:not(.except)").each(function(){
       $(this).removeClass('has-error');
-      $(this).children("span").remove();
+      $(this).children("span").last().remove();
     });
 }
 
 function mark_required(target_form, response){
-
+    form_id = $(target_form[0]).attr('id');
     $.each(response.responseJSON.errors, function(i, item){
-      $(target_form+" ."+i).addClass('has-error');
-
-      $(target_form+" ."+i).append("<span class='help-block'> "+item+" </span>");
+      $("#"+form_id+" ."+i).addClass('has-error');
+      $("#"+form_id+" ."+i).append("<span class='help-block'> "+item+" </span>");
     });
 }
 
@@ -217,6 +217,9 @@ function wait_button(target_form){
     button.attr("disabled","disabled");
     Pace.restart();
 }
+
+
+
 function unwait_button(target_form , type){
     text = '';
     switch(type){
@@ -232,16 +235,45 @@ function unwait_button(target_form , type){
     button.removeAttr('disabled');
 }
 
-function succeed(target_form, type,reset){
-    if(reset == true){
-        $(target_form).get(0).reset();
-    }
-    unmark_required(target_form);
-    unwait_button(target_form, type);
+function loading_btn(target_form){
+    form_id = $(target_form[0]).attr('id');
+    button = $("#"+form_id+" button[type='submit']");
+    button_html = button.html();
+    icon = button.children('i');
+    old_icon_class = icon.attr('class');
+    icon.attr('old-class',old_icon_class);
+    icon.removeClass();
+    icon.addClass('fa fa-spinner fa-spin');
+    button.attr("disabled","disabled");
+    Pace.restart();
 }
 
-function errored(target_form, type, response){
-    unwait_button(target_form,type);
+function remove_loading_btn(target_form){
+    form_id = $(target_form[0]).attr('id');
+    button = $("#"+form_id+" button[type='submit']");
+    button.removeAttr("disabled");
+
+    icon = button.children('i');
+    icon.removeClass();
+    icon.addClass(icon.attr('old-class'));
+}
+
+function succeed(target_form, reset,modal){
+    form_id = $(target_form[0]).attr('id');
+    if(reset == true){
+        $("#"+form_id).get(0).reset();
+    }
+
+    if(modal == true){
+        $(form).parents('.modal').modal('hide');
+    }
+    unmark_required(target_form);
+    remove_loading_btn(target_form);
+}
+
+function errored(target_form, response){
+    form_id = $(target_form[0]).attr('id');
+    remove_loading_btn(target_form);
     unmark_required(target_form);
     mark_required(target_form,response);
     notify("Please fill out required fields", "warning");
@@ -251,7 +283,6 @@ function errored(target_form, type, response){
 function populate_modal(target_modal, response){
     $(target_modal +" #modal_loader").fadeOut(function() {
       $(target_modal +" .modal-content").html(response);
-
       $('.datepicker').each(function(){
         $(this).datepicker({
               autoclose: true,
@@ -259,11 +290,7 @@ function populate_modal(target_modal, response){
               orientation: "bottom"
           });
         });
-
       $("ol.sortable").sortable();
-
-
-
     });
   }
 

@@ -549,8 +549,8 @@
 
   $("#add_scholar_form").submit(function (e) {
     e.preventDefault();
-
-    wait_button("#add_scholar_form");
+    form = $(this);
+    loading_btn(form);
 
     $.ajax({
       url : "<?php echo e(route('dashboard.scholars.store')); ?>",
@@ -558,15 +558,14 @@
       type: 'POST',
       dataType: 'json',
       success: function(response){
-        $("#add_scholar_form").get(0).reset();
         notify("Scholar has been added successfully","success");
         active = response.slug;
         scholars_tbl.draw(false);
-        succeed("#add_scholar_form", "save" ,true);
+        succeed(form, true ,false);
       },
       error: function(response){
         console.log(response);
-        errored("#add_scholar_form","save",response);
+        errored(form,response);
 
       }
     })
@@ -616,7 +615,8 @@
   $("body").on("submit","#edit_scholars_form", function(e){
     e.preventDefault();
     id = $(this).attr('data');
-    wait_button("#edit_scholars_form");
+    form = $(this);
+    loading_btn(form);
     uri = "<?php echo e(route('dashboard.scholars.update','slug')); ?>";
     uri = uri.replace('slug',id);
 
@@ -626,15 +626,14 @@
       type: 'PUT',
       dataType: 'json',
       success: function(response){
-        succeed("#edit_scholars_form","save",false);
-        $("#edit_scholars_modal").modal('hide');
+        succeed(form,true,true);
         notify("Scholar successfully updated",'success');
         active = response.slug
         scholars_tbl.draw(false);
       },
       error: function(response){
         console.log(response);
-        errored("#edit_scholars_form","save",response);
+        errored(form,response);
       }
 
     })

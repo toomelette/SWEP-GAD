@@ -53,15 +53,15 @@
                 <div id="scholars_table_container" style="display: none">
                     <table class="table table-bordered table-striped table-hover" id="scholars_table" style="width: 100% !important">
                         <thead>
-                        <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
-                            <th>Project Code</th>
-                            <th>Year</th>
-                            <th>Activity</th>
-                            <th>Budget Allocated</th>
-                            <th>Balance</th>
-                            <th>%</th>
-                            <th class="action">Action</th>
-                        </tr>
+                            <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
+                                <th>Project Code</th>
+                                <th>Year</th>
+                                <th>Activity</th>
+                                <th>Budget Allocated</th>
+                                <th>Balance</th>
+                                <th>%</th>
+                                <th class="action">Action</th>
+                            </tr>
                         </thead>
                         <tbody>
 
@@ -81,7 +81,6 @@
         </div>
 
         </div>
-
     </section>
 
 @endsection
@@ -167,18 +166,6 @@
 
 @section('scripts')
     <script type="text/javascript">
-
-        autonum_settings = {
-            currencySymbol : ' ₱',
-            decimalCharacter : '.',
-            digitGroupSeparator : ',',
-        };
-
-        $(".autonum").each(function(){
-            new AutoNumeric(this, autonum_settings);
-        })
-
-
         function dt_draw(){
             scholars_tbl.draw();
         }
@@ -299,7 +286,8 @@
 
         $("#add_project_form").submit(function (e) {
             e.preventDefault();
-            wait_button("#add_project_form");
+            form = $(this);
+            loading_btn(form);
             $.ajax({
                 url : "{{ route('dashboard.projects.store') }}",
                 data : $(this).serialize(),
@@ -308,11 +296,11 @@
                     notify("Scholar has been added successfully","success");
                     active = response.slug;
                     scholars_tbl.draw(false);
-                    succeed("#add_project_form", "save" ,true);
+                    succeed(form, true ,false);
                 },
                 error: function (response) {
                     console.log(response);
-                    errored("#add_project_form","save",response);
+                    errored(form,response);
                 }
             })
         })
@@ -386,8 +374,9 @@
 
         $("body").on("submit","#edit_scholars_form", function(e){
             e.preventDefault();
+            form = $(this);
             id = $(this).attr('data');
-            wait_button("#edit_scholars_form");
+            loading_btn(form);
             uri = "{{ route('dashboard.scholars.update','slug') }}";
             uri = uri.replace('slug',id);
 
@@ -397,7 +386,7 @@
                 type: 'PUT',
                 dataType: 'json',
                 success: function(response){
-                    succeed("#edit_scholars_form","save",false);
+                    succeed(form,true,false);
                     $("#edit_scholars_modal").modal('hide');
                     notify("Scholar successfully updated",'success');
                     active = response.slug
@@ -405,7 +394,7 @@
                 },
                 error: function(response){
                     console.log(response);
-                    errored("#edit_scholars_form","save",response);
+                    errored(form,response);
                 }
 
             })

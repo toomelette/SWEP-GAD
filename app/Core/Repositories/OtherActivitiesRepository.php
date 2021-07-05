@@ -9,11 +9,15 @@ use App\Models\OtherActivities;
 
 class OtherActivitiesRepository extends BaseRepository
 {
-    public function __construct()
+    protected $other_activities;
+    public function __construct(OtherActivities $other_activities)
     {
+        $this->other_activities = $other_activities;
         parent::__construct();
     }
-
+    public function fetchTable($data){
+        return $this->other_activities->all();
+    }
     public function store($request){
        $other_act = new OtherActivities;
        $other_act->slug = $this->str->random(24);

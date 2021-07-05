@@ -14,7 +14,9 @@
     height:100%;
 }
 
-
+.select2-container{
+    width: 100% !important;   
+}
 
 .bg-white{
     background-color: white !important;

@@ -93,10 +93,8 @@ class __form{
               </div>';
     }
 
-
-
     public static function select_static($class, $key, $label, $old_value, $array, $error_has, $error_first, $select2, $extra_attr){
-      
+
        return '<div class="form-group col-md-'. $class .' '. self::error_response($error_has) .'">
                 <label for="'. $key .'">'. $label .'</label>
                 <select name="'. $key .'" class="form-control '. $select2 .'" '. $extra_attr .' style="font-size:15px;">
@@ -105,6 +103,45 @@ class __form{
                 </select>
                 '. self::error_message($error_has, $error_first) .'
               </div>';
+    }
+
+
+
+    public static function select_object($class, $name, $label, $id, $object, $value ,$var_text, $var_value,$extra_attr, $input_class = null){
+
+        $select = '<div class="form-group col-md-'. $class .'">
+                <label for="'. $name .'">'. $label .'</label>
+                <select name="'. $name .'" id="'. $id .'" class="form-control '. $input_class .'" '. $extra_attr .'">';
+        foreach($object as $item){
+            $selected = '';
+            if($item->$var_value == $value){
+                $selected = 'selected';
+            }
+            $select = $select.'<option value="'.$item->$var_value.'" '.$selected.'>'.$item->$var_text.'</option>';
+        }
+        $select = $select.'</select>
+              </div>';
+        return $select;
+    }
+
+    public static function select_object_project_code($class, $name, $label, $id, $object, $value , $extra_attr){
+
+        $select = '<div class="form-group col-md-'. $class .'">
+                <label for="'. $name .'">'. $label .'</label>
+                <select name="'. $name .'" id="'. $id .'" class="form-control select2" '. $extra_attr .'">';
+        if($value  == ''){
+            $select = $select.'<option selected disabled>Select an option</option>';
+        }
+        foreach($object as $item){
+            $selected = '';
+            if($item->project_code == $value){
+                $selected = 'selected';
+            }
+            $select = $select.'<option value="'.$item->project_code.'" >'.$item->project_code.' | '.substr($item->activity,0,25).'</option>';
+        }
+        $select = $select.'</select>
+              </div>';
+        return $select;
     }
 
 

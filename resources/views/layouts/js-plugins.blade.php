@@ -97,6 +97,21 @@
 {{--  Cropper --}}
 <script type="text/javascript" src="{{asset('template/plugins/cropperjs/dist/cropper.js')}}"></script>
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        autonum_settings = {
+            currencySymbol : ' ₱',
+            decimalCharacter : '.',
+            digitGroupSeparator : ',',
+        };
+
+        $(".autonum").each(function(){
+            new AutoNumeric(this, autonum_settings);
+        })
+
+        $('.select2').select2();
+    })
+</script>
 
 {{-- BS MODAL --}}
 {{-- <script type="text/javascript" src="{{asset('template/plugins/bootstrap-modal/js/bootstrap-modal.js')}}"></script>
