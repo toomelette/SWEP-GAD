@@ -23,7 +23,6 @@ class ProjectsRepository extends BaseRepository
     }
 
     public function store($request){
-        //return $r = $request;
         $project = New Projects;
         $project->slug = $this->str->random(16);
 
@@ -36,5 +35,18 @@ class ProjectsRepository extends BaseRepository
         }
     }
 
+    public function findBySlug($id){
+        return $this->projects->where('slug',$id)->first();
+    }
 
+    public function update($request,$id){
+        $project = $this->findBySlug($id);
+        foreach ($request->except('_token') as $key => $val) {
+            $project->$key = $val;
+        }
+
+        if($project->update()){
+            return $project->only(['slug']);
+        }
+    }
 }

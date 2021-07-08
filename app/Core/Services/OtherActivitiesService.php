@@ -23,4 +23,11 @@ class OtherActivitiesService extends BaseService
         ]);
         return $this->other_activities_repo->store($request);
     }
+
+    public function update($request,$id){
+        $request->merge([
+            'utilized_fund' => GlobalHelpers::sanitize_autonum($request->utilized_fund)
+        ]);
+        return $this->other_activities_repo->update($request,$id);
+    }
 }

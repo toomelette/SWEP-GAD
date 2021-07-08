@@ -29,18 +29,18 @@ class OtherActivitiesController extends Controller
                     $button = '<div class="btn-group">';
 
                     if($data->has_participants == 1){
-                        $button = $button.'<button type="button" class="btn btn-default btn-sm show_scholars_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#show_scholars_modal" title="Participants" data-placement="left">
+                        $button = $button.'<button type="button" class="btn btn-default btn-sm show_other_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#show_other_modal" title="Participants" data-placement="left">
                                     <i class="fa fa-users"></i>
                                 </button>';
                     }
 
-                    $button = $button.'<button type="button" class="btn btn-default btn-sm show_scholars_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#show_scholars_modal" title="View more" data-placement="left">
+                    $button = $button.'<button type="button" class="btn btn-default btn-sm show_other_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#show_scholars_modal" title="View more" data-placement="left">
                                     <i class="fa fa-file-text"></i>
                                 </button>
-                                <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_scholars_btn" data-toggle="modal" data-target="#edit_scholars_modal" title="Edit" data-placement="top">
+                                <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_other_btn" data-toggle="modal" data-target="#edit_other_modal" title="Edit" data-placement="top">
                                     <i class="fa fa-edit"></i>
                                 </button>
-                                <button type="button" data="'.$data->slug.'" class="btn btn-sm btn-danger delete_scholars_btn" data-toggle="tooltip" title="Delete" data-placement="top">
+                                <button type="button" data="'.$data->slug.'" class="btn btn-sm btn-danger delete_other_btn" data-toggle="tooltip" title="Delete" data-placement="top">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </div>';
@@ -62,5 +62,18 @@ class OtherActivitiesController extends Controller
 
     public function store(OtherActivitiesFormRequest $request){
         return $this->other_activities_service->store($request);
+    }
+
+    public function edit($id){
+        $other_activity = $this->other_activities_repo->findBySlug($id);
+        return view('dashboard.other_activities.edit')->with(['other_activity'=>$other_activity]);
+    }
+
+    public function update(OtherActivitiesFormRequest $request,$id){
+        return $this->other_activities_service->update($request,$id);
+    }
+
+    public function destroy($id){
+        return $this->other_activities_repo->destroy($id);
     }
 }

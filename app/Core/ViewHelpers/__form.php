@@ -553,7 +553,9 @@ class __form{
             if($value === $val){
                 $options = $options.'<option value="'.$val.'" selected>'.$option.'</option>';
             }else{
-                $options = $options.'<option value="'.$val.'">'.$option.'</option>';
+                if($val != $year_now){
+                    $options = $options.'<option value="'.$val.'">'.$option.'</option>';
+                }
             }
         }
 
@@ -564,6 +566,14 @@ class __form{
           '.$options.'
         </select>  
       </div>';
+    }
+
+    public static function markCheckBox($value){
+        if($value == 1){
+            return 'checked';
+        }else{
+            return '';
+        }
     }
 
 }

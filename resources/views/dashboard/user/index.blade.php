@@ -336,8 +336,9 @@
       //Submit add user form
       $("#add_user_form").submit(function(e){
         e.preventDefault();
+        form = $(this);
         uri = "{{ route('dashboard.user.store') }}";
-        wait_button("#add_user_form");
+        loading_btn(form);
         Pace.restart();
         $.ajax({
           url: uri,
@@ -347,10 +348,10 @@
           success: function(response) {
             users_table.draw(false);
             active = response.slug;
-            succeed("#add_user_form","save",true);
+            succeed(form,true,false);
           },
           error: function (response) {
-            errored("#add_user_form","save",response);
+            errored(form,response);
           }
         })
       })
@@ -509,8 +510,8 @@
         id = $(this).attr('data');
         uri = " {{ route('dashboard.user.update', 'slug') }} ";
         uri = uri.replace("slug",id);
-
-        wait_button("#edit_user_form");
+        form = $(this);
+        loading_btn(form);
 
         $.ajaxSetup({
           headers: {
@@ -528,11 +529,11 @@
             users_table.draw(false);
             $("#edit_user_modal").modal('hide');
             notify("Changes were saved successfully.", "success");
-            succeed("#edit_user_form","save",false);
+            succeed(form, true,true);
           },
           error: function(response){
             console.log(response);
-            errored("#edit_user_form","save",response);
+            errored(form,response);
           }
         })
       })

@@ -60,7 +60,7 @@
                                 <th>Project Code</th>
                                 <th>Utilized Fund</th>
                                 <th>Details</th>
-                                <th class="action">Action</th>
+                                <th class="">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -148,8 +148,8 @@
 
 
 
-    {!! __html::blank_modal('show_scholars_modal','lg') !!}
-    {!! __html::blank_modal('edit_scholars_modal','lg') !!}
+    {!! __html::blank_modal('show_other_modal','lg') !!}
+    {!! __html::blank_modal('edit_other_modal','lg') !!}
 
 
 
@@ -225,7 +225,7 @@
                 {
                     "targets" : 6,
                     "orderable" : false,
-                    "class" : 'action'
+                    "class" : 'action-60'
                 },
             ],
             "responsive": false,
@@ -245,9 +245,9 @@
                     $("#other_activities_table #"+active).addClass('success');
                 }
             },
-            'rowGroup': {
-                'dataSrc': 'mill_district'
-            },
+            // 'rowGroup': {
+            //     'dataSrc': 'mill_district'
+            // },
             "order": [[ 1, "asc" ], [0, 'asc']]
         })
 
@@ -317,34 +317,36 @@
             })
         });
 
-        $("body").on("click",".edit_scholars_btn", function(){
+        $("body").on("click",".edit_other_btn", function(){
 
             id = $(this).attr('data');
-            load_modal('#edit_scholars_modal');
+            load_modal('#edit_other_modal');
 
-            uri = " {{ route('dashboard.scholars.edit', 'slug') }} ";
+            uri = " {{ route('dashboard.other_activities.edit', 'slug') }} ";
             uri = uri.replace('slug',id);
 
             $.ajax({
                 url : uri,
                 type: 'GET',
                 success: function(response){
-
-                    populate_modal("#edit_scholars_modal",response);
+                    console.log(response)
+                    populate_modal("#edit_other_modal",response);
 
                 },
                 error: function(response){
+                    notify('Error occurred','danger');
                     console.log(response);
                 }
             })
 
         });
 
-        $("body").on("submit","#edit_scholars_form", function(e){
+        $("body").on("submit","#edit_other_form", function(e){
             e.preventDefault();
             id = $(this).attr('data');
-            wait_button("#edit_scholars_form");
-            uri = "{{ route('dashboard.scholars.update','slug') }}";
+            form = $(this);
+            loading_btn(form);
+            uri = "{{ route('dashboard.other_activities.update','slug') }}";
             uri = uri.replace('slug',id);
 
             $.ajax({
@@ -353,24 +355,24 @@
                 type: 'PUT',
                 dataType: 'json',
                 success: function(response){
-                    succeed("#edit_scholars_form","save",false);
-                    $("#edit_scholars_modal").modal('hide');
-                    notify("Scholar successfully updated",'success');
+                    succeed(form,true,true);
+                    notify("Activity successfully updated",'success');
                     active = response.slug
                     other_activities_tbl.draw(false);
                 },
                 error: function(response){
                     console.log(response);
-                    errored("#edit_scholars_form","save",response);
+                    errored(form ,response);
                 }
 
             })
         })
 
 
-        $("body").on("click",".delete_scholars_btn", function(){
+
+        $("body").on("click",".delete_other_btn", function(){
             id = $(this).attr('data');
-            confirm("{{ route('dashboard.scholars.destroy', 'slug') }}", id);
+            confirm("{{ route('dashboard.other_activities.destroy', 'slug') }}", id);
         })
 
 

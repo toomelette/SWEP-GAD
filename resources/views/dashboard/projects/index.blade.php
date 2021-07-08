@@ -7,7 +7,7 @@
         {{-- Table Grid --}}
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Scholars</h3>
+                <h3 class="box-title">Projects</h3>
                 <div class="pull-right">
                     <button type="button" class="btn {!! __static::bg_color(Auth::user()->color) !!}" data-toggle="modal" data-target="#add_project_modal"><i class="fa fa-plus"></i> Add Project</button>
                 </div>
@@ -25,7 +25,7 @@
                         <div class="row">
                             <div class="col-md-1 col-sm-2 col-lg-2">
                                 <label>Sex:</label>
-                                <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_sex filters">
+                                <select name="projects_table_length" aria-controls="projects_table" class="form-control input-sm filter_sex filters">
                                     <option value="">All</option>
                                     <option value="MALE">Male</option>
                                     <option value="FEMALE">Female</option>
@@ -33,7 +33,7 @@
                             </div>
                             <div class="col-md-1 col-sm-2 col-lg-2">
                                 <label>Scholarship:</label>
-                                <select name="scholars_table_length" aria-controls="scholars_table" class="form-control input-sm filter_scholarship filters">
+                                <select name="projects_table_length" aria-controls="projects_table" class="form-control input-sm filter_scholarship filters">
                                     <option value="">All</option>
                                     <option value="TESDA">TESDA</option>
                                     <option value="CHED">CHED</option>
@@ -50,8 +50,8 @@
             <!-- /.box-header -->
             <div class="box-body">
 
-                <div id="scholars_table_container" style="display: none">
-                    <table class="table table-bordered table-striped table-hover" id="scholars_table" style="width: 100% !important">
+                <div id="projects_table_container" style="display: none">
+                    <table class="table table-bordered table-striped table-hover" id="projects_table" style="width: 100% !important">
                         <thead>
                             <tr class="{!! __static::bg_color(Auth::user()->color) !!}">
                                 <th>Project Code</th>
@@ -158,8 +158,8 @@
 
 
 
-    {!! __html::blank_modal('show_scholars_modal','lg') !!}
-    {!! __html::blank_modal('edit_scholars_modal','lg') !!}
+    {!! __html::blank_modal('show_project_modal','lg') !!}
+    {!! __html::blank_modal('edit_project_modal','') !!}
 
 @endsection
 
@@ -167,7 +167,7 @@
 @section('scripts')
     <script type="text/javascript">
         function dt_draw(){
-            scholars_tbl.draw();
+            projects_tbl.draw();
         }
 
         function filter_dt(){
@@ -175,7 +175,7 @@
             scholarship_type = $(".filter_scholarship").val();
             mill_district = $(".filter_mill_district").val();
             course = $(".filter_course").val();
-            scholars_tbl.ajax.url(
+            projects_tbl.ajax.url(
                 "{{ route('dashboard.scholars.index') }}?sex="+sex+"&scholarship_type="+scholarship_type+"&mill_district="+mill_district+"&course="+course).load();
 
             $(".filters").each(function(index, el) {
@@ -199,7 +199,7 @@
 
         //-----DATATABLES-----//
         //Initialize DataTable
-        scholars_tbl = $("#scholars_table").DataTable({
+        projects_tbl = $("#projects_table").DataTable({
             'dom' : 'lBfrtip',
             "processing": true,
             "serverSide": true,
@@ -236,8 +236,8 @@
             "responsive": false,
             "initComplete": function( settings, json ) {
                 $('#tbl_loader').fadeOut(function(){
-                    $("#scholars_table_container").fadeIn();
-                    // scholars_tbl.search(search_for).draw();
+                    $("#projects_table_container").fadeIn();
+                    // projects_tbl.search(search_for).draw();
                     // active = search_for;
                     // setTimeout(function(){
                     //     active = '';
@@ -252,7 +252,7 @@
                 $('[data-toggle="tooltip"]').tooltip();
                 $('[data-toggle="modal"]').tooltip();
                 if(active != ''){
-                    $("#scholars_table #"+active).addClass('success');
+                    $("#projects_table #"+active).addClass('success');
                 }
             },
             'rowGroup': {
@@ -264,18 +264,18 @@
 
 
 
-        style_datatable("#scholars_table");
+        style_datatable("#projects_table");
 
 
         //Search Bar Styling
-        $('#scholars_table_filter input').css("width","300px");
-        $("#scholars_table_filter input").attr("placeholder","Press enter to search");
+        $('#projects_table_filter input').css("width","300px");
+        $("#projects_table_filter input").attr("placeholder","Press enter to search");
 
         //Need to press enter to search
-        $('#scholars_table_filter input').unbind();
-        $('#scholars_table_filter input').bind('keyup', function (e) {
+        $('#projects_table_filter input').unbind();
+        $('#projects_table_filter input').bind('keyup', function (e) {
             if (e.keyCode == 13) {
-                scholars_tbl.search(this.value).draw();
+                projects_tbl.search(this.value).draw();
             }
         });
 
@@ -295,7 +295,7 @@
                 success: function (response) {
                     notify("Scholar has been added successfully","success");
                     active = response.slug;
-                    scholars_tbl.draw(false);
+                    projects_tbl.draw(false);
                     succeed(form, true ,false);
                 },
                 error: function (response) {
@@ -306,30 +306,6 @@
         })
 
 
-        {{--$("#add_scholar_form").submit(function (e) {--}}
-        {{--    e.preventDefault();--}}
-
-        {{--    wait_button("#add_scholar_form");--}}
-
-        {{--    $.ajax({--}}
-        {{--        url : "{{ route('dashboard.scholars.store') }}",--}}
-        {{--        data : $(this).serialize(),--}}
-        {{--        type: 'POST',--}}
-        {{--        dataType: 'json',--}}
-        {{--        success: function(response){--}}
-        {{--            $("#add_scholar_form").get(0).reset();--}}
-        {{--            notify("Scholar has been added successfully","success");--}}
-        {{--            active = response.slug;--}}
-        {{--            scholars_tbl.draw(false);--}}
-        {{--            succeed("#add_scholar_form", "save" ,true);--}}
-        {{--        },--}}
-        {{--        error: function(response){--}}
-        {{--            console.log(response);--}}
-        {{--            errored("#add_scholar_form","save",response);--}}
-
-        {{--        }--}}
-        {{--    })--}}
-        {{--})--}}
 
         $("body").on("click",".show_scholars_btn",function(){
             id = $(this).attr("data");
@@ -349,21 +325,19 @@
             })
         });
 
-        $("body").on("click",".edit_scholars_btn", function(){
-
+        $("body").on("click",".edit_project_btn", function(){
+            btn = $(this);
             id = $(this).attr('data');
-            load_modal('#edit_scholars_modal');
+            load_modal2(btn);
 
-            uri = " {{ route('dashboard.scholars.edit', 'slug') }} ";
+            uri = " {{ route('dashboard.projects.edit', 'slug') }} ";
             uri = uri.replace('slug',id);
 
             $.ajax({
                 url : uri,
                 type: 'GET',
                 success: function(response){
-
-                    populate_modal("#edit_scholars_modal",response);
-
+                    populate_modal2(btn,response);
                 },
                 error: function(response){
                     console.log(response);
@@ -372,12 +346,12 @@
 
         });
 
-        $("body").on("submit","#edit_scholars_form", function(e){
+        $("body").on("submit","#edit_project_form", function(e){
             e.preventDefault();
             form = $(this);
             id = $(this).attr('data');
             loading_btn(form);
-            uri = "{{ route('dashboard.scholars.update','slug') }}";
+            uri = "{{ route('dashboard.projects.update','slug') }}";
             uri = uri.replace('slug',id);
 
             $.ajax({
@@ -386,14 +360,12 @@
                 type: 'PUT',
                 dataType: 'json',
                 success: function(response){
-                    succeed(form,true,false);
-                    $("#edit_scholars_modal").modal('hide');
-                    notify("Scholar successfully updated",'success');
+                    succeed(form,true,true);
+                    notify("Project successfully updated",'success');
                     active = response.slug
-                    scholars_tbl.draw(false);
+                    projects_tbl.draw(false);
                 },
                 error: function(response){
-                    console.log(response);
                     errored(form,response);
                 }
 

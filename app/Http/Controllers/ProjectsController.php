@@ -43,13 +43,13 @@ class ProjectsController extends Controller
                 })
                 ->addColumn('action', function($data){
                     $button = '<div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm show_scholars_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#show_scholars_modal" title="View more" data-placement="left">
+                                <button type="button" class="btn btn-default btn-sm show_project_btn" data="'.$data->slug.'" data-toggle="modal" data-target ="#show_project_modal" title="View more" data-placement="left">
                                     <i class="fa fa-file-text"></i>
                                 </button>
-                                <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_scholars_btn" data-toggle="modal" data-target="#edit_scholars_modal" title="Edit" data-placement="top">
+                                <button type="button" data="'.$data->slug.'" class="btn btn-default btn-sm edit_project_btn" data-toggle="modal" data-target="#edit_project_modal" title="Edit" data-placement="top">
                                     <i class="fa fa-edit"></i>
                                 </button>
-                                <button type="button" data="'.$data->slug.'" class="btn btn-sm btn-danger delete_scholars_btn" data-toggle="tooltip" title="Delete" data-placement="top">
+                                <button type="button" data="'.$data->slug.'" class="btn btn-sm btn-danger delete_project_btn" data-toggle="tooltip" title="Delete" data-placement="top">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </div>';
@@ -64,5 +64,14 @@ class ProjectsController extends Controller
 
     public function store(ProjectFormRequest $request){
         return $this->project_service->store($request);
+    }
+
+    public function edit($id){
+        $project = $this->project_repo->findBySlug($id);
+        return  view('dashboard.projects.edit')->with(['project'=>$project]);
+    }
+
+    public function update(ProjectFormRequest $request,$id){
+        return $this->project_service->update($request,$id);
     }
 }

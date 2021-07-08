@@ -343,23 +343,8 @@
                         </div>
                       </div>
                   </div>
-                  <!-- /.tab-pane -->
-
-                  <!-- /.tab-pane -->
                 </div>
-                <!-- /.tab-content -->
               </div>
-
-
-
-              
-              
-              
-                
-
-              
-
-              
           </div>
 
           <div class="modal-footer">
@@ -455,7 +440,7 @@
       {
         "targets" : 6,
         "orderable" : false,
-        "class" : 'action'
+        "class" : 'action-120'
       },
       {
         "targets": 1, 

@@ -29,4 +29,28 @@ class OtherActivitiesRepository extends BaseRepository
        }
 
     }
+
+    public function findBySlug($slug){
+        return $this->other_activities->where('slug',$slug)->first();
+    }
+    public function update($request,$id){
+
+        $other_act = $this->findBySlug($id);
+        foreach ($request->except('_token') as $key => $value){
+            $other_act->$key = $value;
+        }
+        if(empty($request->has_participants)){
+            $other_act->has_participants = 0;
+        }
+        if($other_act->update()){
+            return $other_act->only(['slug']);
+        }
+    }
+
+    public function destroy($id){
+        $other_act = $this->findBySlug($id);
+        if($other_act->delete()){
+            return $other_act->only(['slug']);
+        }
+    }
 }

@@ -19,6 +19,10 @@ class Projects extends Model
         static::creating(function($model){
             $model->user_created = Auth::user()->user_id;
         });
+
+        static::updating(function($model){
+            $model->user_updated = Auth::user()->user_id;
+        });
     }
 
     public function seminars(){

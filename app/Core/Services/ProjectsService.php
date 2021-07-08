@@ -23,4 +23,10 @@ class ProjectsService extends BaseService
 
         return $this->projects_repo->store($request);
     }
+    public function update($request,$id){
+        $request->merge([
+            'budget' => GlobalHelpers::sanitize_autonum($request->budget)
+        ]);
+        return $this->projects_repo->update($request,$id);
+    }
 }
