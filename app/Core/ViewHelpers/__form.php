@@ -137,7 +137,7 @@ class __form{
             if($item->project_code == $value){
                 $selected = 'selected';
             }
-            $select = $select.'<option value="'.$item->project_code.'" >'.$item->project_code.' | '.substr($item->activity,0,25).'</option>';
+            $select = $select.'<option value="'.$item->project_code.'" '.$selected.'>'.$item->project_code.' | '.substr($item->activity,0,25).'</option>';
         }
         $select = $select.'</select>
               </div>';

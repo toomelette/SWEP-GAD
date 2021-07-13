@@ -32,13 +32,13 @@ class ProjectsController extends Controller
                 })
                 ->addColumn('balance', function ($data){
                     $allocation = $data->budget;
-                    $utilized = $data->seminars->sum('utilized_fund');
+                    $utilized = $data->seminars->sum('utilized_fund')+$data->OtherActivities->sum('utilized_fund');
+                    $data->utilized = $utilized;
                     return number_format($allocation-$utilized,2);
                 })
                 ->addColumn('percentage',function($data){
                     $allocation = $data->budget;
-                    $utilized = $data->seminars->sum('utilized_fund');
-                    $percentage = ($utilized/$allocation*100);
+                    $percentage = ($data->utilized/$allocation*100);
                     return number_format($percentage,2).'%';
                 })
                 ->addColumn('action', function($data){
@@ -57,6 +57,15 @@ class ProjectsController extends Controller
                 })
                 ->escapeColumns([])
                 ->setRowId('slug')
+                ->setRowAttr([
+                    'is_excess' => function($data) {
+                        if($data->utilized > $data->budget){
+                            return 1;
+                        }else{
+                            return 0;
+                        }
+                    },
+                ])
                 ->make(true);
         }
         return view('dashboard.projects.index');

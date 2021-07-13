@@ -352,22 +352,22 @@
 
   $("#add_member_form").submit(function(e){
     e.preventDefault();
-    wait_button('#add_member_form');
+    form = $(this);
+    loading_btn(form);
     $.ajax({
       url: '{{route("dashboard.committee_members.store")}}',
       data: $(this).serialize(),
       type: 'POST',
       success: function(response){
         active = response.slug;
-        succeed('#add_member_form','save', true);
+        succeed(form, true,false);
         notify('Committee Member successfully added', 'success');
         $('#search_employee_input').parent('div').removeClass('has-success');
         $('#search_employee_input').focus();
-
         committee_members_tbl.draw(false);
       },
       error: function(response){
-        errored('#add_member_form', 'save',response);
+        errored(form,response);
       }     
     })
   })
@@ -411,20 +411,21 @@
   $("body").on("submit","#edit_member_form", function(e){
     e.preventDefault();
     slug = $(this).attr('data');
+    form = $(this);
+    loading_btn(form)
     url = '{{route("dashboard.committee_members.update","slug")}}';
     url = url.replace('slug',slug);
-    wait_button('#edit_member_form');
     $.ajax({
       url : url,
       data : $(this).serialize(),
       type: 'PUT',
       success : function(response){
+        succeed(form,true,true);
         notify('Committee Member successfully updated', 'success');
-        $('#edit_committee_member_modal').modal('hide');
         active = response.slug;
         committee_members_tbl.draw(false);
       },error: function(response){
-        errored('#edit_member_form', 'save',response);
+        errored(form,response);
       }
     })
   })

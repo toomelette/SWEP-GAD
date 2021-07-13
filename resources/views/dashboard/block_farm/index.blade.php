@@ -512,7 +512,8 @@
 
   //Submit Add Block Farm Form
   $("#add_block_farm_form").submit(function(e){
-    wait_button('#add_block_farm_form');
+    form = $(this);
+    loading_btn(form);
     e.preventDefault();
     Pace.restart();
     $.ajax({
@@ -524,14 +525,14 @@
         console.log(response);
         if(response.result == 1){
           notify("Block farm successfully added.","success");
-          succeed("#add_block_farm_form", "save" ,true);
+          succeed(form, true ,false);
           block_farm_tbl.draw(false);
           active = response.slug;
         }
       },
       error: function(response){
         error = 0;
-        errored("#add_block_farm_form","save",response);
+        errored(form,response);
       }
     })
   })
@@ -598,6 +599,7 @@
 
   //Submit Edit block farm form
   $("body").on("submit","#edit_block_farm_form",function(e){
+    form = $(this);
     e.preventDefault();
     uri = "{{ route('dashboard.block_farm.update', 'slug') }}";
     uri = uri.replace('slug',edit_block_farm_slug);
@@ -615,14 +617,13 @@
       success: function(response){
         if (response.result == 1) {
           notify("Block farm successfully updated","success");
-          succeed("#edit_block_farm_form","save",false);
-          $("#edit_block_farm_modal").modal("hide");
+          succeed(form,true,true);
           active = response.slug;
           block_farm_tbl.draw(false);
         }
       },
       error: function(response){
-        errored("#edit_block_farm_form","save",response);
+        errored(form,response);
       }
     })
     

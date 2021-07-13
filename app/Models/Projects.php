@@ -28,4 +28,8 @@ class Projects extends Model
     public function seminars(){
         return $this->hasMany('App\Models\Seminar','project_code','project_code');
     }
+
+    public function otherActivities(){
+        return $this->hasMany('App\Models\OtherActivities','project_code','project_code');
+    }
 }

@@ -227,6 +227,10 @@
                     "orderable" : false,
                 },
                 {
+                    "targets" : [3,4,5],
+                    "class" : 'text-right',
+                },
+                {
                     "targets" : 6,
                     "orderable" : false,
                     "class" : 'action'
@@ -254,6 +258,11 @@
                 if(active != ''){
                     $("#projects_table #"+active).addClass('success');
                 }
+
+                $("tr[is_excess='1']").each(function(i,item){
+                    $(this).children('td').eq(4).addClass('danger');
+                })
+
             },
             'rowGroup': {
                 'dataSrc': 'year'

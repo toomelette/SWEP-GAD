@@ -470,7 +470,8 @@ function dt_draw(){
       //Submit Add Seminar Form
       $("#form_add_seminar").submit(function(e){
         e.preventDefault();
-        wait_button('#form_add_seminar');
+        form = $(this);
+        loading_btn(form);
         formData = new FormData(this);
         Pace.restart();
         $.ajax({
@@ -488,29 +489,12 @@ function dt_draw(){
             seminars_table.draw(false);
             active = response.slug;
 
-            succeed("#form_add_seminar","save",true);
+            succeed(form,true,false);
             $("#form_add_seminar input[name='title']").focus();
             $("#table_body").html('');
           },
           error: function(response){
-            parsed = JSON.parse(response.responseText);
-            //console.log(parsed.errors);
-
-            $("#form_add_seminar .has-error").each(function(){
-              $(this).removeClass("has-error");
-              $(this).children("span").remove();
-            });
-
-            //console.log(parsed);
-            $.each(parsed.errors, function(i, item){
-              i = i.replace('.','-');
-              i = i.replace('.','-');
-              parent = $("#form_add_seminar ."+i);
-              parent.addClass("has-error");
-              parent.append('<span class="help-block">'+item+'</span>');
-            });
-            $(".submit_add_seminar").html('<i class="fa fa-save"></i> Save');
-            $(".submit_add_seminar").removeAttr('disabled');
+            errored(form,response);
           }
         })
       })

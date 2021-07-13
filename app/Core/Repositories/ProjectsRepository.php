@@ -19,7 +19,7 @@ class ProjectsRepository extends BaseRepository
     }
 
     public function fetchTable($data){
-        return Projects::with(['seminars']);
+        return Projects::with(['seminars','otherActivities']);
     }
 
     public function store($request){

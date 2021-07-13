@@ -258,9 +258,9 @@
         "class" : 'sex-th'
       },
       {
-        "targets" : 5,
+        "targets" : 7,
         "orderable" : false,
-        "class" : 'action'
+        "class" : 'action-120'
       },
 
       {
@@ -367,7 +367,8 @@
 	$("body").on('submit','#edit_mill_district_form', function(e){
 		e.preventDefault();
 	    id = $(this).attr('data');
-	    wait_button("#edit_scholars_form");
+	    form  = $(this);
+	    loading_btn(form);
 	    uri = "{{ route('dashboard.mill_district.update','slug') }}";
 	    uri = uri.replace('slug',id);
       t = $(this);
@@ -377,8 +378,7 @@
 	      type: 'PUT',
 	      dataType: 'json',
 	      success: function(response){
-	        succeed("#edit_mill_district_form","save",false);
-	        $("#edit_mill_district_modal").modal('hide');
+	        succeed(form,true,true);
 	        notify("Mill District successfully updated",'success');
 	        active = response.slug
 	        mill_district_tbl.draw(false);
@@ -386,8 +386,7 @@
 	      },
 	      error: function(response){
 	        console.log(response);
-	        errored("#edit_mill_district_form","save",response);
-	        notify("Error: Check console.", 'danger');
+	        errored(form,response);
 	      }
 
 	    })
@@ -397,21 +396,21 @@
 
 	$("#add_mill_district_form").submit(function(e){
 		e.preventDefault();
-		wait_button("#add_mill_district_form");
+		form = $(this);
+		loading_btn(form);
 		$.ajax({
 			url: "{{route('dashboard.mill_district.store')}}",
 			data: $(this).serialize(),
 			type: 'POST',
 			success: function(response){
-				succeed('#add_mill_district_form','save',true);
+				succeed(form,true,false);
 				notify("Mill District successfully added",'success');
 				active = response.slug
 	       mill_district_tbl.draw(false);
         $("#add_mill_district_form select[name='region']").html('<option value="">Select</option>');
 			},
 			error: function(response){
-				notify("Error: Check console.", 'danger');
-				errored('#add_mill_district_form','save',response)				
+				errored(form,response)
 			}
 		});
 	});
